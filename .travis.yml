@@ -98,6 +98,8 @@ addons:
     - lcov
 
 install:
+- pip install python-qpid-proton || true
+- pip3 install python-qpid-proton || true
 - NPROC=2
 - PREFIX=$PWD/install
 - git clone --depth=10 --branch=$PROTON_VERSION https://github.com/apache/qpid-proton.git
@@ -105,7 +107,7 @@ install:
 # Build and install proton from source.
 - mkdir qpid-proton/build
 - pushd qpid-proton/build
-- cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DBUILD_BINDINGS=python ${PROTON_CMAKE_ARGS}
+- cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DBUILD_BINDINGS=OFF ${PROTON_CMAKE_ARGS}
 - cmake --build . --target install -- -j $NPROC
 - popd
 
