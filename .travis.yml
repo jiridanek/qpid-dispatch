@@ -20,6 +20,7 @@
 sudo: true
 language: c
 cache: ccache
+distro: focal
 matrix:
   fast_finish: true
   allow_failures:
