@@ -1,6 +1,5 @@
 # ThreadSanitizer (tsan) suppression file
 #
-race:libqpid-proton-proactor
 deadlock:libpython
 
 race:qd_vlog_impl

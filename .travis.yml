@@ -55,6 +55,12 @@ matrix:
     env:
     - PATH="/usr/bin:$PATH" PROTON_VERSION=0.31.0 BUILD_TYPE=RelWithDebInfo
     - DISPATCH_CMAKE_ARGS='-DRUNTIME_CHECK=asan'
+    - PROTON_CMAKE_ARGS='-DRUNTIME_CHECK=asan'
+  - os: linux
+    env:
+    - PATH="/usr/bin:$PATH" PROTON_VERSION=0.31.0 BUILD_TYPE=RelWithDebInfo
+    - DISPATCH_CMAKE_ARGS='-DRUNTIME_CHECK=tsan'
+    - PROTON_CMAKE_ARGS='-DRUNTIME_CHECK=tsan'
   - os: osx
     osx_image: xcode11
     env:
@@ -98,7 +104,7 @@ install:
 # Build and install proton from source.
 - mkdir qpid-proton/build
 - pushd qpid-proton/build
-- cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DBUILD_PYTHON=YES -DBUILD_JAVASCRIPT=NO -DBUILD_CPP=NO -DBUILD_GO=NO -DBUILD_RUBY=NO -DBUILD_PHP=NO -DBUILD_PERL=NO
+- cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DBUILD_BINDINGS=PYTHON ${PROTON_CMAKE_ARGS}
 - cmake --build . --target install -- -j $NPROC
 - popd
 
