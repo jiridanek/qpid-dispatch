@@ -105,7 +105,7 @@ install:
 # Build and install proton from source.
 - mkdir qpid-proton/build
 - pushd qpid-proton/build
-- cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DBUILD_BINDINGS=PYTHON ${PROTON_CMAKE_ARGS}
+- cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DBUILD_BINDINGS=python ${PROTON_CMAKE_ARGS}
 - cmake --build . --target install -- -j $NPROC
 - popd
 
