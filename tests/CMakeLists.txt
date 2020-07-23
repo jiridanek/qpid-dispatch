@@ -17,14 +17,14 @@
 ## under the License.
 ##
 
-if(NOT (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "4.8.5"))
-  add_subdirectory(c_unittests)
-endif()
-
 include_directories(
   ${CMAKE_SOURCE_DIR}/src
   ${CMAKE_BINARY_DIR}/src
   )
+
+if(NOT (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "4.8.5"))
+  add_subdirectory(c_unittests)
+endif()
 
 ##
 ## Build test applications
