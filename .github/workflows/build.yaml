@@ -90,7 +90,7 @@ jobs:
           path: ${{env.InstallPrefix}}
       - name: ctest
         working-directory: ${{env.DispatchBuildDir}}
-        run: ctest -C ${BuildType} -V -T Test --no-compress-output
+        run: source ${{env.ProtonBuildDir}}/config.sh && ctest -C ${BuildType} -V -T Test --no-compress-output
         shell: bash
       - name: Upload Test results
         uses: actions/upload-artifact@v2
