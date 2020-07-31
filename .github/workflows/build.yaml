@@ -67,7 +67,7 @@ jobs:
       - name: Install MacOS dependencies
         if: ${{ runner.os == 'macOS' }}
         run: |
-          brew install ninja libuv swig pkgconfig jsoncpp libwebsockets
+          brew install ninja libuv swig pkgconfig jsoncpp openssl libwebsockets
       - name: qpid-proton cmake configure
         working-directory: ${{env.ProtonBuildDir}}
         run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-GNinja Multi-Config" ${cmake_extra}
