@@ -32,13 +32,13 @@ jobs:
         include:
           - os: macOS-latest
             pkg_config_path: '/usr/local/opt/openssl@1.1/lib/pkgconfig'
-            cmake_extra: '-DBUILD_BINDINGS=python'
     env:
       BuildType: ${{matrix.buildType}}
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
       DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
       InstallPrefix: ${{github.workspace}}/install
       PKG_CONFIG_PATH: ${{matrix.pkg_config_path}}
+      cmake_extra: '-DBUILD_BINDINGS=python'
     steps:
       - uses: actions/checkout@v2
         with:
