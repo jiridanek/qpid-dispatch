@@ -31,7 +31,7 @@ jobs:
         buildType: [RelWithDebInfo]
         include:
           - os: macOS-latest
-            pkg_config_path: '/usr/local/opt/openssl@1.1/lib/pkgconfig'
+            pkg_config_path: '/usr/local/Cellar/openssl@1.1/1.1.1g/lib/pkgconfig'
     env:
       BuildType: ${{matrix.buildType}}
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
@@ -67,7 +67,7 @@ jobs:
       - name: Install MacOS dependencies
         if: ${{ runner.os == 'macOS' }}
         run: |
-          brew install ninja libuv swig pkgconfig jsoncpp openssl libwebsockets
+          brew install cmake ninja libuv swig pkgconfig jsoncpp openssl libwebsockets
       - name: qpid-proton cmake configure
         working-directory: ${{env.ProtonBuildDir}}
         run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-GNinja" ${cmake_extra}
