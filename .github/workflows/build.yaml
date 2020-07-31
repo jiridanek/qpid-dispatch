@@ -32,7 +32,7 @@ jobs:
         include:
           - os: macOS-latest
             pkg_config_path: '/usr/local/opt/openssl@1.1/lib/pkgconfig'
-            cmake_extra: '-DBUILD_RUBY=no'
+            cmake_extra: '-DBUILD_BINDINGS=python'
     env:
       BuildType: ${{matrix.buildType}}
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
