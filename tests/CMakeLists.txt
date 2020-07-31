@@ -64,7 +64,7 @@ target_link_libraries(test-receiver ${Proton_LIBRARIES})
 add_executable(clogger clogger.c)
 target_link_libraries(clogger ${Proton_LIBRARIES})
 
-set(TEST_WRAP bwrap --bind / / --unshare-net ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/run.py)
+set(TEST_WRAP bwrap --bind / / --unshare-net -- ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/run.py)
 
 add_test(unit_tests_size_10000 ${TEST_WRAP} unit_tests_size 10000)
 add_test(unit_tests_size_512   ${TEST_WRAP} unit_tests_size 512)
