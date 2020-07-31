@@ -41,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: ''
+          repository: 'apache/qpid-proton'
           ref: 'master'
           path: 'qpid-proton'
       - uses: actions/checkout@v2
@@ -62,21 +62,21 @@ jobs:
       - name: Install Linux dependencies
         if: ${{ runner.os == 'Linux' }}
         run: |
-          sudo apt install -y swig libpython3-dev libsasl2-dev libjsoncpp-dev libwebsocket-dev
+          sudo apt install -y swig ninja-build libpython3-dev libsasl2-dev libjsoncpp-dev libwebsockets-dev
       - name: Install MacOS dependencies
         if: ${{ runner.os == 'macOS' }}
         run: |
-          brew install libuv swig pkgconfig jsoncpp libwebsocket
+          brew install ninja libuv swig pkgconfig jsoncpp libwebsocket
       - name: qpid-proton cmake configure
         working-directory: ${{env.ProtonBuildDir}}
-        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_BUILD_TYPE=${BuildType}" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" ${{matrix.cmake_extra}}
+        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_BUILD_TYPE=${BuildType}" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-G 'Ninja Multi-Config'" ${{matrix.cmake_extra}}
         shell: bash
       - name: qpid-proton cmake build/install
         run: cmake --build "${ProtonBuildDir}" --config ${BuildType} -t install
         shell: bash
       - name: qpid-dispatch cmake configure
         working-directory: ${{env.DispatchBuildDir}}
-        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_BUILD_TYPE=${BuildType}" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" ${{matrix.cmake_extra}}
+        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_BUILD_TYPE=${BuildType}" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-G 'Ninja Multi-Config'" ${{matrix.cmake_extra}}
         shell: bash
       - name: qpid-dispatch cmake build/install
         run: cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
@@ -96,14 +96,12 @@ jobs:
         with:
           name: Test_Results_${{matrix.os}}_${{matrix.buildType}}
           path: ${{env.BuildDir}}/Testing/**/*.xml
-      - name: Upload Python & C build directories on failure
+      - name: Upload build directories on failure
         uses: actions/upload-artifact@v2
         if: failure()
         with:
-          name: Debug-python-C-BLD_${{matrix.os}}_${{matrix.buildType}}
-          path: |
-            ${{env.BuildDir}}/c
-            ${{env.BuildDir}}/python
+          name: Build_${{matrix.os}}_${{matrix.buildType}}
+          path: ${{env.DispatchBuildDir}}
       - name: Environment (Linux/Windows)
         if: ${{ always() && runner.os != 'macOS' }}
         run: env -0 | sort -z | tr '\0' '\n'
