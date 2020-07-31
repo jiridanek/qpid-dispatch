@@ -63,7 +63,7 @@ jobs:
       - name: Install Linux dependencies
         if: ${{ runner.os == 'Linux' }}
         run: |
-          sudo apt install -y swig ninja-build libpython3-dev libsasl2-dev libjsoncpp-dev libwebsockets-dev
+          sudo apt install -y bubblewrap swig ninja-build libpython3-dev libsasl2-dev libjsoncpp-dev libwebsockets-dev
       - name: Install MacOS dependencies
         if: ${{ runner.os == 'macOS' }}
         run: |
@@ -90,7 +90,7 @@ jobs:
           path: ${{env.InstallPrefix}}
       - name: ctest
         working-directory: ${{env.DispatchBuildDir}}
-        run: source ${{env.ProtonBuildDir}}/config.sh && ctest -C ${BuildType} -V -T Test --no-compress-output
+        run: source ${{env.ProtonBuildDir}}/config.sh && ctest -C ${BuildType} -V -T Test --no-compress-output -j4
         shell: bash
       - name: Upload Test results
         uses: actions/upload-artifact@v2
