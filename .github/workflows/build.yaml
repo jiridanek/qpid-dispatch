@@ -75,13 +75,13 @@ jobs:
       - name: qpid-proton cmake build/install
         run: cmake --build "${ProtonBuildDir}" --config ${BuildType} -t install
         shell: bash
+      # nb. run source config.sh here, because CMake sets placeholder vars in run.py from env
       - name: qpid-dispatch cmake configure
         working-directory: ${{env.DispatchBuildDir}}
-        run: cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-GNinja Multi-Config" ${cmake_extra}
+        run: source ${{env.ProtonBuildDir}}/config.sh && cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-GNinja Multi-Config" ${cmake_extra}
         shell: bash
-      # nb. run source config.sh here, because CMake sets placeholder vars in run.py from env
       - name: qpid-dispatch cmake build/install
-        run: source ${{env.ProtonBuildDir}}/config.sh && cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
+        run: cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
         shell: bash
       - name: Upload Install
         uses: actions/upload-artifact@v2
