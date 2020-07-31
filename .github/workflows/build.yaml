@@ -70,14 +70,14 @@ jobs:
           brew install ninja libuv swig pkgconfig jsoncpp libwebsockets
       - name: qpid-proton cmake configure
         working-directory: ${{env.ProtonBuildDir}}
-        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-GNinja Multi-Config" ${{cmake_extra}}
+        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-GNinja Multi-Config" ${cmake_extra}
         shell: bash
       - name: qpid-proton cmake build/install
         run: cmake --build "${ProtonBuildDir}" --config ${BuildType} -t install
         shell: bash
       - name: qpid-dispatch cmake configure
         working-directory: ${{env.DispatchBuildDir}}
-        run: cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-GNinja Multi-Config" ${{cmake_extra}}
+        run: cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-GNinja Multi-Config" ${cmake_extra}
         shell: bash
       - name: qpid-dispatch cmake build/install
         run: cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
