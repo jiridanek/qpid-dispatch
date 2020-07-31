@@ -79,8 +79,9 @@ jobs:
         working-directory: ${{env.DispatchBuildDir}}
         run: cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-GNinja Multi-Config" ${cmake_extra}
         shell: bash
+      # nb. run source config.sh here, because CMake sets placeholder vars in run.py from env
       - name: qpid-dispatch cmake build/install
-        run: cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
+        run: source ${{env.ProtonBuildDir}}/config.sh && cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
         shell: bash
       - name: Upload Install
         uses: actions/upload-artifact@v2
@@ -88,12 +89,12 @@ jobs:
           name: qpid_dispatch_pkg_${{matrix.os}}_${{matrix.buildType}}
           path: ${{env.InstallPrefix}}
       - name: ctest
-        continue-on-error: true
         working-directory: ${{env.DispatchBuildDir}}
-        run: source ${{env.ProtonBuildDir}}/config.sh && ctest -C ${BuildType} -V -T Test --no-compress-output
+        run: ctest -C ${BuildType} -V -T Test --no-compress-output
         shell: bash
       - name: Upload Test results
         uses: actions/upload-artifact@v2
+        if: ${{ ! cancelled() }}
         with:
           name: Test_Results_${{matrix.os}}_${{matrix.buildType}}
           path: ${{env.BuildDir}}/Testing/**/*.xml
@@ -103,7 +104,7 @@ jobs:
         with:
           name: Build_${{matrix.os}}_${{matrix.buildType}}
           path: ${{env.DispatchBuildDir}}
-      - name: Environment (Linux/Windows)
+      - name: Environment (Linux)
         if: ${{ always() && runner.os != 'macOS' }}
         run: env -0 | sort -z | tr '\0' '\n'
         shell: bash
