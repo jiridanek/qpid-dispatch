@@ -148,7 +148,7 @@ jobs:
 #        with:
 #          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}
       - name: download artifact & unzip
-        run: curl ${{matrix.archive_url}} -O archive.zip && unzip archive.zip
+        run: curl -O archive.zip ${{matrix.archive_url}} && unzip archive.zip
       - name: Setup python
         uses: actions/setup-python@v2
         with:
