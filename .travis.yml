@@ -62,7 +62,7 @@ jobs:
     dist: focal
     compiler: clang
     before_install:
-    - sudo apt-get install clang-10 llvm-10-dev ninja-build bubblewrap
+    - sudo apt-get install clang-10 llvm-10-dev bubblewrap
     # https://github.com/pypa/virtualenv/issues/1740
     # https://github.com/pypa/virtualenv/issues/1873
     - python -m pip install --user --upgrade pip
@@ -71,7 +71,7 @@ jobs:
     - CC=clang-10
     - CXX=clang++-10
     - PATH="/usr/bin:$PATH" PROTON_VERSION=master BUILD_TYPE=RelWithDebInfo
-    - DISPATCH_CMAKE_ARGS='-DRUNTIME_CHECK=asan -DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG -DUSE_BWRAP=ON -GNinja'
+    - DISPATCH_CMAKE_ARGS='-DRUNTIME_CHECK=asan -DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG -DUSE_BWRAP=ON'
     - DISPATCH_CTEST_ARGS='-Rsystem_tests_bad_configuration'
   - name: "qdrouterd:Default Build"
     os: linux
