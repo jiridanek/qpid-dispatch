@@ -78,7 +78,7 @@ jobs:
       # nb. run source config.sh here, because CMake sets placeholder vars in run.py from env
       - name: qpid-dispatch cmake configure
         working-directory: ${{env.DispatchBuildDir}}
-        run: source ${{env.ProtonBuildDir}}/config.sh && cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-GNinja" ${cmake_extra}
+        run: source ${{env.ProtonBuildDir}}/config.sh && cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-GNinja" "-DUSE_BWRAP=ON" ${cmake_extra}
         shell: bash
       - name: qpid-dispatch cmake build/install
         run: cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
