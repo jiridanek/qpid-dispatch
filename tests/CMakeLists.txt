@@ -68,7 +68,7 @@ target_link_libraries(clogger ${Proton_LIBRARIES})
 #  running tests in parallel (the ctest -j option) without port clashes
 set(USE_BWRAP OFF CACHE BOOL "Wrap test executions with bwrap (https://github.com/containers/bubblewrap)")
 if(USE_BWRAP)
-  set(BWRAP_ARGS bwrap --bind / / --bind /dev/null /etc/resolv.conf --unshare-net --dev /dev --die-with-parent --)
+  set(BWRAP_ARGS bwrap --bind / / --bind /dev/zero /etc/resolv.conf --unshare-net --dev /dev --die-with-parent --)
 else()
   set(BWRAP_ARGS "")
 endif()
