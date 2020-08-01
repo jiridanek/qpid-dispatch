@@ -158,7 +158,7 @@ jobs:
       - name: Install Linux dependencies
         if: ${{ runner.os == 'Linux' }}
         run: |
-          sudo apt install -y bubblewrap swig ninja-build libsasl2-2 sasl2-bin libjsoncpp libwebsockets xz-utils
+          sudo apt install -y bubblewrap swig ninja-build libsasl2-2 sasl2-bin libjsoncpp1 libwebsockets15 xz-utils
       - name: Install MacOS dependencies
         if: ${{ runner.os == 'macOS' }}
         run: |
