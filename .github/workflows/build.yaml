@@ -22,119 +22,119 @@ name: Build
 on: [push, pull_request]
 
 jobs:
-  build:
+#  build:
+#    runs-on: ${{ matrix.os }}
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        os: [ubuntu-20.04]
+#        buildType: [RelWithDebInfo]
+#    env:
+#      BuildType: ${{matrix.buildType}}
+#      ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
+#      DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
+#      InstallPrefix: ${{github.workspace}}/install
+#      PKG_CONFIG_PATH: ${{matrix.pkg_config_path}}
+#      cmake_extra: '-DBUILD_BINDINGS=python'
+#    steps:
+#      - uses: actions/checkout@v2
+#        with:
+#          repository: 'apache/qpid-proton'
+#          ref: 'master'
+#          path: 'qpid-proton'
+#      - uses: actions/checkout@v2
+#        with:
+#          path: 'qpid-dispatch'
+#      - name: Create Build and Install directories
+#        run: mkdir -p "${ProtonBuildDir}" "${DispatchBuildDir}" "{InstallPrefix}"
+#        shell: bash
+#      - name: Setup python
+#        uses: actions/setup-python@v2
+#        with:
+#          python-version: 3.6
+#          architecture: x64
+#      - name: Install python dependencies
+#        run: |
+#          python -m pip install --upgrade pip
+#          python -m pip install setuptools wheel tox
+#      - name: Install Linux dependencies
+#        if: ${{ runner.os == 'Linux' }}
+#        run: |
+#          sudo apt install -y bubblewrap swig ninja-build libpython3-dev libsasl2-dev sasl2-bin libjsoncpp-dev libwebsockets-dev xz-utils
+#      - name: Install MacOS dependencies
+#        if: ${{ runner.os == 'macOS' }}
+#        run: |
+#          brew install cmake ninja libuv swig pkgconfig jsoncpp openssl libwebsockets
+#      - name: qpid-proton cmake configure
+#        working-directory: ${{env.ProtonBuildDir}}
+#        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-GNinja" ${cmake_extra}
+#        shell: bash
+#      - name: qpid-proton cmake build/install
+#        run: cmake --build "${ProtonBuildDir}" --config ${BuildType} -t install
+#        shell: bash
+#      # nb. run source config.sh here, because CMake sets placeholder vars in run.py from env
+#      - name: install qpid-proton python wheel
+#        run: python -m pip install "${ProtonBuildDir}/python/pkgs/python_qpid_proton-0.32.0-cp36-cp36m-linux_x86_64.whl"
+#        shell: bash
+#      - name: qpid-dispatch cmake configure
+#        working-directory: ${{env.DispatchBuildDir}}
+#        run: cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-GNinja" "-DUSE_BWRAP=ON" ${cmake_extra}
+#        shell: bash
+#      - name: qpid-dispatch cmake build/install
+#        run: cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
+#        shell: bash
+##      - name: Compress build
+##        run: tar --xz -cvf /tmp/archive.tar.xz ${{github.workspace}}
+##      - name: Show size
+##        run: du -h /tmp/archive.tar.xz
+##      - name: Upload archive
+##        uses: actions/upload-artifact@v2
+##        with:
+##          name: qpid_dispatch_arc_${{matrix.os}}_${{matrix.buildType}}
+##          path: /tmp/archive.tar.xz
+#      - name: Upload Build
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}
+#          path: |
+#            ${{github.workspace}}/qpid-proton/build
+#            ${{github.workspace}}/qpid-dispatch/build
+#            !${{github.workspace}}/qpid-dispatch/build/console
+##      - name: ctest
+##        working-directory: ${{env.DispatchBuildDir}}
+##        run: source ${{env.ProtonBuildDir}}/config.sh && ctest -C ${BuildType} -V -T Test --no-compress-output
+##        shell: bash
+##      - name: Upload Test results
+##        uses: actions/upload-artifact@v2
+##        if: ${{ ! cancelled() }}
+##        with:
+##          name: Test_Results_${{matrix.os}}_${{matrix.buildType}}
+##          path: ${{env.BuildDir}}/Testing/**/*.xml
+###      - name: Upload build directories on failure
+###        uses: actions/upload-artifact@v2
+###        if: failure()
+###        with:
+###          name: Build_${{matrix.os}}_${{matrix.buildType}}
+###          path: ${{env.DispatchBuildDir}}
+##      - name: Environment (Linux)
+##        if: ${{ always() && runner.os != 'macOS' }}
+##        run: env -0 | sort -z | tr '\0' '\n'
+##        shell: bash
+##      - name: Environment (macOS)
+##        if: ${{ always() && runner.os == 'macOS' }}
+##        run: env | sort
+##        shell: bash
+  test:
     runs-on: ${{ matrix.os }}
+#    needs: [build]
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
         buildType: [RelWithDebInfo]
-    env:
-      BuildType: ${{matrix.buildType}}
-      ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
-      DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
-      InstallPrefix: ${{github.workspace}}/install
-      PKG_CONFIG_PATH: ${{matrix.pkg_config_path}}
-      cmake_extra: '-DBUILD_BINDINGS=python'
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: 'apache/qpid-proton'
-          ref: 'master'
-          path: 'qpid-proton'
-      - uses: actions/checkout@v2
-        with:
-          path: 'qpid-dispatch'
-      - name: Create Build and Install directories
-        run: mkdir -p "${ProtonBuildDir}" "${DispatchBuildDir}" "{InstallPrefix}"
-        shell: bash
-      - name: Setup python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.6
-          architecture: x64
-      - name: Install python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install setuptools wheel tox
-      - name: Install Linux dependencies
-        if: ${{ runner.os == 'Linux' }}
-        run: |
-          sudo apt install -y bubblewrap swig ninja-build libpython3-dev libsasl2-dev sasl2-bin libjsoncpp-dev libwebsockets-dev xz-utils
-      - name: Install MacOS dependencies
-        if: ${{ runner.os == 'macOS' }}
-        run: |
-          brew install cmake ninja libuv swig pkgconfig jsoncpp openssl libwebsockets
-      - name: qpid-proton cmake configure
-        working-directory: ${{env.ProtonBuildDir}}
-        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-GNinja" ${cmake_extra}
-        shell: bash
-      - name: qpid-proton cmake build/install
-        run: cmake --build "${ProtonBuildDir}" --config ${BuildType} -t install
-        shell: bash
-      # nb. run source config.sh here, because CMake sets placeholder vars in run.py from env
-      - name: install qpid-proton python wheel
-        run: python -m pip install "${ProtonBuildDir}/python/pkgs/python_qpid_proton-0.32.0-cp36-cp36m-linux_x86_64.whl"
-        shell: bash
-      - name: qpid-dispatch cmake configure
-        working-directory: ${{env.DispatchBuildDir}}
-        run: cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-GNinja" "-DUSE_BWRAP=ON" ${cmake_extra}
-        shell: bash
-      - name: qpid-dispatch cmake build/install
-        run: cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
-        shell: bash
-#      - name: Compress build
-#        run: tar --xz -cvf /tmp/archive.tar.xz ${{github.workspace}}
-#      - name: Show size
-#        run: du -h /tmp/archive.tar.xz
-#      - name: Upload archive
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: qpid_dispatch_arc_${{matrix.os}}_${{matrix.buildType}}
-#          path: /tmp/archive.tar.xz
-      - name: Upload Build
-        uses: actions/upload-artifact@v2
-        with:
-          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}
-          path: |
-            ${{github.workspace}}/qpid-proton/build
-            ${{github.workspace}}/qpid-dispatch/build
-            !${{github.workspace}}/qpid-dispatch/build/console
-#      - name: ctest
-#        working-directory: ${{env.DispatchBuildDir}}
-#        run: source ${{env.ProtonBuildDir}}/config.sh && ctest -C ${BuildType} -V -T Test --no-compress-output
-#        shell: bash
-#      - name: Upload Test results
-#        uses: actions/upload-artifact@v2
-#        if: ${{ ! cancelled() }}
-#        with:
-#          name: Test_Results_${{matrix.os}}_${{matrix.buildType}}
-#          path: ${{env.BuildDir}}/Testing/**/*.xml
-##      - name: Upload build directories on failure
-##        uses: actions/upload-artifact@v2
-##        if: failure()
-##        with:
-##          name: Build_${{matrix.os}}_${{matrix.buildType}}
-##          path: ${{env.DispatchBuildDir}}
-#      - name: Environment (Linux)
-#        if: ${{ always() && runner.os != 'macOS' }}
-#        run: env -0 | sort -z | tr '\0' '\n'
-#        shell: bash
-#      - name: Environment (macOS)
-#        if: ${{ always() && runner.os == 'macOS' }}
-#        run: env | sort
-#        shell: bash
-  test:
-    runs-on: ${{ matrix.os }}
-    needs: [build]
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-20.04, macOS-latest]
-        buildType: [RelWithDebInfo]
         include:
-          - os: macOS-latest
-            pkg_config_path: '/usr/local/Cellar/openssl@1.1/1.1.1g/lib/pkgconfig'
+          - os: ubuntu-20.04
+            archive_url: 'https://github.com/jiridanek/qpid-dispatch/suites/995738930/artifacts/12841855'
     env:
       BuildType: ${{matrix.buildType}}
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
@@ -143,10 +143,12 @@ jobs:
       PKG_CONFIG_PATH: ${{matrix.pkg_config_path}}
       cmake_extra: '-DBUILD_BINDINGS=python'
     steps:
-      - name: Download Build
-        uses: actions/download-artifact@v2
-        with:
-          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}
+#      - name: Download Build
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}
+      - name: download artifact & unzip
+        run: curl ${{matrix.archive_url}} -O archive.zip && unzip archive.zip
       - name: Setup python
         uses: actions/setup-python@v2
         with:
