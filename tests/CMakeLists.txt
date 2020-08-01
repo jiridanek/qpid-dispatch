@@ -64,7 +64,15 @@ target_link_libraries(test-receiver ${Proton_LIBRARIES})
 add_executable(clogger clogger.c)
 target_link_libraries(clogger ${Proton_LIBRARIES})
 
-set(TEST_WRAP bwrap --bind / / --unshare-net --dev /dev --tmpfs /run --die-with-parent -- ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/run.py)
+# Bubblewrap is an unprivileged sandboxing tool for Linux. Setting --unshare-net allows
+#  running tests in parallel (the ctest -j option) without port clashes
+set(USE_BWRAP OFF CACHE BOOL "Wrap test executions with bwrap (https://github.com/containers/bubblewrap)")
+if(USE_BWRAP)
+  set(BWRAP_ARGS bwrap --bind / / --unshare-net --dev /dev --die-with-parent --)
+else()
+  set(BWRAP_ARGS "")
+endif()
+set(TEST_WRAP ${BWRAP_ARGS} ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/run.py)
 
 add_test(unit_tests_size_10000 ${TEST_WRAP} unit_tests_size 10000)
 add_test(unit_tests_size_512   ${TEST_WRAP} unit_tests_size 512)
