@@ -71,7 +71,7 @@ jobs:
     - CC=clang-10
     - CXX=clang++-10
     - PATH="/usr/bin:$PATH" PROTON_VERSION=master BUILD_TYPE=RelWithDebInfo
-    - DISPATCH_CMAKE_ARGS='-DRUNTIME_CHECK=asan -DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG'
+    - DISPATCH_CMAKE_ARGS='-DRUNTIME_CHECK=asan -DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG -DUSE_BWRAP=ON'
   - name: "qdrouterd:Default Build"
     os: linux
     env:
@@ -110,6 +110,8 @@ addons:
     - tox
     # code coverage
     - lcov
+    # test isolation
+    - bubblewrap
 
 install:
 - NPROC=2
