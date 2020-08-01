@@ -140,6 +140,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}
+      - name: Install Linux dependencies
+        if: ${{ runner.os == 'Linux' }}
+        run: |
+          sudo apt install -y bubblewrap swig ninja-build libsasl2 sasl2-bin libjsoncpp libwebsockets
+      - name: Install MacOS dependencies
+        if: ${{ runner.os == 'macOS' }}
+        run: |
+          brew install cmake ninja libuv swig pkgconfig jsoncpp openssl libwebsockets
       - name: ctest
         working-directory: ${{env.DispatchBuildDir}}
         run: source ${{env.ProtonBuildDir}}/config.sh && ctest -C ${BuildType} -V -T Test --no-compress-output
