@@ -74,7 +74,7 @@ jobs:
         shell: bash
       # nb. run source config.sh here, because CMake sets placeholder vars in run.py from env
       - name: install qpid-proton python wheel
-        run: python -m pip install "${ProtonBuildDir}/python/pkgs/python_qpid_proton-*.whl"
+        run: python -m pip install "${ProtonBuildDir}/python/pkgs/python_qpid_proton-0.32.0-cp36-cp36m-linux_x86_64.whl"
         shell: bash
       - name: qpid-dispatch cmake configure
         working-directory: ${{env.DispatchBuildDir}}
@@ -148,7 +148,7 @@ jobs:
         with:
           name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}
       - name: install qpid-proton python wheel
-        run: python -m pip install "${ProtonBuildDir}/python/pkgs/python_qpid_proton-*.whl"
+        run: python -m pip install "${ProtonBuildDir}/python/pkgs/python_qpid_proton-0.32.0-cp36-cp36m-linux_x86_64.whl"
         shell: bash
       - name: Install Linux dependencies
         if: ${{ runner.os == 'Linux' }}
