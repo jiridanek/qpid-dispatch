@@ -63,7 +63,7 @@ jobs:
       - name: Install Linux dependencies
         if: ${{ runner.os == 'Linux' }}
         run: |
-          sudo apt install -y bubblewrap swig ninja-build libpython3-dev libsasl2-dev sasl2-bin libjsoncpp-dev libwebsockets-dev
+          sudo apt install -y bubblewrap swig ninja-build libpython3-dev libsasl2-dev sasl2-bin libjsoncpp-dev libwebsockets-dev xz-utils
       - name: Install MacOS dependencies
         if: ${{ runner.os == 'macOS' }}
         run: |
@@ -83,6 +83,15 @@ jobs:
       - name: qpid-dispatch cmake build/install
         run: cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
         shell: bash
+      - name: Compress build
+        run: tar --xz -cvf /tmp/archive.tar.xz ${{github.workspace}}
+      - name: Show size
+        run: du -h /tmp/archive.tar.xz
+      - name: Upload archive
+        uses: actions/upload-artifact@v2
+        with:
+          name: qpid_dispatch_arc_${{matrix.os}}_${{matrix.buildType}}
+          path: /tmp/archive.tar.xz
       - name: Upload Build
         uses: actions/upload-artifact@v2
         with:
@@ -143,7 +152,7 @@ jobs:
       - name: Install Linux dependencies
         if: ${{ runner.os == 'Linux' }}
         run: |
-          sudo apt install -y bubblewrap swig ninja-build libsasl2 sasl2-bin libjsoncpp libwebsockets
+          sudo apt install -y bubblewrap swig ninja-build libsasl2 sasl2-bin libjsoncpp libwebsockets xz-utils
       - name: Install MacOS dependencies
         if: ${{ runner.os == 'macOS' }}
         run: |
