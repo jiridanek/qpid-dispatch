@@ -127,6 +127,7 @@ class RouterTestBadConfiguration(TestCase):
         # f = open('../setUpClass/test-router.out', 'rt')
         with open('../setUpClass/test-router.log', 'r') as router_log:
             log_lines = router_log.read().split("\n")
+            print("log_lines:", log_lines)
             expected_errors = [
                 "proton:io Name or service not known",  # Linux
                 "proton:io unknown node or service",  # macOS

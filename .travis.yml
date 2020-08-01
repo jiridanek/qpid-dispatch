@@ -72,7 +72,7 @@ jobs:
     - CXX=clang++-10
     - PATH="/usr/bin:$PATH" PROTON_VERSION=master BUILD_TYPE=RelWithDebInfo
     - DISPATCH_CMAKE_ARGS='-DRUNTIME_CHECK=asan -DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG -DUSE_BWRAP=ON'
-    - DISPATCH_CTEST_ARGS='-Rsystem_tests_bad_configuration'
+    - DISPATCH_CTEST_ARGS='-R system_tests_bad_configuration'
   - name: "qdrouterd:Default Build"
     os: linux
     env:
