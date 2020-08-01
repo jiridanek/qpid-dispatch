@@ -28,7 +28,8 @@ from __future__ import division
 from __future__ import absolute_import
 from __future__ import print_function
 
-
+import shutil
+import time
 from threading import Timer
 import os
 import re
@@ -63,8 +64,18 @@ class RouterTestBadConfiguration(TestCase):
         ])
 
         try:
-            cls.router = cls.tester.qdrouterd(cls.name, cls.config, wait=False)
-        except OSError:
+            cls.router = cls.tester.qdrouterd(cls.name, cls.config, wait=False, )
+            print("config:", cls.config)
+            print("router:", dir(cls.router))
+            print("router.logfile:", cls.router.logfile)
+            print("router.pid:", cls.router.pid)
+            time.sleep(3)
+            print("router.stdout:", cls.router.stdout)
+            print("router.stderr:", cls.router.stderr)
+            print("router.outdir:", cls.router.outdir)
+            print("router.outfile:", cls.router.outfile)
+        except OSError as e:
+            print(e)
             pass
 
     def __init__(self, test_method):
@@ -109,6 +120,11 @@ class RouterTestBadConfiguration(TestCase):
         then it stops scheduling new attempts.
         :return:
         """
+        print("cwd:", os.getcwd())
+        print("cwd list .:", list(os.listdir(".")))
+        print("cwd list ..:", list(os.listdir("..")))
+        print("cwd list ../setUpClass:", list(os.listdir("../setUpClass")))
+        # f = open('../setUpClass/test-router.out', 'rt')
         with open('../setUpClass/test-router.log', 'r') as router_log:
             log_lines = router_log.read().split("\n")
             expected_errors = [
@@ -145,100 +161,102 @@ class RouterTestBadConfiguration(TestCase):
         """
         self.assertTrue(self.error_caught)
 
-    def test_qdmanage_query(self):
-        """
-        Attempts to query the router after the error (or timeout) has occurred.
-        It expects a successful query response to be returned by the router.
-        :return:
-        """
-        p = self.popen(
-            ['qdmanage', '-b', self.address(), 'query', '--type=router', '--timeout', str(TIMEOUT)],
-            stdin=PIPE, stdout=PIPE, stderr=STDOUT, expect=Process.EXIT_OK,
-            universal_newlines=True)
-        out = p.communicate()[0]
-        try:
-            p.teardown()
-        except Exception as e:
-            raise Exception("%s\n%s" % (e, out))
-        return out
+    # def test_qdmanage_query(self):
+    #     """
+    #     Attempts to query the router after the error (or timeout) has occurred.
+    #     It expects a successful query response to be returned by the router.
+    #     :return:
+    #     """
+    #     p = self.popen(
+    #         ['qdmanage', '-b', self.address(), 'query', '--type=router', '--timeout', str(TIMEOUT)],
+    #         stdin=PIPE, stdout=PIPE, stderr=STDOUT, expect=Process.EXIT_OK,
+    #         universal_newlines=True)
+    #     out = p.communicate()[0]
+    #     try:
+    #         p.teardown()
+    #     except Exception as e:
+    #         raise Exception("%s\n%s" % (e, out))
+    #     return out
 
 
-class RouterTestIdFailCtrlChar(TestCase):
-    """
-    This test case sets up a router using a configuration router id
-    that is illegal (control character). The router should not start.
-    """
-    @classmethod
-    def setUpClass(cls):
-        super(RouterTestIdFailCtrlChar, cls).setUpClass()
-        cls.name = "test-router-ctrl-char"
+# class RouterTestIdFailCtrlChar(TestCase):
+#     """
+#     This test case sets up a router using a configuration router id
+#     that is illegal (control character). The router should not start.
+#     """
+#     @classmethod
+#     def setUpClass(cls):
+#         super(RouterTestIdFailCtrlChar, cls).setUpClass()
+#         cls.name = "test-router-ctrl-char"
+#
+#     def __init__(self, test_method):
+#         TestCase.__init__(self, test_method)
+#
+#     @classmethod
+#     def tearDownClass(cls):
+#         super(RouterTestIdFailCtrlChar, cls).tearDownClass()
+#
+#     def test_verify_reject_id_with_ctrl_char(self):
+#         """
+#         Writes illegal config, runs router, examines console output
+#         """
+#         conf_path = "../setUpClass/test-router-ctrl-char.conf"
+#         with open(conf_path, 'w') as router_conf:
+#             router_conf.write("router { \n")
+#             router_conf.write("    id: abc\\bdef \n")
+#             router_conf.write("}")
+#         lib_include_path = os.path.join(os.environ["QPID_DISPATCH_HOME"], "python")
+#         p = self.popen(
+#             ['qdrouterd', '-c', conf_path, '-I', lib_include_path],
+#             stdin=PIPE, stdout=PIPE, stderr=STDOUT, expect=Process.EXIT_FAIL,
+#             universal_newlines=True)
+#         out, err = p.communicate(timeout=5)
+#         print("router stdout:", out)
+#         print("router stderr:", err)
+#         try:
+#             p.teardown()
+#         except Exception as e:
+#             raise Exception("%s\n%s" % (e, out))
+#         if "AttributeError" not in out:
+#             print("output: ", out)
+#             assert False, "AttributeError not in process output"
 
-    def __init__(self, test_method):
-        TestCase.__init__(self, test_method)
-
-    @classmethod
-    def tearDownClass(cls):
-        super(RouterTestIdFailCtrlChar, cls).tearDownClass()
-
-    def test_verify_reject_id_with_ctrl_char(self):
-        """
-        Writes illegal config, runs router, examines console output
-        """
-        conf_path = "../setUpClass/test-router-ctrl-char.conf"
-        with open(conf_path, 'w') as router_conf:
-            router_conf.write("router { \n")
-            router_conf.write("    id: abc\\bdef \n")
-            router_conf.write("}")
-        lib_include_path = os.path.join(os.environ["QPID_DISPATCH_HOME"], "python")
-        p = self.popen(
-            ['qdrouterd', '-c', conf_path, '-I', lib_include_path],
-            stdin=PIPE, stdout=PIPE, stderr=STDOUT, expect=Process.EXIT_FAIL,
-            universal_newlines=True)
-        out = p.communicate(timeout=5)[0]
-        try:
-            p.teardown()
-        except Exception as e:
-            raise Exception("%s\n%s" % (e, out))
-        if "AttributeError" not in out:
-            print("output: ", out)
-            assert False, "AttributeError not in process output"
-
-class RouterTestIdFailWhiteSpace(TestCase):
-    """
-    This test case sets up a router using a configuration router id
-    that is illegal (whitespace character). The router should not start.
-    """
-    @classmethod
-    def setUpClass(cls):
-        super(RouterTestIdFailWhiteSpace, cls).setUpClass()
-        cls.name = "test-router-ctrl-char"
-
-    def __init__(self, test_method):
-        TestCase.__init__(self, test_method)
-
-    @classmethod
-    def tearDownClass(cls):
-        super(RouterTestIdFailWhiteSpace, cls).tearDownClass()
-
-    def test_verify_reject_id_with_whitespace(self):
-        """
-        Writes illegal config, runs router, examines console output
-        """
-        conf_path = "../setUpClass/test-router-whitespace.conf"
-        with open(conf_path, 'w') as router_conf:
-            router_conf.write("router { \n")
-            router_conf.write("    id: abc def \n")
-            router_conf.write("}")
-        lib_include_path = os.path.join(os.environ["QPID_DISPATCH_HOME"], "python")
-        p = self.popen(
-            ['qdrouterd', '-c', conf_path, '-I', lib_include_path],
-            stdin=PIPE, stdout=PIPE, stderr=STDOUT, expect=Process.EXIT_FAIL,
-            universal_newlines=True)
-        out = p.communicate(timeout=5)[0]
-        try:
-            p.teardown()
-        except Exception as e:
-            raise Exception("%s\n%s" % (e, out))
-        if "AttributeError" not in out:
-            print("output: ", out)
-            assert False, "AttributeError not in process output"
+# class RouterTestIdFailWhiteSpace(TestCase):
+#     """
+#     This test case sets up a router using a configuration router id
+#     that is illegal (whitespace character). The router should not start.
+#     """
+#     @classmethod
+#     def setUpClass(cls):
+#         super(RouterTestIdFailWhiteSpace, cls).setUpClass()
+#         cls.name = "test-router-ctrl-char"
+#
+#     def __init__(self, test_method):
+#         TestCase.__init__(self, test_method)
+#
+#     @classmethod
+#     def tearDownClass(cls):
+#         super(RouterTestIdFailWhiteSpace, cls).tearDownClass()
+#
+#     def test_verify_reject_id_with_whitespace(self):
+#         """
+#         Writes illegal config, runs router, examines console output
+#         """
+#         conf_path = "../setUpClass/test-router-whitespace.conf"
+#         with open(conf_path, 'w') as router_conf:
+#             router_conf.write("router { \n")
+#             router_conf.write("    id: abc def \n")
+#             router_conf.write("}")
+#         lib_include_path = os.path.join(os.environ["QPID_DISPATCH_HOME"], "python")
+#         p = self.popen(
+#             ['qdrouterd', '-c', conf_path, '-I', lib_include_path],
+#             stdin=PIPE, stdout=PIPE, stderr=STDOUT, expect=Process.EXIT_FAIL,
+#             universal_newlines=True)
+#         out = p.communicate(timeout=5)[0]
+#         try:
+#             p.teardown()
+#         except Exception as e:
+#             raise Exception("%s\n%s" % (e, out))
+#         if "AttributeError" not in out:
+#             print("output: ", out)
+#             assert False, "AttributeError not in process output"
