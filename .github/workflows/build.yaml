@@ -83,11 +83,63 @@ jobs:
       - name: qpid-dispatch cmake build/install
         run: cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
         shell: bash
-      - name: Upload Install
+      - name: Upload Build
         uses: actions/upload-artifact@v2
         with:
-          name: qpid_dispatch_pkg_${{matrix.os}}_${{matrix.buildType}}
-          path: ${{env.InstallPrefix}}
+          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}
+          path: ${{github.workspace}}
+#      - name: Upload Install
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: qpid_dispatch_pkg_${{matrix.os}}_${{matrix.buildType}}
+#          path: ${{env.InstallPrefix}}
+#      - name: ctest
+#        working-directory: ${{env.DispatchBuildDir}}
+#        run: source ${{env.ProtonBuildDir}}/config.sh && ctest -C ${BuildType} -V -T Test --no-compress-output
+#        shell: bash
+#      - name: Upload Test results
+#        uses: actions/upload-artifact@v2
+#        if: ${{ ! cancelled() }}
+#        with:
+#          name: Test_Results_${{matrix.os}}_${{matrix.buildType}}
+#          path: ${{env.BuildDir}}/Testing/**/*.xml
+##      - name: Upload build directories on failure
+##        uses: actions/upload-artifact@v2
+##        if: failure()
+##        with:
+##          name: Build_${{matrix.os}}_${{matrix.buildType}}
+##          path: ${{env.DispatchBuildDir}}
+#      - name: Environment (Linux)
+#        if: ${{ always() && runner.os != 'macOS' }}
+#        run: env -0 | sort -z | tr '\0' '\n'
+#        shell: bash
+#      - name: Environment (macOS)
+#        if: ${{ always() && runner.os == 'macOS' }}
+#        run: env | sort
+#        shell: bash
+  test:
+    runs-on: ${{ matrix.os }}
+    needs: [build]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-20.04, macOS-latest]
+        buildType: [RelWithDebInfo]
+        include:
+          - os: macOS-latest
+            pkg_config_path: '/usr/local/Cellar/openssl@1.1/1.1.1g/lib/pkgconfig'
+    env:
+      BuildType: ${{matrix.buildType}}
+      ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
+      DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
+      InstallPrefix: ${{github.workspace}}/install
+      PKG_CONFIG_PATH: ${{matrix.pkg_config_path}}
+      cmake_extra: '-DBUILD_BINDINGS=python'
+    steps:
+      - name: Download Build
+        uses: actions/download-artifact@v2
+        with:
+          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}
       - name: ctest
         working-directory: ${{env.DispatchBuildDir}}
         run: source ${{env.ProtonBuildDir}}/config.sh && ctest -C ${BuildType} -V -T Test --no-compress-output
@@ -98,12 +150,6 @@ jobs:
         with:
           name: Test_Results_${{matrix.os}}_${{matrix.buildType}}
           path: ${{env.BuildDir}}/Testing/**/*.xml
-#      - name: Upload build directories on failure
-#        uses: actions/upload-artifact@v2
-#        if: failure()
-#        with:
-#          name: Build_${{matrix.os}}_${{matrix.buildType}}
-#          path: ${{env.DispatchBuildDir}}
       - name: Environment (Linux)
         if: ${{ always() && runner.os != 'macOS' }}
         run: env -0 | sort -z | tr '\0' '\n'
