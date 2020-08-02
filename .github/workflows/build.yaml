@@ -37,12 +37,6 @@ jobs:
       ProtonCMakeExtraArgs: '-DBUILD_BINDINGS=python'
       DispatchCMakeExtraArgs: '-DRUNTIME_CHECK=asan'
     steps:
-      - name: run 1
-        run: touch baf-sss.txt
-      - name: run 2
-        run: ls
-      - name: ls baf-*.txt
-        run: python -m pip install baf-*.txt
       - uses: actions/checkout@v2
         with:
           repository: 'apache/qpid-proton'
