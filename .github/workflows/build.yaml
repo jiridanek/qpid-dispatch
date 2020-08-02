@@ -42,7 +42,7 @@ jobs:
       - name: run 2
         run: ls
       - name: ls baf-*.txt
-        run: ls baf-*.txt
+        run: python -m pip install baf-*.txt
       - uses: actions/checkout@v2
         with:
           repository: 'apache/qpid-proton'
