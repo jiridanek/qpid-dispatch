@@ -142,7 +142,7 @@ jobs:
       DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
       InstallPrefix: ${{github.workspace}}/install
       PKG_CONFIG_PATH: ${{matrix.pkg_config_path}}
-      cmake_extra: '-DBUILD_BINDINGS=python'
+      LD_LIBRARY_PATH: ${{github.workspace}}/install/lib
     steps:
       - name: Download Build
         uses: actions/download-artifact@v2
