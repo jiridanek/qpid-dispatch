@@ -184,7 +184,7 @@ jobs:
         if: ${{ ! cancelled() }}
         with:
           name: Test_Results_${{matrix.os}}_${{matrix.buildType}}_${{matrix.shard}}
-          path: ${{env.BuildDir}}/Testing/**/*.xml
+          path: ${{env.DispatchBuildDir}}/Testing/**/*.xml
       - name: Environment (Linux)
         if: ${{ always() && runner.os != 'macOS' }}
         run: env -0 | sort -z | tr '\0' '\n'
