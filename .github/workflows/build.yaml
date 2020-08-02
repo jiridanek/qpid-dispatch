@@ -35,7 +35,7 @@ jobs:
       DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
       InstallPrefix: ${{github.workspace}}/install
       ProtonCMakeExtraArgs: '-DBUILD_BINDINGS=python'
-      DispatchCMakeExtraArgs: '-DRUNTIME_CHECK=asan'
+      DispatchCMakeExtraArgs: ''
     steps:
       - uses: actions/checkout@v2
         with:
@@ -72,10 +72,6 @@ jobs:
         if: ${{ runner.os == 'Linux' }}
         run: |
           sudo apt install -y swig ninja-build libpython3-dev libsasl2-dev libjsoncpp-dev libwebsockets-dev xz-utils
-      - name: Install MacOS dependencies
-        if: ${{ runner.os == 'macOS' }}
-        run: |
-          brew install cmake ninja libuv swig pkgconfig jsoncpp openssl libwebsockets
       - name: qpid-proton cmake configure
         working-directory: ${{env.ProtonBuildDir}}
         run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-DBUILD_TESTING=OFF" "-DENABLE_FUZZ_TESTING=OFF" "-GNinja" ${ProtonCMakeExtraArgs}
@@ -83,8 +79,6 @@ jobs:
       - name: qpid-proton cmake build/install
         run: cmake --build "${ProtonBuildDir}" --config ${BuildType} -t install
         shell: bash
-      - name: install qpid-proton python wheel
-        run: python -m pip install ${ProtonBuildDir}/python/pkgs/python_qpid_proton*.whl
       - name: qpid-dispatch cmake configure
         working-directory: ${{env.DispatchBuildDir}}
         run: cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-GNinja" "-DUSE_BWRAP=ON" ${DispatchCMakeExtraArgs}
@@ -124,8 +118,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}
-#      - name: download artifact & unzip
-#        run: curl -O archive.zip ${{matrix.archive_url}} && unzip archive.zip
       - name: Setup python
         uses: actions/setup-python@v2
         with:
@@ -146,7 +138,7 @@ jobs:
       - name: Unpack archive
         run: tar --xz -xf archive.tar.xz
       - name: install qpid-proton python wheel
-        run: python -m pip install "${ProtonBuildDir}/python/pkgs/python_qpid_proton-0.32.0-cp36-cp36m-linux_x86_64.whl"
+        run: python -m pip install ${ProtonBuildDir}/python/pkgs/python_qpid_proton*.whl
         shell: bash
       - name: CTest
         working-directory: ${{env.DispatchBuildDir}}
@@ -170,8 +162,4 @@ jobs:
       - name: Environment (Linux)
         if: ${{ always() && runner.os != 'macOS' }}
         run: env -0 | sort -z | tr '\0' '\n'
-        shell: bash
-      - name: Environment (macOS)
-        if: ${{ always() && runner.os == 'macOS' }}
-        run: env | sort
         shell: bash
