@@ -177,7 +177,7 @@ jobs:
         shell: bash
       - name: ctest
         working-directory: ${{env.DispatchBuildDir}}
-        run: ctest -C ${BuildType} -V -T Test --no-compress-output -I ${{matrix.shard}},,${{matrix.shards}} -j2
+        run: ctest -C ${BuildType} -V -T Test --no-compress-output -I ${{matrix.shard}},,${{matrix.shards}} -j4
         shell: bash
       - name: Upload Test results
         uses: actions/upload-artifact@v2
