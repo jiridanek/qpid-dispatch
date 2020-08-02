@@ -35,7 +35,7 @@ jobs:
       DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
       InstallPrefix: ${{github.workspace}}/install
       PKG_CONFIG_PATH: ${{matrix.pkg_config_path}}
-      cmake_extra: '-DBUILD_BINDINGS=python'
+      cmake_extra: '-DBUILD_BINDINGS=python -DRUNTIME_CHECK=asan'
     steps:
       - uses: actions/checkout@v2
         with:
@@ -151,7 +151,7 @@ jobs:
         shell: bash
       - name: CTest
         working-directory: ${{env.DispatchBuildDir}}
-        run: ctest -C ${BuildType} -V -T Test --no-compress-output -I ${{matrix.shard}},,${{matrix.shards}} -j4
+        run: ctest -C ${BuildType} -V -T Test --no-compress-output -I ${{matrix.shard}},,${{matrix.shards}} -j2
         shell: bash
       - name: Upload Test results
         uses: actions/upload-artifact@v2
