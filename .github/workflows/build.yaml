@@ -85,7 +85,7 @@ jobs:
         shell: bash
       - name: Compress build
         working-directory: ${{github.workspace}}
-        run: tar --xz -cvf /tmp/archive.tar.xz --exclude='qpid-dispatch/build/console' qpid-dispatch ${InstallPrefix} qpid-proton/build/python/pkgs
+        run: tar --xz -cvf /tmp/archive.tar.xz --exclude='qpid-dispatch/build/console' qpid-dispatch install qpid-proton/build/python/pkgs
       - name: Show size
         run: du -h /tmp/archive.tar.xz
       - name: Upload archive
