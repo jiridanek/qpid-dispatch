@@ -165,6 +165,8 @@ jobs:
           brew install cmake ninja libuv swig pkgconfig jsoncpp openssl libwebsockets
       - name: Unpack archive
         run: ls && ls /tmp && tar -xvJf archive.tar.xz
+      - name: ls librarypath
+        run: ls LD_LIBRARY_PATH
       - name: install qpid-proton python wheel
         run: python -m pip install "${ProtonBuildDir}/python/pkgs/python_qpid_proton-0.32.0-cp36-cp36m-linux_x86_64.whl"
         shell: bash
