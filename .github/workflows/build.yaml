@@ -60,19 +60,18 @@ jobs:
       - name: Install Linux dependencies
         if: ${{ runner.os == 'Linux' }}
         run: |
-          sudo apt install -y bubblewrap swig ninja-build libpython3-dev libsasl2-dev sasl2-bin libjsoncpp-dev libwebsockets-dev xz-utils
+          sudo apt install -y swig ninja-build libpython3-dev libsasl2-dev sasl2-bin libjsoncpp-dev libwebsockets-dev xz-utils
       - name: Install MacOS dependencies
         if: ${{ runner.os == 'macOS' }}
         run: |
           brew install cmake ninja libuv swig pkgconfig jsoncpp openssl libwebsockets
       - name: qpid-proton cmake configure
         working-directory: ${{env.ProtonBuildDir}}
-        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-DBUILD_TESTING=OFF" "-DENABLE_FUZZ_TESTING=OFF" "-DFUZZ_REGRESSION_TESTS=OFF" "-GNinja" ${cmake_extra}
+        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-DBUILD_TESTING=OFF" "-DENABLE_FUZZ_TESTING=OFF" "-GNinja" ${cmake_extra}
         shell: bash
       - name: qpid-proton cmake build/install
         run: cmake --build "${ProtonBuildDir}" --config ${BuildType} -t install
         shell: bash
-      # nb. run source config.sh here, because CMake sets placeholder vars in run.py from env
       - name: install qpid-proton python wheel
         run: python -m pip install "${ProtonBuildDir}/python/pkgs/python_qpid_proton-0.32.0-cp36-cp36m-linux_x86_64.whl"
         shell: bash
@@ -86,9 +85,7 @@ jobs:
       # github actions/upload-artifact@v2 does not preserve file permissions (executable)
       - name: Compress build
         working-directory: ${{github.workspace}}
-        run: tar --xz -cvf /tmp/archive.tar.xz --exclude='qpid-dispatch/build/console' qpid-dispatch install qpid-proton/build/python/pkgs
-      - name: Show size
-        run: du -h /tmp/archive.tar.xz
+        run: tar --xz -cvf /tmp/archive.tar.xz --exclude '*.o' --exclude='qpid-dispatch/build/console' qpid-dispatch install qpid-proton/build/python/pkgs
       - name: Upload archive
         uses: actions/upload-artifact@v2
         with:
@@ -127,7 +124,7 @@ jobs:
 #        run: env | sort
 #        shell: bash
   test:
-    name: "Test (shard ${{matrix.shard}} of ${{matrix.shards}}"
+    name: "Test (${{matrix.os}}, shard ${{matrix.shard}} of ${{matrix.shards}}"
     runs-on: ${{ matrix.os }}
     needs: [build]
     strategy:
@@ -180,13 +177,13 @@ jobs:
         shell: bash
       - name: ctest
         working-directory: ${{env.DispatchBuildDir}}
-        run: ctest -C ${BuildType} -V -T Test --no-compress-output -I ${{matrix.shard}},,${{matrix.shards}}
+        run: ctest -C ${BuildType} -V -T Test --no-compress-output -I ${{matrix.shard}},,${{matrix.shards}} -j2
         shell: bash
       - name: Upload Test results
         uses: actions/upload-artifact@v2
         if: ${{ ! cancelled() }}
         with:
-          name: Test_Results_${{matrix.os}}_${{matrix.buildType}}
+          name: Test_Results_${{matrix.os}}_${{matrix.buildType}}_${{matrix.shard}}
           path: ${{env.BuildDir}}/Testing/**/*.xml
       - name: Environment (Linux)
         if: ${{ always() && runner.os != 'macOS' }}
