@@ -85,7 +85,7 @@ jobs:
       # github actions/upload-artifact@v2 does not preserve file permissions (executable)
       - name: Compress build
         working-directory: ${{github.workspace}}
-        run: tar --xz -cvf /tmp/archive.tar.xz --exclude '*.o' --exclude '*.pyc' --exclude '.git' --exclude='qpid-dispatch/build/console' --exclude='qpid-dispatch/console' qpid-dispatch install qpid-proton/build/python/pkgs
+        run: tar --xz -cvf /tmp/archive.tar.xz --exclude '*.o' --exclude '*.pyc' --exclude '.git' --exclude='qpid-dispatch/build/console' qpid-dispatch install qpid-proton/build/python/pkgs
       - name: Upload archive
         uses: actions/upload-artifact@v2
         with:
