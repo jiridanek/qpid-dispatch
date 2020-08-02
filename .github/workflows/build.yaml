@@ -90,8 +90,7 @@ jobs:
         run: cmake --build "${ProtonBuildDir}" --config ${BuildType} -t install
         shell: bash
       - name: install qpid-proton python wheel
-        run: python -m pip install $(find -name "${ProtonBuildDir}/python/pkgs/python_qpid_proton*.whl")
-        shell: bash
+        run: python -m pip install "${ProtonBuildDir}/python/pkgs/python_qpid_proton*.whl"
       - name: qpid-dispatch cmake configure
         working-directory: ${{env.DispatchBuildDir}}
         run: cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-GNinja" "-DUSE_BWRAP=ON" ${DispatchCMakeExtraArgs}
