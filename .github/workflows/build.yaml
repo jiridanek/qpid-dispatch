@@ -125,7 +125,7 @@ jobs:
       - name: Upload archive
         uses: actions/upload-artifact@v2
         with:
-          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}_${{matrix.runtimeCheck}}
+          name: Workspace_${{matrix.os}}_${{matrix.buildType}}_${{matrix.runtimeCheck}}
           path: /tmp/archive.tar.xz
 
   test:
@@ -155,7 +155,7 @@ jobs:
       - name: Download Build
         uses: actions/download-artifact@v2
         with:
-          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}_${{matrix.runtimeCheck}}
+          name: Workspace_${{matrix.os}}_${{matrix.buildType}}_${{matrix.runtimeCheck}}
 
       - name: Setup python
         uses: actions/setup-python@v2
@@ -190,10 +190,10 @@ jobs:
           name: Test_Results_${{matrix.os}}_${{matrix.buildType}}_${{matrix.runtimeCheck}}_${{matrix.shard}}
           path: ${{env.DispatchBuildDir}}/Testing/**/*.xml
 
-      - name: Upload core files (if any)
+      - name: Upload core dumps (if any)
         uses: actions/upload-artifact@v2
-        if: failure()
+        if: ${{ failure() }}
         with:
-          name: cores_${{matrix.os}}_${{matrix.buildType}}_${{matrix.runtimeCheck}}_${{matrix.shard}}
+          name: Core_Dumps_${{matrix.os}}_${{matrix.buildType}}_${{matrix.runtimeCheck}}_${{matrix.shard}}
           path: |
             **/core
