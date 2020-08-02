@@ -102,38 +102,6 @@ jobs:
         with:
           name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}
           path: /tmp/archive.tar.xz
-#      - name: Upload Build
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}
-#          path: |
-#            ${{github.workspace}}/qpid-proton/build
-#            ${{github.workspace}}/qpid-dispatch/build
-#            !${{github.workspace}}/qpid-dispatch/build/console
-#      - name: ctest
-#        working-directory: ${{env.DispatchBuildDir}}
-#        run: source ${{env.ProtonBuildDir}}/config.sh && ctest -C ${BuildType} -V -T Test --no-compress-output
-#        shell: bash
-#      - name: Upload Test results
-#        uses: actions/upload-artifact@v2
-#        if: ${{ ! cancelled() }}
-#        with:
-#          name: Test_Results_${{matrix.os}}_${{matrix.buildType}}
-#          path: ${{env.BuildDir}}/Testing/**/*.xml
-##      - name: Upload build directories on failure
-##        uses: actions/upload-artifact@v2
-##        if: failure()
-##        with:
-##          name: Build_${{matrix.os}}_${{matrix.buildType}}
-##          path: ${{env.DispatchBuildDir}}
-#      - name: Environment (Linux)
-#        if: ${{ always() && runner.os != 'macOS' }}
-#        run: env -0 | sort -z | tr '\0' '\n'
-#        shell: bash
-#      - name: Environment (macOS)
-#        if: ${{ always() && runner.os == 'macOS' }}
-#        run: env | sort
-#        shell: bash
   test:
     name: "Test (${{matrix.os}}, shard ${{matrix.shard}} of ${{matrix.shards}}"
     runs-on: ${{ matrix.os }}
@@ -143,11 +111,8 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
         buildType: [RelWithDebInfo]
-        shard: [1, 2, 3]
-        shards: [3]
-        include:
-          - os: ubuntu-20.04
-            archive_url: 'https://github.com/jiridanek/qpid-dispatch/suites/995738930/artifacts/12841855'
+        shard: [1, 2, 3, 4]
+        shards: [4]
     env:
       BuildType: ${{matrix.buildType}}
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
@@ -181,12 +146,10 @@ jobs:
           brew install cmake ninja libuv swig pkgconfig jsoncpp openssl libwebsockets
       - name: Unpack archive
         run: tar --xz -xf archive.tar.xz
-      - name: ls librarypath
-        run: ls ${LD_LIBRARY_PATH}
       - name: install qpid-proton python wheel
         run: python -m pip install "${ProtonBuildDir}/python/pkgs/python_qpid_proton-0.32.0-cp36-cp36m-linux_x86_64.whl"
         shell: bash
-      - name: ctest
+      - name: CTest
         working-directory: ${{env.DispatchBuildDir}}
         run: ctest -C ${BuildType} -V -T Test --no-compress-output -I ${{matrix.shard}},,${{matrix.shards}} -j4
         shell: bash
