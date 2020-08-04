@@ -23,20 +23,21 @@ on: [push, pull_request]
 
 jobs:
   compile:
-    name: "Compile (${{matrix.os}})"
+    name: "Compile (${{matrix.os}}, ${{matrix.runtimeCheck}})"
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
         buildType: [RelWithDebInfo]
+        runtimeCheck: [asan, tsan]
     env:
       BuildType: ${{matrix.buildType}}
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
       DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
       InstallPrefix: ${{github.workspace}}/install
-      ProtonCMakeExtraArgs: '-DBUILD_BINDINGS=python'
-      DispatchCMakeExtraArgs: ''
+      ProtonCMakeExtraArgs: '-DBUILD_BINDINGS=python -DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
+      DispatchCMakeExtraArgs: '-DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
     steps:
       - name: Show environment (Linux)
         if: ${{ always() && runner.os == 'Linux' }}
@@ -95,10 +96,10 @@ jobs:
       - name: Upload archive
         uses: actions/upload-artifact@v2
         with:
-          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}
+          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}_${{matrix.runtimeCheck}}
           path: /tmp/archive.tar.xz
   test:
-    name: 'Test (${{matrix.os}}, shard ${{matrix.shard}} of ${{matrix.shards}})'
+    name: 'Test (${{matrix.os}}, ${{matrix.runtimeCheck}}, shard ${{matrix.shard}} of ${{matrix.shards}})'
     runs-on: ${{ matrix.os }}
     needs: [compile]
     strategy:
@@ -106,8 +107,8 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
         buildType: [RelWithDebInfo]
-        shard: [1, 2, 3]
-        shards: [3]
+        shard: [1, 2, 3, 4, 5]
+        shards: [5]
     env:
       BuildType: ${{matrix.buildType}}
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
@@ -123,7 +124,7 @@ jobs:
       - name: Download Build
         uses: actions/download-artifact@v2
         with:
-          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}
+          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}_${{matrix.runtimeCheck}}
       - name: Setup python
         uses: actions/setup-python@v2
         with:
