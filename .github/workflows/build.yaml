@@ -38,7 +38,7 @@ jobs:
       InstallPrefix: ${{github.workspace}}/install
       ProtonCMakeExtraArgs: '-DBUILD_BINDINGS=python -DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
       DispatchCMakeExtraArgs: '-DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
-      CFLAGS: '-DQD_MEMORY_DEBUG -UNDEBUG'
+      CFLAGS: '-DQD_MEMORY_DEBUG'
     steps:
       - name: Show environment (Linux)
         if: ${{ always() && runner.os == 'Linux' }}
@@ -78,14 +78,14 @@ jobs:
           sudo apt install -y swig libpython3-dev libsasl2-dev libjsoncpp-dev libwebsockets-dev ninja-build xz-utils
       - name: qpid-proton cmake configure
         working-directory: ${{env.ProtonBuildDir}}
-        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-DBUILD_TESTING=OFF" "-DENABLE_FUZZ_TESTING=OFF" "-GNinja" ${ProtonCMakeExtraArgs}
+        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_CXX_FLAGS_RELWITHDEBINFO=-O2 -g" "-DCMAKE_C_FLAGS_RELWITHDEBINFO=-O2 -g" "-DCMAKE_BUILD_TYPE=${BuildType}" "-DBUILD_TESTING=OFF" "-DENABLE_FUZZ_TESTING=OFF" "-GNinja" ${ProtonCMakeExtraArgs}
         shell: bash
       - name: qpid-proton cmake build/install
         run: cmake --build "${ProtonBuildDir}" --config ${BuildType} -t install
         shell: bash
       - name: qpid-dispatch cmake configure
         working-directory: ${{env.DispatchBuildDir}}
-        run: cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-GNinja" "-DUSE_BWRAP=ON" ${DispatchCMakeExtraArgs}
+        run: cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_CXX_FLAGS_RELWITHDEBINFO=-O2 -g" "-DCMAKE_C_FLAGS_RELWITHDEBINFO=-O2 -g" "-DCMAKE_BUILD_TYPE=${BuildType}" "-GNinja" "-DUSE_BWRAP=ON" ${DispatchCMakeExtraArgs}
         shell: bash
       - name: qpid-dispatch cmake build/install
         run: cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
