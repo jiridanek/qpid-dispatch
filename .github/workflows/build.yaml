@@ -107,6 +107,7 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
         buildType: [RelWithDebInfo]
+        runtimeCheck: [asan, tsan]
         shard: [1, 2, 3, 4, 5]
         shards: [5]
     env:
