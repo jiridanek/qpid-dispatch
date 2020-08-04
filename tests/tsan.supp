@@ -2,6 +2,9 @@
 #
 race:libqpid-proton-proactor
 deadlock:libpython
+# libwebsockets
+race:log_init
+race:_lws_log
 
 race:qd_vlog_impl
 deadlock:qd_vlog_impl
@@ -16,7 +19,7 @@ mutex:qd_router_timer_handler
 race:qdr_process_tick_CT
 deadlock:qd_timer
 
-race:qdr_connection_process
+race:qd_connector_decref
 
 race:qdr_link_flow
 race:qdr_link_flow_CT
@@ -31,6 +34,7 @@ race:qdr_delivery_anycast_update_CT
 
 race:qdr_connection_set_context
 race:qdr_connection_get_context
+race:qdr_connection_process
 
 race:notify_downstream
 race:notify_upstream
