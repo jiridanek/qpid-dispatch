@@ -36,8 +36,8 @@ jobs:
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
       DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
       InstallPrefix: ${{github.workspace}}/install
-      ProtonCMakeExtraArgs: '-DBUILD_BINDINGS=python -DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
-      DispatchCMakeExtraArgs: '-DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
+      ProtonCMakeExtraArgs: '-DBUILD_BINDINGS=python -DRUNTIME_CHECK=${{matrix.runtimeCheck}} "-DCMAKE_C_FLAGS=-UNDEBUG"'
+      DispatchCMakeExtraArgs: '-DRUNTIME_CHECK=${{matrix.runtimeCheck}} "-DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG -UNDEBUG"'
     steps:
       - name: Show environment (Linux)
         if: ${{ always() && runner.os == 'Linux' }}
