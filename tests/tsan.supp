@@ -10,6 +10,8 @@ race:qd_vlog_impl
 deadlock:qd_vlog_impl
 race:qd_log_entity
 
+race:qd_dispatch_set_router_area
+
 race:qdr_core_free
 
 race:qd_alloc
