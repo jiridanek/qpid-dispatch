@@ -69,9 +69,9 @@ jobs:
           cache-name: cache-ccache
         with:
           path: ~/.ccache
-          key: ${{ runner.os }}-${{ matrix.runtimeCheck }}-${{ env.cache-name }}-${{ steps.proton_checkout.outputs.sha }}
+          key: ${{ matrix.os }}-${{ matrix.runtimeCheck }}-${{ env.cache-name }}-${{ steps.proton_checkout.outputs.sha }}-${{ hashFiles('qpid-dispatch/.github/workflows/build.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.runtimeCheck }}-${{ env.cache-name }}
+            ${{ matrix.os }}-${{ matrix.runtimeCheck }}-${{ env.cache-name }}
 
       - name: Create Build and Install directories
         run: mkdir -p "${ProtonBuildDir}" "${DispatchBuildDir}" "{InstallPrefix}"
