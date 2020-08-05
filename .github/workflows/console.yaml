@@ -40,7 +40,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install Dependencies
-        run: cd console/react && npm install
+        run: cd console/react && npm ci
 
       - name: Run Tests
         run: cd console/react && npm run test
@@ -63,7 +63,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install Dependencies
-        run: cd console/react && npm install
+        run: cd console/react && npm ci
 
       - name: Install Typescript
         run: cd console/react && npm install typescript
