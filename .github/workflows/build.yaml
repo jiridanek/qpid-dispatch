@@ -43,7 +43,6 @@ jobs:
       CCACHE_BASEDIR: ${{github.workspace}}
       CCACHE_COMPRESS: 'true'
       CCACHE_MAXSIZE: '100MB'
-      CCACHE_DEBUG: '1'
 
       LDFLAGS: '-fuse-ld=gold'
     steps:
