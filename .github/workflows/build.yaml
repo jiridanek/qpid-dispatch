@@ -42,6 +42,7 @@ jobs:
 
       CCACHE_COMPRESS: 'true'
       CCACHE_MAXSIZE: '100MB'
+      CCACHE_DEBUG: '1'
 
       LDFLAGS: '-fuse-ld=gold'
     steps:
@@ -134,8 +135,8 @@ jobs:
         os: [ubuntu-20.04]
         buildType: [RelWithDebInfo]
         runtimeCheck: [asan]
-        shard: [1, 2, 3, 4, 5, 6, 7]
-        shards: [7]
+        shard: [1, 2]
+        shards: [2]
     env:
       BuildType: ${{matrix.buildType}}
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
@@ -177,7 +178,7 @@ jobs:
         working-directory: ${{env.DispatchBuildDir}}
         run: |
           ulimit -c unlimited
-          ctest -C ${BuildType} -V -T Test --no-compress-output -I ${{matrix.shard}},,${{matrix.shards}} -j6
+          ctest -C ${BuildType} -V -T Test --no-compress-output -I ${{matrix.shard}},,${{matrix.shards}} -j2
 
       - name: Upload test results
         uses: actions/upload-artifact@v2
