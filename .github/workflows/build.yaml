@@ -62,16 +62,20 @@ jobs:
         with:
           path: 'qpid-dispatch'
 
-      - name: Get proton checkout information
-        run: echo ::set-output name=sha::$(git --git-dir=qpid-proton/.git rev-parse HEAD)
-        id: proton_checkout
+      # https://cristianadam.eu/20200113/speeding-up-c-plus-plus-github-actions-using-ccache/
+      - name: Prepare ccache timestamp
+        id: ccache_cache_timestamp
+        shell: cmake -P {0}
+        run: |
+          string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
+          message("::set-output name=timestamp::${current_date}")
 
       - uses: actions/cache@v2
         env:
           cache-name: cache-ccache
         with:
           path: ~/.ccache
-          key: ${{ matrix.os }}-${{ matrix.runtimeCheck }}-${{ env.cache-name }}-${{ steps.proton_checkout.outputs.sha }}-${{ hashFiles('qpid-dispatch/.github/workflows/build.yaml') }}
+          key: ${{ matrix.os }}-${{ matrix.runtimeCheck }}-${{ env.cache-name }}-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.runtimeCheck }}-${{ env.cache-name }}
 
