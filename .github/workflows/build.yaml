@@ -177,7 +177,7 @@ jobs:
         working-directory: ${{env.DispatchBuildDir}}
         run: |
           ulimit -c unlimited
-          ctest -C ${BuildType} -V -T Test --no-compress-output -I ${{matrix.shard}},,${{matrix.shards}} -j3
+          ctest -C ${BuildType} -V -T Test --no-compress-output -I ${{matrix.shard}},,${{matrix.shards}} -j2
 
       - name: Upload test results
         uses: actions/upload-artifact@v2
