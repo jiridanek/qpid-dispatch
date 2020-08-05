@@ -37,14 +37,13 @@ jobs:
       DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
       InstallPrefix: ${{github.workspace}}/install
 
-      ProtonCMakeExtraArgs: '-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DBUILD_BINDINGS=python -DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
+      ProtonCMakeExtraArgs: '-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DENABLE_LINKTIME_OPTIMIZATION=OFF -DBUILD_BINDINGS=python -DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
       DispatchCMakeExtraArgs: '-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCONSOLE_INSTALL=OFF -DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG -DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
 
       CCACHE_BASEDIR: ${{github.workspace}}
+      CCACHE_DIR: ${{github.workspace}}/.ccache
       CCACHE_COMPRESS: 'true'
       CCACHE_MAXSIZE: '100MB'
-
-      LDFLAGS: '-fuse-ld=gold'
     steps:
 
       - name: Show environment (Linux)
@@ -73,7 +72,7 @@ jobs:
         env:
           cache-name: cache-ccache
         with:
-          path: ~/.ccache
+          path: .ccache
           key: ${{ matrix.os }}-${{ matrix.runtimeCheck }}-${{ env.cache-name }}-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.runtimeCheck }}-${{ env.cache-name }}
