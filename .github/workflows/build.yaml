@@ -30,75 +30,72 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
         buildType: [RelWithDebInfo]
-        runtimeCheck: [asan, tsan]
+        runtimeCheck: [asan]
     env:
       BuildType: ${{matrix.buildType}}
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
       DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
       InstallPrefix: ${{github.workspace}}/install
       ProtonCMakeExtraArgs: '-DBUILD_BINDINGS=python -DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
-      DispatchCMakeExtraArgs: '-DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
-      CFLAGS: '-DQD_MEMORY_DEBUG'
+      DispatchCMakeExtraArgs: '-DCONSOLE_INSTALL=OFF -DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG -DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
     steps:
+
       - name: Show environment (Linux)
         if: ${{ always() && runner.os == 'Linux' }}
         run: env -0 | sort -z | tr '\0' '\n'
-        shell: bash
+
       - uses: actions/checkout@v2
         with:
           repository: 'apache/qpid-proton'
           ref: 'master'
           path: 'qpid-proton'
+
       - uses: actions/checkout@v2
         with:
           path: 'qpid-dispatch'
-      - uses: actions/cache@v2
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+
       - name: Create Build and Install directories
         run: mkdir -p "${ProtonBuildDir}" "${DispatchBuildDir}" "{InstallPrefix}"
-        shell: bash
+
       - name: Setup python
         uses: actions/setup-python@v2
         with:
           python-version: 3.6
           architecture: x64
+
       - name: Install python dependencies
         run: python -m pip install setuptools wheel tox
+
       - name: Install Linux dependencies
         if: ${{ runner.os == 'Linux' }}
         run: |
           sudo apt install -y swig libpython3-dev libsasl2-dev libjsoncpp-dev libwebsockets-dev ninja-build xz-utils
+
       - name: qpid-proton cmake configure
         working-directory: ${{env.ProtonBuildDir}}
-        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_CXX_FLAGS_RELWITHDEBINFO=-O2 -g" "-DCMAKE_C_FLAGS_RELWITHDEBINFO=-O2 -g" "-DCMAKE_BUILD_TYPE=${BuildType}" "-DBUILD_TESTING=OFF" "-DENABLE_FUZZ_TESTING=OFF" "-GNinja" ${ProtonCMakeExtraArgs}
-        shell: bash
+        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-DBUILD_TESTING=OFF" "-DENABLE_FUZZ_TESTING=OFF" "-GNinja" ${ProtonCMakeExtraArgs}
+
       - name: qpid-proton cmake build/install
         run: cmake --build "${ProtonBuildDir}" --config ${BuildType} -t install
-        shell: bash
+
       - name: qpid-dispatch cmake configure
         working-directory: ${{env.DispatchBuildDir}}
-        run: cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_CXX_FLAGS_RELWITHDEBINFO=-O2 -g" "-DCMAKE_C_FLAGS_RELWITHDEBINFO=-O2 -g" "-DCMAKE_BUILD_TYPE=${BuildType}" "-GNinja" "-DUSE_BWRAP=ON" ${DispatchCMakeExtraArgs}
-        shell: bash
+        run: cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-GNinja" "-DUSE_BWRAP=ON" ${DispatchCMakeExtraArgs}
+
       - name: qpid-dispatch cmake build/install
         run: cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
-        shell: bash
+
       # github actions/upload-artifact@v2 does not preserve executable permission on binaries
       - name: Compress build
         working-directory: ${{github.workspace}}
         run: tar --xz -cf /tmp/archive.tar.xz --exclude '*.o' --exclude '*.pyc' --exclude '.git' --exclude='qpid-dispatch/build/console' qpid-dispatch install qpid-proton/build/python/pkgs
+
       - name: Upload archive
         uses: actions/upload-artifact@v2
         with:
           name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}_${{matrix.runtimeCheck}}
           path: /tmp/archive.tar.xz
+
   test:
     name: 'Test (${{matrix.os}}, ${{matrix.runtimeCheck}}, shard ${{matrix.shard}} of ${{matrix.shards}})'
     runs-on: ${{ matrix.os }}
@@ -108,9 +105,9 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
         buildType: [RelWithDebInfo]
-        runtimeCheck: [asan, tsan]
-        shard: [1, 2, 3, 4, 5]
-        shards: [5]
+        runtimeCheck: [asan]
+        shard: [1]
+        shards: [1]
     env:
       BuildType: ${{matrix.buildType}}
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
@@ -119,43 +116,49 @@ jobs:
       PKG_CONFIG_PATH: ${{matrix.pkg_config_path}}
       LD_LIBRARY_PATH: ${{github.workspace}}/install/lib
     steps:
+
       - name: Show environment (Linux)
         if: ${{ always() && runner.os == 'Linux' }}
         run: env -0 | sort -z | tr '\0' '\n'
-        shell: bash
+
       - name: Download Build
         uses: actions/download-artifact@v2
         with:
           name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}_${{matrix.runtimeCheck}}
+
       - name: Setup python
         uses: actions/setup-python@v2
         with:
           python-version: 3.6
           architecture: x64
+
       - name: Install python dependencies
         run: python -m pip install tox
+
       - name: Install Linux dependencies
         if: ${{ runner.os == 'Linux' }}
         run: |
           sudo apt install -y libsasl2-2 libsasl2-modules sasl2-bin libjsoncpp1 libwebsockets15 xz-utils bubblewrap
+
       - name: Unpack archive
         run: tar --xz -xf archive.tar.xz
       - name: install qpid-proton python wheel
         run: python -m pip install ${ProtonBuildDir}/python/pkgs/python_qpid_proton*.whl
-        shell: bash
+
       - name: CTest
         working-directory: ${{env.DispatchBuildDir}}
         run: |
           ulimit -c unlimited
-          ctest -C ${BuildType} -V -T Test --no-compress-output -I ${{matrix.shard}},,${{matrix.shards}}
-        shell: bash
+          ctest -C ${BuildType} -V -T Test --no-compress-output -I ${{matrix.shard}},,${{matrix.shards}} -j1
+
       - name: Upload test results
         uses: actions/upload-artifact@v2
         if: ${{ ! cancelled() }}
         with:
           name: Test_Results_${{matrix.os}}_${{matrix.buildType}}_${{matrix.shard}}
           path: ${{env.DispatchBuildDir}}/Testing/**/*.xml
-      - name: Upload core files
+
+      - name: Upload core files (if any)
         uses: actions/upload-artifact@v2
         if: failure()
         with:
