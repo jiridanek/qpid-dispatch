@@ -101,7 +101,7 @@ jobs:
 
       - name: qpid-proton cmake configure
         working-directory: ${{env.ProtonBuildDir}}
-        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-DBUILD_TESTING=OFF" "-DENABLE_FUZZ_TESTING=OFF" "-GNinja" ${ProtonCMakeExtraArgs}
+        run: cmake "${{github.workspace}}/qpid-proton" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-DBUILD_TESTING=OFF" "-DENABLE_FUZZ_TESTING=OFF" ${ProtonCMakeExtraArgs}
 
       - name: qpid-proton cmake build/install
         run: cmake --build "${ProtonBuildDir}" --config ${BuildType} -t install
@@ -111,7 +111,7 @@ jobs:
 
       - name: qpid-dispatch cmake configure
         working-directory: ${{env.DispatchBuildDir}}
-        run: cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-GNinja" "-DUSE_BWRAP=ON" ${DispatchCMakeExtraArgs}
+        run: cmake "${{github.workspace}}/qpid-dispatch" "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" "-DCMAKE_BUILD_TYPE=${BuildType}" "-DUSE_BWRAP=ON" ${DispatchCMakeExtraArgs}
 
       - name: qpid-dispatch cmake build/install
         run: cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
