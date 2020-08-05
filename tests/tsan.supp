@@ -1,6 +1,6 @@
 # ThreadSanitizer (tsan) suppression file
 #
-race:libqpid-proton-proactor
+#race:libqpid-proton-proactor
 deadlock:libpython
 # libwebsockets
 race:log_init
