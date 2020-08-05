@@ -71,9 +71,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ matrix.runtimeCheck }}-${{ env.cache-name }}
 
-      - name: Zero ccache stats
-        run: ccache -z
-
       - name: Create Build and Install directories
         run: mkdir -p "${ProtonBuildDir}" "${DispatchBuildDir}" "{InstallPrefix}"
 
@@ -90,6 +87,9 @@ jobs:
         if: ${{ runner.os == 'Linux' }}
         run: |
           sudo apt install -y swig libpython3-dev libsasl2-dev libjsoncpp-dev libwebsockets-dev ccache ninja-build xz-utils
+
+      - name: Zero ccache stats
+        run: ccache -z
 
       - name: qpid-proton cmake configure
         working-directory: ${{env.ProtonBuildDir}}
