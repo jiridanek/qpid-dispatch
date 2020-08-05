@@ -36,8 +36,12 @@ jobs:
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
       DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
       InstallPrefix: ${{github.workspace}}/install
-      ProtonCMakeExtraArgs: '-DBUILD_BINDINGS=python -DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
-      DispatchCMakeExtraArgs: '-DCONSOLE_INSTALL=OFF -DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG -DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
+
+      ProtonCMakeExtraArgs: '-DCMAKE_C_COMPILER_LAUNCHER=ccache -DBUILD_BINDINGS=python -DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
+      DispatchCMakeExtraArgs: '-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCONSOLE_INSTALL=OFF -DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG -DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
+
+      CCACHE_COMPRESS: 'true'
+      CCACHE_MAXSIZE: '100MB'
     steps:
 
       - name: Show environment (Linux)
@@ -54,6 +58,22 @@ jobs:
         with:
           path: 'qpid-dispatch'
 
+      - name: Get proton checkout information
+        run: echo ::set-output name=sha::$(git --git-dir=qpid-proton/.git rev-parse HEAD)
+        id: proton_checkout
+
+      - uses: actions/cache@v2
+        env:
+          cache-name: cache-ccache
+        with:
+          path: ~/.ccache
+          key: ${{ runner.os }}-${{ matrix.runtimeCheck }}-${{ env.cache-name }}-${{ steps.proton_checkout.outputs.sha }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.runtimeCheck }}-${{ env.cache-name }}
+
+      - name: Zero ccache stats
+        run: ccache -z
+
       - name: Create Build and Install directories
         run: mkdir -p "${ProtonBuildDir}" "${DispatchBuildDir}" "{InstallPrefix}"
 
@@ -69,7 +89,7 @@ jobs:
       - name: Install Linux dependencies
         if: ${{ runner.os == 'Linux' }}
         run: |
-          sudo apt install -y swig libpython3-dev libsasl2-dev libjsoncpp-dev libwebsockets-dev ninja-build xz-utils
+          sudo apt install -y swig libpython3-dev libsasl2-dev libjsoncpp-dev libwebsockets-dev ccache ninja-build xz-utils
 
       - name: qpid-proton cmake configure
         working-directory: ${{env.ProtonBuildDir}}
@@ -84,6 +104,9 @@ jobs:
 
       - name: qpid-dispatch cmake build/install
         run: cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
+
+      - name: Display ccache stats
+        run: ccache -s
 
       # github actions/upload-artifact@v2 does not preserve executable permission on binaries
       - name: Compress build
@@ -113,7 +136,6 @@ jobs:
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
       DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
       InstallPrefix: ${{github.workspace}}/install
-      PKG_CONFIG_PATH: ${{matrix.pkg_config_path}}
       LD_LIBRARY_PATH: ${{github.workspace}}/install/lib
     steps:
 
@@ -142,6 +164,7 @@ jobs:
 
       - name: Unpack archive
         run: tar --xz -xf archive.tar.xz
+
       - name: install qpid-proton python wheel
         run: python -m pip install ${ProtonBuildDir}/python/pkgs/python_qpid_proton*.whl
 
