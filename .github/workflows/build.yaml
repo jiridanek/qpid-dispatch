@@ -43,7 +43,7 @@ jobs:
       CCACHE_BASEDIR: ${{github.workspace}}
       CCACHE_DIR: ${{github.workspace}}/.ccache
       CCACHE_COMPRESS: 'true'
-      CCACHE_MAXSIZE: '100MB'
+      CCACHE_MAXSIZE: '400MB'
     steps:
 
       - name: Show environment (Linux)
