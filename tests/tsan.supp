@@ -6,12 +6,15 @@ deadlock:libpython
 race:log_init
 race:_lws_log
 
+race:libqpid-dispatch.so
+
 race:qd_vlog_impl
 deadlock:qd_vlog_impl
 race:qd_log_entity
 
 race:qd_dispatch_set_router_area
 
+race:qd_buffer
 race:qd_buffer_list_clone
 race:router_annotate_message
 race:qd_compose_insert_string
