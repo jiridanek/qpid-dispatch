@@ -42,6 +42,8 @@ jobs:
 
       CCACHE_COMPRESS: 'true'
       CCACHE_MAXSIZE: '100MB'
+
+      LDFLAGS: '-fuse-ld=gold'
     steps:
 
       - name: Show environment (Linux)
