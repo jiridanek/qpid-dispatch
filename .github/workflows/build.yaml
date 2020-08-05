@@ -40,8 +40,8 @@ jobs:
       ProtonCMakeExtraArgs: '-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DBUILD_BINDINGS=python -DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
       DispatchCMakeExtraArgs: '-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCONSOLE_INSTALL=OFF -DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG -DRUNTIME_CHECK=${{matrix.runtimeCheck}}'
 
-#      CCACHE_BASEDIR: ${{github.workspace}}
-      CCACHE_COMPRESS: 'true'
+      CCACHE_BASEDIR: ${{github.workspace}}
+#      CCACHE_COMPRESS: 'true'
       CCACHE_MAXSIZE: '100MB'
       CCACHE_DEBUG: '1'
 
@@ -129,6 +129,9 @@ jobs:
         with:
           name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}_${{matrix.runtimeCheck}}
           path: /tmp/archive.tar.xz
+
+      - name: Check cache
+        run: ls /home/runner/.ccache/1/1/e3659bc9306dc8fff809a1e42293c0-103873.o || true
 
   test:
     name: 'Test (${{matrix.os}}, ${{matrix.runtimeCheck}}, shard ${{matrix.shard}} of ${{matrix.shards}})'
