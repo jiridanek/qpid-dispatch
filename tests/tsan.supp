@@ -12,6 +12,10 @@ race:qd_log_entity
 
 race:qd_dispatch_set_router_area
 
+race:qd_buffer_list_clone
+race:router_annotate_message
+race:qd_compose_insert_string
+
 race:qdr_core_free
 
 race:qd_alloc
