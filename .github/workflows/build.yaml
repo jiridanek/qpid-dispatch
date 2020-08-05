@@ -79,6 +79,9 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.runtimeCheck }}-${{ env.cache-name }}
 
+      - name: Check cache
+        run: ls /home/runner/.ccache/1/1/e3659bc9306dc8fff809a1e42293c0-103873.o || true
+
       - name: Create Build and Install directories
         run: mkdir -p "${ProtonBuildDir}" "${DispatchBuildDir}" "{InstallPrefix}"
 
