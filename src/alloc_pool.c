@@ -101,10 +101,10 @@ void *qd_alloc(qd_alloc_type_desc_t *desc, qd_alloc_pool_t **tpool)
 bool qd_dealloc(qd_alloc_type_desc_t *desc, qd_alloc_pool_t **tpool, char *p)
 {
     qd_refcount_t *item = ((qd_refcount_t*) p) - 1;
-    if (sys_atomic_get(&item->refcount) == 1 && sys_atomic_get(&item->allocated)) {
+    sys_atomic_dec(&item->refcount);
+    if (sys_atomic_get(&item->refcount) == 0) {
         return true;
     } else {
-        sys_atomic_dec(&item->refcount);
         sys_atomic_set(&item->allocated, 0);
         return false;
     }

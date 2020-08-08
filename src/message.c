@@ -84,12 +84,12 @@ static const char * const section_names[QD_DEPTH_ALL + 1] = {
 
 PN_HANDLE(PN_DELIVERY_CTX)
 
-void dealloc_qd_message_content_t(qd_message_content_t *p) {
-    unset_safe_ptr_qd_message_content_t(&p->input_link_sp);
+void destruct_qd_message_content_t(qd_message_content_t *p) {
+    unset_safe_ptr_qd_link_t(&p->input_link_sp);
 }
 
 ALLOC_DEFINE_CONFIG(qd_message_t, sizeof(qd_message_pvt_t), 0, 0, NULL);
-ALLOC_DEFINE_DESTRUCTOR(qd_message_content_t, dealloc_qd_message_content_t);
+ALLOC_DEFINE_DESTRUCTOR(qd_message_content_t, destruct_qd_message_content_t);
 
 typedef void (*buffer_process_t) (void *context, const unsigned char *base, int length);
 
