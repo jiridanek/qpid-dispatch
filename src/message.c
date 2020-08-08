@@ -1914,7 +1914,7 @@ static qd_message_depth_status_t qd_message_check_LH(qd_message_content_t *conte
         if (rc != QD_MESSAGE_DEPTH_OK || depth == QD_DEPTH_MESSAGE_ANNOTATIONS)
             break;
 
-        // fallthough
+        // fallthrough
 
     case QD_DEPTH_PROPERTIES:
         //
