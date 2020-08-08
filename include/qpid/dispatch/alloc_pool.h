@@ -21,6 +21,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <qpid/dispatch/threading.h>
 #include <qpid/dispatch/ctools.h>
 
@@ -78,9 +79,10 @@ typedef struct {
 /** Allocate in a thread pool. Use via ALLOC_DECLARE */
 void *qd_alloc(qd_alloc_type_desc_t *desc, qd_alloc_pool_t **tpool);
 /** De-allocate from a thread pool. Use via ALLOC_DECLARE */
-void qd_dealloc(qd_alloc_type_desc_t *desc, qd_alloc_pool_t **tpool, char *p);
+bool qd_dealloc(qd_alloc_type_desc_t *desc, qd_alloc_pool_t **tpool, char *p);
 void qd_alloc_incref(void *p);
-void qd_alloc_decref(void *p);
+bool qd_alloc_decref(void *p);
+void qd_alloc_free(void *p);
 void *qd_alloc_safe_deref(void *p);
 uint32_t qd_alloc_sequence(void *p);
 static inline void qd_nullify_safe_ptr(qd_alloc_safe_ptr_t *sp) { sp->ptr = 0; }
@@ -105,9 +107,10 @@ static inline void qd_nullify_safe_ptr(qd_alloc_safe_ptr_t *sp) { sp->ptr = 0; }
     qd_alloc_type_desc_t __desc_##T  __attribute__((aligned(64))) = {0, #T, S, A, 0, C, 0, 0, 0, {0,0}, 0}; \
     __thread qd_alloc_pool_t *__local_pool_##T = 0;                     \
     T *new_##T(void) { return (T*) qd_alloc(&__desc_##T, &__local_pool_##T); }  \
-    void free_##T(T *p) { void (*d)(T *) = D; if (d != NULL) d(p); qd_dealloc(&__desc_##T, &__local_pool_##T, (char*) p); } \
+    void delete_##T(T *p) { void (*d)(T *) = D; if (d != NULL) d(p); qd_alloc_free(p); }  \
+    void free_##T(T *p) { if (qd_dealloc(&__desc_##T, &__local_pool_##T, (char*) p)) delete_##T(p); } \
     void set_safe_ptr_##T(T *p, T##_sp *sp) { qd_alloc_incref((void*) p); sp->ptr = (void*) p; } \
-    void unset_safe_ptr_##T(T##_sp *sp) { if (sp->ptr != NULL) qd_alloc_decref(sp->ptr); sp->ptr = NULL; } \
+    void unset_safe_ptr_##T(T##_sp *sp) { if (sp->ptr != NULL) { if(qd_alloc_decref(sp->ptr)) delete_##T(sp->ptr); } sp->ptr = NULL; } \
     T *safe_deref_##T(T##_sp sp) { return qd_alloc_safe_deref((void*) sp.ptr); } \
     qd_alloc_stats_t *alloc_stats_##T(void) { return __desc_##T.stats; } \
     void *unused##T

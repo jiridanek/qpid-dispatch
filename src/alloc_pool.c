@@ -98,15 +98,15 @@ void *qd_alloc(qd_alloc_type_desc_t *desc, qd_alloc_pool_t **tpool)
     return item+1;
 }
 
-void qd_dealloc(qd_alloc_type_desc_t *desc, qd_alloc_pool_t **tpool, char *p)
+bool qd_dealloc(qd_alloc_type_desc_t *desc, qd_alloc_pool_t **tpool, char *p)
 {
     qd_refcount_t *item = ((qd_refcount_t*) p) - 1;
-    if (sys_atomic_get(&item->refcount) <= 1 && sys_atomic_get(&item->allocated)) {
-        sys_atomic_set(&item->allocated, 0);
-        free(item);
+    if (sys_atomic_get(&item->refcount) == 1 && sys_atomic_get(&item->allocated)) {
+        return true;
     } else {
         sys_atomic_dec(&item->refcount);
         sys_atomic_set(&item->allocated, 0);
+        return false;
     }
 }
 
@@ -116,16 +116,17 @@ void qd_alloc_incref(void *p) {
     sys_atomic_inc(&item->refcount);
 }
 
-void qd_alloc_decref(void *p) {
+bool qd_alloc_decref(void *p) {
     qd_refcount_t *item = ((qd_refcount_t*) p) - 1;
-    assert(sys_atomic_get(&item->allocated));
     sys_atomic_dec(&item->refcount);
-    if(sys_atomic_get(&item->refcount) == 1) {
-        qd_dealloc(NULL, NULL, p);
+    if(sys_atomic_get(&item->refcount) == 0) {
+        return true;
     }
+    return false;
 }
 
 void* qd_alloc_safe_deref(void *p){
+    if (p == NULL) return NULL;
     qd_refcount_t *item = ((qd_refcount_t*) p) - 1;
     if(sys_atomic_get(&item->allocated)) {
         return p;
@@ -136,13 +137,19 @@ void* qd_alloc_safe_deref(void *p){
 
 uint32_t qd_alloc_sequence(void *p)
 {
-    if (!p)
-        return 0;
-
-    qd_alloc_item_t *item = ((qd_alloc_item_t*) p) - 1;
-    return item->sequence;
+    // todo, need this for identity in few places
+//    if (!p)
+//        return 0;
+//
+//    qd_alloc_item_t *item = ((qd_alloc_item_t*) p) - 1;
+//    return item->sequence;
+    return 42;
 }
 
+void qd_alloc_free(void *p) {
+    qd_refcount_t *item = ((qd_refcount_t*) p) - 1;
+    free(item);
+}
 
 void qd_alloc_initialize(void)
 {
