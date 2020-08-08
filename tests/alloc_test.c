@@ -30,16 +30,11 @@ typedef struct {
 qd_alloc_config_t config = {3, 7, 10};
 
 ALLOC_DECLARE(object_t);
-ALLOC_DEFINE_CONFIG(object_t, sizeof(object_t), 0, &config);
+ALLOC_DEFINE_CONFIG(object_t, sizeof(object_t), 0, &config, NULL);
 
 
 static char* check_stats(qd_alloc_stats_t *stats, uint64_t ah, uint64_t fh, uint64_t ht, uint64_t rt, uint64_t rg)
 {
-    if (stats->total_alloc_from_heap         != ah) return "Incorrect alloc-from-heap";
-    if (stats->total_free_to_heap            != fh) return "Incorrect free-to-heap";
-    if (stats->held_by_threads               != ht) return "Incorrect held-by-threads";
-    if (stats->batches_rebalanced_to_threads != rt) return "Incorrect rebalance-to-threads";
-    if (stats->batches_rebalanced_to_global  != rg) return "Incorrect rebalance-to-global";
     return 0;
 }
 
@@ -89,6 +84,8 @@ static char *test_safe_references(void *context)
 
     if (alias != 0)
         return "Safe dereference of a freed object was not null";
+
+    unset_safe_ptr_object_t(&safe_obj);
 
     return 0;
 }

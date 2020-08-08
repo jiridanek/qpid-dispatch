@@ -310,7 +310,7 @@ void qdr_field_free(qdr_field_t *field)
     if (field) {
         qd_iterator_free(field->iterator);
         qd_buffer_list_free_buffers(&field->buffers);
-        free_qdr_field_t(field);
+//        free_qdr_field_t(field);  // TODO, would get double free with this
     }
 }
 

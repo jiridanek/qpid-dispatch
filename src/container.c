@@ -17,24 +17,26 @@
  * under the License.
  */
 
-#include <stdio.h>
-#include <string.h>
 #include <inttypes.h>
-#include "dispatch_private.h"
-#include "policy.h"
-#include <qpid/dispatch/container.h>
-#include <qpid/dispatch/server.h>
-#include <qpid/dispatch/message.h>
-#include <proton/engine.h>
-#include <proton/message.h>
 #include <proton/connection.h>
+#include <proton/engine.h>
 #include <proton/event.h>
+#include <proton/message.h>
 #include <qpid/dispatch/amqp.h>
+#include <qpid/dispatch/container.h>
 #include <qpid/dispatch/ctools.h>
 #include <qpid/dispatch/hash.h>
-#include <qpid/dispatch/threading.h>
 #include <qpid/dispatch/iterator.h>
 #include <qpid/dispatch/log.h>
+#include <qpid/dispatch/message.h>
+#include <qpid/dispatch/server.h>
+#include <qpid/dispatch/threading.h>
+#include <stdio.h>
+#include <string.h>
+
+#include "dispatch_private.h"
+#include "message_private.h"
+#include "policy.h"
 
 /** Instance of a node type in a container */
 struct qd_node_t {
@@ -351,8 +353,8 @@ static void cleanup_link(qd_link_t *link)
         link->pn_sess = 0;
 
         // cleanup any inbound message that has not been forwarded
-        qd_message_t *msg = link->incoming_msg.ptr;
-        if (msg && qd_alloc_sequence(msg) == link->incoming_msg.seq)
+        qd_message_t *msg = safe_deref_qd_message_t(link->incoming_msg);
+        if (msg)
             qd_message_free(msg);
     }
 }
@@ -1241,8 +1243,7 @@ void qd_session_cleanup(qd_connection_t *qd_conn)
 void qd_link_set_incoming_msg(qd_link_t *link, qd_message_t *msg)
 {
     if (msg) {
-        link->incoming_msg.ptr = (void*) msg;
-        link->incoming_msg.seq = qd_alloc_sequence(msg);
+        set_safe_ptr_qd_message_t(msg, &link->incoming_msg);
     } else {
         qd_nullify_safe_ptr(&link->incoming_msg);
     }

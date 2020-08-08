@@ -29,7 +29,12 @@
  * This module owns, manages, and uses the router-link list and the address hash table
  */
 
-ALLOC_DEFINE(qdr_action_t);
+void destruct_qdr_action_t(qdr_action_t *p) {
+    unset_safe_ptr_qd_connection_t(&p->args.connection.conn);
+    unset_safe_ptr_qd_link_t(&p->args.connection.link);
+}
+
+ALLOC_DEFINE_DESTRUCTOR(qdr_action_t, destruct_qdr_action_t);
 
 
 typedef struct qdrc_module_t {

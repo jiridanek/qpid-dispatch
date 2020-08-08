@@ -759,6 +759,7 @@ static void deferred_AMQP_rx_handler(void *context, bool discard)
         }
     }
 
+    unset_safe_ptr_qd_link_t(safe_qdl);
     free(safe_qdl);
 }
 
