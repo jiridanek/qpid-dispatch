@@ -29,9 +29,23 @@
  * This module owns, manages, and uses the router-link list and the address hash table
  */
 
+static bool prefix(const char *prefix, const char *str)
+{
+    return strncmp(prefix, str, strlen(prefix)) == 0;
+}
+
 void destruct_qdr_action_t(qdr_action_t *p) {
-    unset_safe_ptr_qd_connection_t(&p->args.connection.conn);
-    unset_safe_ptr_qd_link_t(&p->args.connection.link);
+    if (prefix("connection_", p->label)) {
+        unset_safe_ptr_qdr_connection_t(&p->args.connection.conn);
+        unset_safe_ptr_qdr_link_t(&p->args.connection.link);
+    } else if (strcmp("link_deliver", p->label) == 0) {
+        // nothing to do
+    } else if (prefix("link_", p->label)) {
+        unset_safe_ptr_qdr_connection_t(&p->args.connection.conn);
+        unset_safe_ptr_qdr_link_t(&p->args.connection.link);
+    } else if (strcmp("streaming_link_scrubber", p->label) == 0 || strcmp("detect_stuck_deliveries", p->label) == 0) {
+        // tracker_t but that's not visible type from here
+    }
 }
 
 ALLOC_DEFINE_DESTRUCTOR(qdr_action_t, destruct_qdr_action_t);
