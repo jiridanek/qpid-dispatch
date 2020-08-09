@@ -232,10 +232,10 @@ class MaxSessionFramesDefaultTest(TestCase):
             log_lines = router_log.read().split("\n")
             open_lines = [s for s in log_lines if "-> @open" in s]
             # if frame size not set then a default is used
-            self.assertTrue(" max-frame-size=16384" in open_lines[0])
+            self.assertIn(" max-frame-size=16384", open_lines[0])
             begin_lines = [s for s in log_lines if "-> @begin" in s]
             # incoming-window is defaulted to 2^31-1 (Proton default)
-            self.assertTrue(" incoming-window=2147483647," in begin_lines[0])
+            self.assertIn(" incoming-window=2147483647,", begin_lines[0])
 
 
 class MaxFrameMaxSessionFramesZeroTest(TestCase):
@@ -268,10 +268,10 @@ class MaxFrameMaxSessionFramesZeroTest(TestCase):
             log_lines = router_log.read().split("\n")
             open_lines = [s for s in log_lines if "-> @open" in s]
             # max-frame gets set to protocol min
-            self.assertTrue(' max-frame-size=512,' in open_lines[0])
+            self.assertIn(' max-frame-size=512,', open_lines[0])
             begin_lines = [s for s in log_lines if "-> @begin" in s]
             # incoming-window is defaulted to 2^31-1 (Proton default)
-            self.assertTrue(" incoming-window=2147483647," in begin_lines[0])
+            self.assertIn(" incoming-window=2147483647,", begin_lines[0])
 
 
 class ConnectorSettingsDefaultTest(TestCase):
@@ -321,11 +321,11 @@ class ConnectorSettingsDefaultTest(TestCase):
             log_lines = router_log.read().split("\n")
             open_lines = [s for s in log_lines if "<- @open" in s]
             # defaults
-            self.assertTrue(' max-frame-size=16384,' in open_lines[0])
-            self.assertTrue(' channel-max=32767,' in open_lines[0])
+            self.assertIn(' max-frame-size=16384,', open_lines[0])
+            self.assertIn(' channel-max=32767,', open_lines[0])
             begin_lines = [s for s in log_lines if "<- @begin" in s]
             # defaults
-            self.assertTrue(" incoming-window=2147483647," in begin_lines[0])
+            self.assertIn(" incoming-window=2147483647,", begin_lines[0])
 
 
 class ConnectorSettingsNondefaultTest(TestCase):
