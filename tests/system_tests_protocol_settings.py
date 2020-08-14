@@ -25,19 +25,21 @@ from __future__ import print_function
 from system_test import TestCase, Qdrouterd, main_module
 from system_test import unittest
 from proton.utils import BlockingConnection
-import subprocess
+
 
 class MaxFrameMaxSessionFramesTest(TestCase):
     """System tests setting proton negotiated size max-frame-size and incoming-window"""
+
     @classmethod
     def setUpClass(cls):
-        '''Start a router'''
+        """Start a router"""
         super(MaxFrameMaxSessionFramesTest, cls).setUpClass()
         name = "MaxFrameMaxSessionFrames"
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
 
-            ('listener', {'host': '0.0.0.0', 'port': cls.tester.get_port(), 'maxFrameSize': '2048', 'maxSessionFrames': '10'}),
+            ('listener',
+             {'host': '0.0.0.0', 'port': cls.tester.get_port(), 'maxFrameSize': '2048', 'maxSessionFrames': '10'}),
         ])
         cls.router = cls.tester.qdrouterd(name, config)
         cls.router.wait_ready()
@@ -49,20 +51,21 @@ class MaxFrameMaxSessionFramesTest(TestCase):
         bc.create_receiver("xxx")
         bc.close()
 
-        with  open('../setUpClass/MaxFrameMaxSessionFrames.log', 'r') as router_log:
+        with open('../setUpClass/MaxFrameMaxSessionFrames.log', 'r') as router_log:
             log_lines = router_log.read().split("\n")
             open_lines = [s for s in log_lines if "-> @open" in s]
             # max-frame is from the config
-            self.assertTrue(' max-frame-size=2048,' in open_lines[0])
+            self.assertIn(' max-frame-size=2048,', open_lines[0])
             # channel-max is default
-            self.assertTrue(" channel-max=32767" in open_lines[0])
+            self.assertIn(" channel-max=32767", open_lines[0])
             begin_lines = [s for s in log_lines if "-> @begin" in s]
             # incoming-window is from the config
-            self.assertTrue(" incoming-window=10," in begin_lines[0] )
+            self.assertIn(" incoming-window=10,", begin_lines[0])
 
 
 class MaxSessionsTest(TestCase):
     """System tests setting proton channel-max"""
+
     @classmethod
     def setUpClass(cls):
         """Start a router and a messenger"""
@@ -83,7 +86,7 @@ class MaxSessionsTest(TestCase):
         bc.create_receiver("xxx")
         bc.close()
 
-        with  open('../setUpClass/MaxSessions.log', 'r') as router_log:
+        with open('../setUpClass/MaxSessions.log', 'r') as router_log:
             log_lines = router_log.read().split("\n")
             open_lines = [s for s in log_lines if "-> @open" in s]
             # channel-max is 9
@@ -92,6 +95,7 @@ class MaxSessionsTest(TestCase):
 
 class MaxSessionsZeroTest(TestCase):
     """System tests setting proton channel-max"""
+
     @classmethod
     def setUpClass(cls):
         """Start a router and a messenger"""
@@ -112,7 +116,7 @@ class MaxSessionsZeroTest(TestCase):
         bc.create_receiver("xxx")
         bc.close()
 
-        with  open('../setUpClass/MaxSessionsZero.log', 'r') as router_log:
+        with open('../setUpClass/MaxSessionsZero.log', 'r') as router_log:
             log_lines = router_log.read().split("\n")
             open_lines = [s for s in log_lines if "-> @open" in s]
             # channel-max is 0. Should get proton default 32767
@@ -121,6 +125,7 @@ class MaxSessionsZeroTest(TestCase):
 
 class MaxSessionsLargeTest(TestCase):
     """System tests setting proton channel-max"""
+
     @classmethod
     def setUpClass(cls):
         """Start a router and a messenger"""
@@ -141,7 +146,7 @@ class MaxSessionsLargeTest(TestCase):
         bc.create_receiver("xxx")
         bc.close()
 
-        with  open('../setUpClass/MaxSessionsLarge.log', 'r') as router_log:
+        with open('../setUpClass/MaxSessionsLarge.log', 'r') as router_log:
             log_lines = router_log.read().split("\n")
             open_lines = [s for s in log_lines if "-> @open" in s]
             # channel-max is 0. Should get proton default 32767
@@ -150,6 +155,7 @@ class MaxSessionsLargeTest(TestCase):
 
 class MaxFrameSmallTest(TestCase):
     """System tests setting proton max-frame-size"""
+
     @classmethod
     def setUpClass(cls):
         """Start a router and a messenger"""
@@ -170,7 +176,7 @@ class MaxFrameSmallTest(TestCase):
         bc.create_receiver("xxx")
         bc.close()
 
-        with  open('../setUpClass/MaxFrameSmall.log', 'r') as router_log:
+        with open('../setUpClass/MaxFrameSmall.log', 'r') as router_log:
             log_lines = router_log.read().split("\n")
             open_lines = [s for s in log_lines if "-> @open" in s]
             # if frame size <= 512 proton set min of 512
@@ -179,6 +185,7 @@ class MaxFrameSmallTest(TestCase):
 
 class MaxFrameDefaultTest(TestCase):
     """System tests setting proton max-frame-size"""
+
     @classmethod
     def setUpClass(cls):
         """Start a router and a messenger"""
@@ -199,7 +206,7 @@ class MaxFrameDefaultTest(TestCase):
         bc.create_receiver("xxx")
         bc.close()
 
-        with  open('../setUpClass/MaxFrameDefault.log', 'r') as router_log:
+        with open('../setUpClass/MaxFrameDefault.log', 'r') as router_log:
             log_lines = router_log.read().split("\n")
             open_lines = [s for s in log_lines if "-> @open" in s]
             # if frame size not set then a default is used
@@ -208,6 +215,7 @@ class MaxFrameDefaultTest(TestCase):
 
 class MaxSessionFramesDefaultTest(TestCase):
     """System tests setting proton max-frame-size"""
+
     @classmethod
     def setUpClass(cls):
         """Start a router and a messenger"""
@@ -228,7 +236,7 @@ class MaxSessionFramesDefaultTest(TestCase):
         bc.create_receiver("xxx")
         bc.close()
 
-        with  open('../setUpClass/MaxSessionFramesDefault.log', 'r') as router_log:
+        with open('../setUpClass/MaxSessionFramesDefault.log', 'r') as router_log:
             log_lines = router_log.read().split("\n")
             open_lines = [s for s in log_lines if "-> @open" in s]
             # if frame size not set then a default is used
@@ -244,9 +252,10 @@ class MaxFrameMaxSessionFramesZeroTest(TestCase):
     when they are both zero. Frame size is bumped up to the minimum and capacity is
     bumped up to have an incoming window of 1
     """
+
     @classmethod
     def setUpClass(cls):
-        '''Start a router'''
+        """Start a router"""
         super(MaxFrameMaxSessionFramesZeroTest, cls).setUpClass()
         name = "MaxFrameMaxSessionFramesZero"
         config = Qdrouterd.Config([
@@ -264,7 +273,7 @@ class MaxFrameMaxSessionFramesZeroTest(TestCase):
         bc.create_receiver("xxx")
         bc.close()
 
-        with  open('../setUpClass/MaxFrameMaxSessionFramesZero.log', 'r') as router_log:
+        with open('../setUpClass/MaxFrameMaxSessionFramesZero.log', 'r') as router_log:
             log_lines = router_log.read().split("\n")
             open_lines = [s for s in log_lines if "-> @open" in s]
             # max-frame gets set to protocol min
@@ -317,7 +326,7 @@ class ConnectorSettingsDefaultTest(TestCase):
         cls.routers[1].wait_router_connected('QDR.A')
 
     def test_connector_default(self):
-        with  open('../setUpClass/A.log', 'r') as router_log:
+        with open('../setUpClass/A.log', 'r') as router_log:
             log_lines = router_log.read().split("\n")
             open_lines = [s for s in log_lines if "<- @open" in s]
             # defaults
