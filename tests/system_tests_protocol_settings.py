@@ -38,8 +38,7 @@ class MaxFrameMaxSessionFramesTest(TestCase):
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
 
-            ('listener',
-             {'host': '0.0.0.0', 'port': cls.tester.get_port(), 'maxFrameSize': '2048', 'maxSessionFrames': '10'}),
+            ('listener', {'host': '0.0.0.0', 'port': cls.tester.get_port(), 'maxFrameSize': '2048', 'maxSessionFrames': '10'}),
         ])
         cls.router = cls.tester.qdrouterd(name, config)
         cls.router.wait_ready()
