@@ -763,8 +763,8 @@ class RouterTestSslInterRouter(RouterTestSslBase):
         router_nodes = self.get_router_nodes()
         self.assertTrue(router_nodes)
         for node in router_nodes:
-            self.assertTrue(node in self.connected_tls_sasl_routers,
-                            "%s should not be connected" % node)
+            self.assertIn(node, self.connected_tls_sasl_routers,
+                          "%s should not be connected" % node)
 
         # Router A and B are always expected (no tls version restriction)
         expected_nodes = len(self.connected_tls_sasl_routers)
