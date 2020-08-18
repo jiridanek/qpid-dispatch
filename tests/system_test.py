@@ -37,7 +37,6 @@ import errno, os, time, socket, random, subprocess, shutil, unittest, __main__, 
 from datetime import datetime
 from subprocess import PIPE, STDOUT
 from copy import copy
-
 try:
     import queue as Queue  # 3.x
 except ImportError:
