@@ -428,7 +428,7 @@ class Qdrouterd(Process):
                 return "%s" % item
 
             def attributes(e, level):
-                assert (isinstance(e, dict))
+                assert isinstance(e, dict)
                 # k = attribute name
                 # v = string | scalar | dict
                 return "".join(["%s%s: %s\n" % (tabs(level),
@@ -847,7 +847,6 @@ class TestCase(unittest.TestCase, Tester):  # pylint: disable=too-many-public-me
 
     if not hasattr(unittest.TestCase, 'assertIn'):
         def assertIn(self, item, items, msg=None):
-            msg = "" if not msg else ": " + msg
             assert item in items, msg or "%s not in %s%s"
 
     if not hasattr(unittest.TestCase, 'assertNotIn'):
