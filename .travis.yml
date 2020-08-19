@@ -17,7 +17,7 @@
 # under the License
 #
 
-language: c
+language: cpp
 cache: ccache
 jobs:
   fast_finish: true
