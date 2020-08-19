@@ -18,6 +18,7 @@
 #
 
 language: cpp
+compiler: gcc
 cache: ccache
 jobs:
   fast_finish: true
