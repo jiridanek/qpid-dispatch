@@ -213,3 +213,10 @@ A copy of its licence can be found at: tests/c_unittests/LICENSE.txt
 The tests run a http2 server which uses a Python ASGI web microframework
 called Quart which is distributed under the MIT licence.
 A copy of Quart's licence can be found at: tests/quart/LICENSE
+
+###
+
+This product bundles a copy of Mimick within its test code (found at
+tests/c_unittests/mimick), which is distributed under the MIT licence.
+
+A copy of its licence can be found at: tests/c_unittests/mimick/LICENSE
