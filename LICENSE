@@ -209,3 +209,10 @@ This product bundles a copy of DOCTEST within its test code (found at
 tests/c_unittests/doctest.h), which is distributed under the MIT licence.
 
 A copy of its licence can be found at: tests/c_unittests/LICENSE.txt
+
+###
+
+This product bundles a copy of Mimick within its test code (found at
+tests/c_unittests/mimick), which is distributed under the MIT licence.
+
+A copy of its licence can be found at: tests/c_unittests/mimick/LICENSE
