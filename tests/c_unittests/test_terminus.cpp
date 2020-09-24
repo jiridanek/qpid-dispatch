@@ -17,7 +17,19 @@
  * under the License.
  */
 
+#include <iostream>
 #include "qdr_doctest.hpp"
+extern "C" {
+//#include "mimick.h"
+}
+extern "C" {
+#include <qpid/dispatch/amqp.h>
+}
+
+#include "elfspy/SPY.h"
+#include "elfspy/Call.h"
+#include "elfspy/Arg.h"
+#include "elfspy/Result.h"
 
 extern "C" {
 #include "qpid/dispatch/router_core.h"
@@ -27,7 +39,169 @@ extern "C" {
 #include <inttypes.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include "string.h"
 }
+#include "elfspy/Fake.h"
+
+int fake_vsnprintf(char * s, size_t n, const char * format, va_list arg);
+
+__attribute__((noinline))
+int add(int a, int b)
+{
+  std::cout << "add(" << a << ", " << b << ") -> " << a + b << std::endl;
+  return a + b;
+}
+
+__attribute__((noinline))
+int f()
+{
+    int rv = 0;
+    rv += add(1, 2);
+    rv += add(3, 4);
+    return rv;
+}
+
+int fake(const char *) {
+    return 42;
+}
+
+int fake2(const char *name, const char *proto) {
+    return 42;
+}
+
+int my_snprintf(char *__s, size_t __maxlen, const char *__format, ...) {
+    return -1;
+}
+
+//template <typename H, typename ReturnType, typename... ArgTypes>
+//inline auto fake(ReturnType (*patch)(ArgTypes...)) -> spy::Fake<H, ReturnType, ArgTypes...>
+//{
+//    H h = SPY(&vsnprintf);
+//    return { h, patch };
+//}
+
+TEST_CASE ("self_contained_malloc") {
+    char *argv[2] = {(char *) "c_unittests", nullptr};
+    spy::initialise(1, argv);
+
+    printf("&malloc: %p\n", &malloc);
+
+    {
+        auto mlc = SPY(&malloc);
+        auto mlc_call = spy::call(mlc);
+//    auto fake2 = spy::fake(malloc, &malloc);
+
+        char *buf = (char *) malloc(30);
+        printf("&malloc: %p\n", &malloc);
+        sprintf(buf, "lek");
+        printf("%s", buf);
+
+                CHECK(mlc_call.count() == 1);
+    }
+
+    printf("&malloc: %p\n", &malloc);
+}
+
+TEST_CASE("self_contained_vsnprintf") {
+    char* argv[2] = {(char*)"c_unittests", nullptr};
+    spy::initialise(1, argv);
+
+    printf("&vsnprintf: %p\n", &vsnprintf);
+
+    {
+        auto vsnprintf_ = SPY(&vsnprintf);
+        auto fake2 = spy::fake(vsnprintf_, &fake_vsnprintf);
+
+        char buf[30];
+        vsnprintf(buf, 30, "lek", NULL);
+        printf("&vsnprintf: %p\n", &vsnprintf);
+    }
+
+    printf("&vsnprintf: %p\n", &vsnprintf);
+}
+
+TEST_CASE("localfunc") {
+    char* argv[2] = {(char*)"c_unittests", nullptr};
+    spy::initialise(1, argv);
+
+    auto vsnprintf_ = SPY(&vsnprintf);
+    auto fake2 = spy::fake(vsnprintf_, &fake_vsnprintf);
+
+//    auto snprintf_ = SPY(&snprintf);
+//    auto add_call = spy::call(snprintf_);   // capture number of calls to add()
+
+    auto malloc_ = SPY(&malloc);
+    auto malloc_call = spy::call(malloc_);   // capture number of calls to add()
+
+//    auto fake2 = spy::fake(snprintf_, &my_snprintf);
+
+//    auto snprintf_ = SPY(&vsnprintf);
+//    auto fake3 = spy::fake(snprintf_, &my_snprintf);
+
+//    f2();
+
+//    CHECK(add_call.count() == 1);  // verify add is called twice
+    CHECK(malloc_call.count() == 1);  // verify add is called twice
+    CHECK(&fake2 != nullptr);
+}
+
+int fake_vsnprintf(char * s, size_t n, const char * format, va_list arg) {
+    return -1;
+}
+
+TEST_CASE("safe_snprintf_vsnprintf_failed") {
+    const int   OUTPUT_SIZE = 128;
+    const char *TEST_MESSAGE = "something";
+    const int   LEN = strlen(TEST_MESSAGE);
+    size_t len;
+    char output[OUTPUT_SIZE];
+
+    // weird elfspy boilerplate
+    char* argv[2] = {(char*)"c_unittests", nullptr};
+    spy::initialise(0, argv);
+
+    // setup the fake, it will be unset when the variables go out of scope
+    auto vsnprintf_ = SPY(&vsnprintf);
+     auto vsnprintf_fake = spy::fake(vsnprintf_, &fake_vsnprintf);
+    // alternative way for previous line:
+    // auto vsnprintf_fake = spy::fake(vsnprintf_, [](auto ...) { return -1; });  // I can haz lambdaz
+
+    // run the test, simulating a failed vsnprintf
+    output[0] = 'a';
+    len = safe_snprintf(output, LEN+10, TEST_MESSAGE);
+    CHECK(0 == len);
+    CHECK('\0' == output[0]);
+    CHECK("" == output);
+}
+
+//TEST_CASE("test_safe_snprintf_mocked") {
+//    doctest::Context ctx;
+//    char* argv[2] = {(char*)"c_unittests", nullptr};
+////    char* argv[2] = {nullptr, nullptr};
+//    spy::initialise(0, argv);
+//    {
+//        // add some spies about things that happen in f()
+////        auto add_spy = SPY(&qd_port_int);
+//        auto qdgsbn_spy = SPY(&qd_getservbyname);
+//        auto fake = spy::fake(qdgsbn_spy, &fake2);
+////        auto add_arg0 = spy::arg<0>(add_spy); // capture first argument of add()
+////        auto add_arg1 = spy::arg<1>(add_spy); // capture second argument of add()
+////        auto add_call = spy::call(add_spy);   // capture number of calls to add()
+////        auto add_result = spy::result(add_spy); // capture return value from add()
+//        auto rv = qd_port_int("amqps");
+//        auto rvv = qd_port_int("amqp");
+//                CHECK(rv == 5671);
+//                CHECK(rvv == 5672);
+////                CHECK(add_call.count() == 2);  // verify add is called twice
+////                CHECK(add_arg0.value(0) == "amqps"); // verify first argument of first call
+//////                CHECK(add_arg1.value(0) == 2); // verify second argument of first call
+////                CHECK(add_arg0.value(1) == "amqp"); // verify first argument of second call
+//////                CHECK(add_arg1.value(1) == 4); // verify second argument of second call
+////                CHECK(add_result.value(0) == 5671); // verify return value of first call
+////                CHECK(add_result.value(1) == 5672); // verify return value of second call
+//    }
+//}
 
 TEST_CASE("test_safe_snprintf") {
     const int   OUTPUT_SIZE = 128;

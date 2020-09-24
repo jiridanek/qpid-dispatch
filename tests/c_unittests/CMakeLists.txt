@@ -37,15 +37,40 @@ add_executable(c_unittests
         test_router_startup.cpp
         test_terminus.cpp
         $<TARGET_OBJECTS:qpid-dispatch>)
-target_link_libraries(c_unittests pthread qpid-dispatch-libraries)
+target_include_directories(c_unittests PRIVATE ${CMAKE_SOURCE_DIR}/3rdparty/tests/)
+target_link_libraries(c_unittests elfspy pthread qpid-dispatch-libraries)
 
 file(COPY
         ${CMAKE_CURRENT_SOURCE_DIR}/minimal_silent.conf
         ${CMAKE_CURRENT_SOURCE_DIR}/minimal_trace.conf
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+target_compile_options(c_unittests PRIVATE -g -fPIE -fPIC -O0 -Wno-error -fpermissive -std=c++14 -Wl,-z,norelro)
+target_link_options(c_unittests PRIVATE -g -fPIE -fPIC -O0 -Wno-error -fpermissive -std=c++14 -Wl,-z,norelro)
 
 add_test(
     NAME c_unittests
     COMMAND ${TEST_WRAP} $<TARGET_FILE:c_unittests>
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+add_executable(mmck mmck.c)
+target_include_directories(mmck PRIVATE ${CMAKE_SOURCE_DIR}/3rdparty/tests/mimick/include)
+target_link_libraries(mmck mimick pthread qpid-dispatch)
+target_compile_options(mmck PRIVATE -g -fPIE -fPIC -O0 -Wno-error -fpermissive -std=c++14 -Wl,-z,norelro)
+target_link_options(mmck PRIVATE -g -fPIE -fPIC -O0 -Wno-error -fpermissive -std=c++14 -Wl,-z,norelro)
+
+add_test(
+        NAME mmck
+        COMMAND ${TEST_WRAP} $<TARGET_FILE:mmck>
+)
+
+#
+#add_executable(c_unittestss test_terminuss.cpp "c_unittests_main.cpp")
+#target_include_directories(c_unittestss PRIVATE ${CMAKE_SOURCE_DIR}/3rdparty/tests/mimick/include)
+#target_link_libraries(c_unittestss mimick pthread qpid-dispatch)
+#target_compile_options(c_unittestss PRIVATE -g -fPIC -O0 -Wno-error -fpermissive -std=c++14)
+#
+#add_test(
+#        NAME c_unittestss
+#        COMMAND ${TEST_WRAP} $<TARGET_FILE:c_unittestss>
+#)

@@ -77,6 +77,11 @@ message(STATUS "Build type is \"${CMAKE_BUILD_TYPE}\"${has_debug_symbols}")
 # This is commonly needed so define it before we include anything else.
 string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
 
+# add 3rdparty projects, before we set our compile flags
+add_subdirectory(3rdparty)
+
+option(QD_MEMORY_STATS "Track memory pool usage statistics" ON)
+
 if(uppercase_CMAKE_BUILD_TYPE STREQUAL "DEBUG" )
     option(QD_ENABLE_ASSERTIONS "Enable assertions" ON)
 else()
