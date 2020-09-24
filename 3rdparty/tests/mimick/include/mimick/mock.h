@@ -24,7 +24,7 @@
 #ifndef MIMICK_MOCK_H_
 # define MIMICK_MOCK_H_
 
-typedef struct mmk_mock_ctx *mmk_mock_ctx;
+typedef struct mmk_mock_ctx *mmk_mock_ctx_t;
 
 # include <errno.h>
 # include <stdarg.h>
