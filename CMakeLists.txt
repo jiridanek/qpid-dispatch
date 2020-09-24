@@ -35,6 +35,9 @@ if (CMAKE_BUILD_TYPE MATCHES "Deb|Cover")
 endif (CMAKE_BUILD_TYPE MATCHES "Deb|Cover")
 message(STATUS "Build type is \"${CMAKE_BUILD_TYPE}\"${has_debug_symbols}")
 
+# add 3rdparty projects, before we set our compile flags
+add_subdirectory(3rdparty)
+
 option(QD_MEMORY_STATS "Track memory pool usage statistics" ON)
 
 file(STRINGS "${CMAKE_SOURCE_DIR}/VERSION.txt" QPID_DISPATCH_VERSION)
