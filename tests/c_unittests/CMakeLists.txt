@@ -38,12 +38,13 @@ add_executable(c_unittests
         test_terminus.cpp
         $<TARGET_OBJECTS:qpid-dispatch>)
 target_include_directories(c_unittests PRIVATE ${CMAKE_SOURCE_DIR}/3rdparty/tests/)
-target_link_libraries(c_unittests elfspy pthread qpid-dispatch-libraries)
+target_link_libraries(c_unittests elfspy plthook pthread qpid-dispatch-libraries)
 
 file(COPY
         ${CMAKE_CURRENT_SOURCE_DIR}/minimal_silent.conf
         ${CMAKE_CURRENT_SOURCE_DIR}/minimal_trace.conf
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(c_unittests PRIVATE ${CMAKE_SOURCE_DIR}/3rdparty/tests/plthook)
 target_compile_options(c_unittests PRIVATE -g -fPIE -fPIC -O0 -Wno-error -fpermissive -std=c++14 -Wl,-z,norelro)
 target_link_options(c_unittests PRIVATE -g -fPIE -fPIC -O0 -Wno-error -fpermissive -std=c++14 -Wl,-z,norelro)
 

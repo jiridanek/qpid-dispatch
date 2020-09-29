@@ -18,9 +18,11 @@
  */
 
 #include <iostream>
+#include <plthook/plthook.h>
 #include "qdr_doctest.hpp"
 extern "C" {
 //#include "mimick.h"
+#include "plthook.h"
 }
 extern "C" {
 #include <qpid/dispatch/amqp.h>
@@ -45,6 +47,9 @@ extern "C" {
 #include "elfspy/Fake.h"
 
 int fake_vsnprintf(char * s, size_t n, const char * format, va_list arg);
+int fake_snprintf(char * s, size_t n, const char * format) {
+    printf("fake snprintf\n");
+}
 
 __attribute__((noinline))
 int add(int a, int b)
@@ -74,12 +79,64 @@ int my_snprintf(char *__s, size_t __maxlen, const char *__format, ...) {
     return -1;
 }
 
+void * fake_malloc(unsigned long size) {
+    printf("from fake malloc\n");
+    return reinterpret_cast<void *>(33);
+}
+
 //template <typename H, typename ReturnType, typename... ArgTypes>
 //inline auto fake(ReturnType (*patch)(ArgTypes...)) -> spy::Fake<H, ReturnType, ArgTypes...>
 //{
 //    H h = SPY(&vsnprintf);
 //    return { h, patch };
 //}
+
+int int_return_42() {
+    return 42;
+}
+
+int int_return_24() {
+    return 24;
+}
+
+TEST_CASE ("plthook defined here") {
+    printf("&int_return_42: %p\n", &int_return_42);
+    plthook_t *plthook;
+    {
+        if(plthook_open(&plthook, nullptr) != 0) {
+            printf("error: %s\n", plthook_error());
+        }
+        void *oldfunc;
+        plthook_replace(plthook, "int_return_42", (void *)(&int_return_24), &oldfunc);
+        printf("&int_return_42: %p\n", &int_return_42);
+        plthook_replace(plthook, "int_return_42", oldfunc, nullptr);
+    }
+    plthook_close(plthook);
+
+    printf("&int_return_42: %p\n", &int_return_42);
+}
+
+
+TEST_CASE ("self_contained_mallocPlthook") {
+    printf("&malloc: %p\n", &snprintf);
+
+//    snprintf(nullptr, 0, "baf");
+    plthook_t *plthook;
+    {
+        if(plthook_open(&plthook, nullptr) != 0) {
+            printf("error: %s\n", plthook_error());
+        }
+        void *oldfunc;
+        plthook_replace(plthook, "snprintf", (void *)(&fake_snprintf), &oldfunc);
+        printf("&snprintf: %p\n", &snprintf);
+        printf("%p\n", snprintf("", 42, nullptr));
+        plthook_replace(plthook, "snprintf", oldfunc, nullptr);
+    }
+    plthook_close(plthook);
+    printf("%p\n", snprintf("", 0, nullptr));
+
+    printf("&snprintf: %p\n", &snprintf);
+}
 
 TEST_CASE ("self_contained_malloc") {
     char *argv[2] = {(char *) "c_unittests", nullptr};
