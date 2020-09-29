@@ -25,7 +25,8 @@ file(GLOB unittest_SOURCES
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SANITIZE_FLAGS} -std=c++11")
 add_executable(c_unittests ${unittest_SOURCES})
 target_include_directories(c_unittests PRIVATE ${CMAKE_SOURCE_DIR}/3rdparty/tests/)
-target_link_libraries(c_unittests elfspy pthread qpid-dispatch)
+target_link_libraries(c_unittests elfspy plthook pthread qpid-dispatch)
+target_include_directories(c_unittests PRIVATE ${CMAKE_SOURCE_DIR}/3rdparty/tests/plthook)
 target_compile_options(c_unittests PRIVATE -g -fPIE -fPIC -O0 -Wno-error -fpermissive -std=c++14 -Wl,-z,norelro)
 target_link_options(c_unittests PRIVATE -g -fPIE -fPIC -O0 -Wno-error -fpermissive -std=c++14 -Wl,-z,norelro)
 
