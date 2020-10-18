@@ -59,7 +59,7 @@ TEST_CASE("baf") {
 
     {
 //        auto patch = lib.patch(int_return_24);
-        CHECK(int_return_42() == 24);
+//        CHECK(int_return_42() == 24);
     }
 
 //    CHECK(int_return_42() == 42);

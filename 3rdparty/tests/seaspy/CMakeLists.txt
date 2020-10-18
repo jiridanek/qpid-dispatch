@@ -7,6 +7,7 @@ add_library(seaspy src/spy.cpp)
 enable_testing()
 
 add_library(doctest OBJECT ${CMAKE_SOURCE_DIR}/tests/c_unittests/c_unittests_main.cpp)
+target_include_directories(doctest INTERFACE ${CMAKE_SOURCE_DIR}/tests/c_unittests)
 
 add_executable(seaspy_test src/test_spy.cpp)
 target_link_libraries(seaspy PRIVATE plthook)

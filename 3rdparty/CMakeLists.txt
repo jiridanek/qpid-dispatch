@@ -7,7 +7,7 @@ file(GLOB elfspy_SOURCES
 )
 
 add_library(elfspy ${elfspy_SOURCES})
-target_include_directories(elfspy PRIVATE tests)
+target_include_directories(elfspy PUBLIC tests)
 
 add_library(glibcmock tests/glibcmock/got_hook.cc tests/glibcmock/got_hook.h)
 target_include_directories(glibcmock PRIVATE tests/glibcmock)
@@ -38,3 +38,5 @@ target_include_directories(plthook PRIVATE tests/plthook)
 #add_test(NAME glibmock_tests COMMAND glibmock_tests --gtest_death_test_style=threadsafe)
 
 add_subdirectory(tests/seaspy)
+
+add_subdirectory(tests/doublesea/awesome)
