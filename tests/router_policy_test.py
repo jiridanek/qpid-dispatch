@@ -350,7 +350,7 @@ class PolicyAliases(TestCase):
 
     #
     def test_AliasesRenameOwnVhost(self):
-        config_str="""
+        config_str = """
 [{
   "hostname": "$default",
   "allowUnknownUser": true,
@@ -379,7 +379,7 @@ class PolicyAliases(TestCase):
 
     #
     def test_SameAliasOnTwoVhosts(self):
-        config_str="""
+        config_str = """
 [{
   "hostname": "$default",
   "aliases": "a,b,c,d,e",
@@ -412,7 +412,7 @@ class PolicyAliases(TestCase):
 
     #
     def test_AliasConflictsWithVhost(self):
-        config_str="""
+        config_str = """
 [{
   "hostname": "$default",
   "groups": {

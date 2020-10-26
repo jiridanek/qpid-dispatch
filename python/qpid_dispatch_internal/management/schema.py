@@ -157,7 +157,7 @@ class EnumType(Type):
 
     def __str__(self):
         """String description of enum type."""
-        return "One of [%s]" % ', '.join([("'%s'" %tag) for tag in self.tags])
+        return "One of [%s]" % ', '.join([("'%s'" % tag) for tag in self.tags])
 
 
 class PropertiesType(Type):
@@ -248,9 +248,9 @@ class AttributeType(object):
             if self.value is not None and self.default is not None:
                 raise ValidationError("Attribute '%s' has default value and fixed value" %
                                       self.name)
-            self.create=create
-            self.update=update
-            self.graph=graph
+            self.create = create
+            self.update = update
+            self.graph = graph
         except Exception:
             raise ValidationError("Attribute '%s': %s\n%s"
                                   % (name,
@@ -660,7 +660,7 @@ class Schema(object):
                 try:
                     if entity_type.attributes[a.name] == a and attributes[a.name] == e[a.name]:
                         raise ValidationError(
-                            "adding %s duplicates unique attribute '%s' from existing %s"%
+                            "adding %s duplicates unique attribute '%s' from existing %s" %
                             (attributes, a.name, e))
                 except KeyError:
                     continue    # Missing attribute or definition means no clash

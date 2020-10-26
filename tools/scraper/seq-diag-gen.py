@@ -93,7 +93,7 @@ class log_record:
                 linediff = int(self.peer_log_rec.index) - int(self.index)
                 space = -MAGIC_SPACE_NUMBER * (linediff - 1)
                 if showtime:
-                    print("%s->(%s)%s:%s %s" %(self.sentby, str(linediff), self.rcvdby, self.time, self.performative))
+                    print("%s->(%s)%s:%s %s" % (self.sentby, str(linediff), self.rcvdby, self.time, self.performative))
                 else:
                     print("%s->(%s)%s:%s" % (self.sentby, str(linediff), self.rcvdby, self.performative))
                 print("space %s" % (str(space)))

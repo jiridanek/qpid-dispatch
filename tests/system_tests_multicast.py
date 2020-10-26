@@ -39,13 +39,13 @@ from proton import Delivery
 from system_test import AsyncTestSender, AsyncTestReceiver, TestCase, Qdrouterd, main_module, TIMEOUT, TestTimeout, unittest
 
 
-MAX_FRAME=1023
-LINK_CAPACITY=250
-W_THREADS=2
+MAX_FRAME = 1023
+LINK_CAPACITY = 250
+W_THREADS = 2
 LARGE_PAYLOAD = ("X" * MAX_FRAME) * 19
 
 # check for leaks of the following entities
-ALLOC_STATS=["qd_message_t",
+ALLOC_STATS = ["qd_message_t",
              "qd_buffer_t",
              "qdr_delivery_t"]
 

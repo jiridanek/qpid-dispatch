@@ -386,6 +386,6 @@ class OpenPropertiesBadConfigTest(TestCase):
                 self.assertTrue(self._find_in_output(router.outfile + '.out', err))
 
 
-if __name__== '__main__':
+if __name__ == '__main__':
     unittest.main(main_module())
 

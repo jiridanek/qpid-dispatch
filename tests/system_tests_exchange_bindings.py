@@ -612,7 +612,7 @@ class ExchangeBindingsTest(TestCase):
         """
         Verify that multi-frame messages are forwarded properly
         """
-        MAX_FRAME=1024
+        MAX_FRAME = 1024
         config = [
             ('router', {'mode': 'interior', 'id': 'QDR.X',
                         'allowUnsettledMulticast': 'yes'}),

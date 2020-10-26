@@ -724,7 +724,7 @@ class DeliveriesInTransit(MessagingHandler):
             self.conn2.close()
 
     def on_message(self, event):
-        self.received_count+=1
+        self.received_count += 1
         self.check_if_done()
 
     def run(self):

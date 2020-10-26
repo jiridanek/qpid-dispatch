@@ -373,7 +373,7 @@ class LinkRouteTruncateTest(MessagingHandler):
 
     def run(self):
         container = Container(self)
-        container.container_id="LRC"
+        container.container_id = "LRC"
         container.run()
 
 
@@ -468,7 +468,7 @@ class MessageRouteAbortTest(MessagingHandler):
         if m.body == "FINISH":
             self.finish()
         else:
-            self.logger.log("on_message receives len: %d" %(len(m.body)))
+            self.logger.log("on_message receives len: %d" % (len(m.body)))
             self.result.append(len(m.body))
             self.send()
 

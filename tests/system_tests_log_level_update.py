@@ -94,7 +94,7 @@ class ManyLogFilesTest(TestCase):
         self.assertTrue(server_log_found)
 
         protocol_log_found = True
-        all_protocol_logs =True
+        all_protocol_logs = True
         try:
             with open(self.router.outdir + '/test-router-protocol.log', 'r') as protocol_log:
                 for line in protocol_log:

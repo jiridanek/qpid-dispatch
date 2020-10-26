@@ -918,7 +918,7 @@ class UnexpectedReleaseTest(MessagingHandler):
             self.error = "Expected %d calls to on_released but got %d" % (self.num_messages - self.recv_messages_max, self.num_released)
 
     def on_accepted(self, event):
-        self.num_accepted +=1
+        self.num_accepted += 1
 
     def on_message(self, event):
         if event.receiver == self.receiver:

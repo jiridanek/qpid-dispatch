@@ -389,14 +389,14 @@ class ConnectionBaseEntity(EntityAdapter):
     """
     # qdrouterd reserves a set of connection-property keys as well as any key
     # that starts with certain prefixes
-    _RESERVED_KEYS=['product',
+    _RESERVED_KEYS = ['product',
                     'version',
                     'failover-server-list',
                     'network-host',
                     'port',
                     'scheme'
                     'hostname']
-    _RESERVED_PREFIXES=['qd.', 'x-opt-qd.']
+    _RESERVED_PREFIXES = ['qd.', 'x-opt-qd.']
 
     def validate(self, **kwargs):
         super(ConnectionBaseEntity, self).validate(**kwargs)
@@ -888,7 +888,7 @@ class Agent(object):
         with self.request_lock:
             try:
                 self.entities.refresh_from_c()
-                self.log(LOG_DEBUG, "Agent request %s"% request)
+                self.log(LOG_DEBUG, "Agent request %s" % request)
                 status, body = self.handle(request)
                 self.respond(request, status=status, body=body)
             except ManagementError as e:

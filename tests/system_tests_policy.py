@@ -1778,7 +1778,7 @@ class ConnectorPolicyNSndrRcvr(TestCase):
             self.assertFalse(res)
 
         # close a sender and verify that another one only may open
-        addr="skyblue"
+        addr = "skyblue"
         cpc.close_sender()
 
         for i in range(1):

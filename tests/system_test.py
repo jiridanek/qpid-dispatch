@@ -830,7 +830,7 @@ class TestCase(unittest.TestCase, Tester): # pylint: disable=too-many-public-met
     if not hasattr(unittest.TestCase, 'assertRegexpMatches'):
         def assertRegexpMatches(self, text, regexp, msg=None):
             """For python < 2.7: assert re.search(regexp, text)"""
-            assert re.search(regexp, text), msg or "Can't find %r in '%s'" %(regexp, text)
+            assert re.search(regexp, text), msg or "Can't find %r in '%s'" % (regexp, text)
 
 
 class SkipIfNeeded(object):

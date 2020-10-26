@@ -30,8 +30,8 @@ class Address(str):
     Provides a central place for logic to construct addresses of various types.
     """
 
-    AMQP="amqp:"
-    TOPO="_topo"
+    AMQP = "amqp:"
+    TOPO = "_topo"
 
     def __new__(self, addr): # Subclassing immutable type, must use __new__ not __init__
         if addr.startswith(self.AMQP):
