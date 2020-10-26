@@ -205,7 +205,7 @@ class DynamicSourceAnonymousSender(MessagingHandler):
         self.errors = []
 
     def on_message(self, event):
-        self.message = event.message.body;
+        self.message = event.message.body
 
     def on_link_opened(self, event):
         if event.receiver:

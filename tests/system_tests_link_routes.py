@@ -480,7 +480,7 @@ class LinkRouteTest(TestCase):
                     raise Exception("Expected route '%s' to expire!" % route)
                 sleep(0.1)
             except NotFoundStatus:
-                break;
+                break
 
         node_A.close()
         node_B.close()
@@ -1936,7 +1936,7 @@ class ConnectionLinkRouteTest(TestCase):
             self.assertTrue(time() < deadline)
             sleep(0.1)
 
-        fs.join();
+        fs.join()
 
     # simple forwarding tests with auto delete
     def test_send_receive(self):
@@ -2152,9 +2152,9 @@ class InvalidTagTest(MessagingHandler):
         super(InvalidTagTest, self).__init__(auto_accept=False, auto_settle=False)
         self.test_conn = None
         self.test_address = router_addr
-        self.tx_ct = 0;
-        self.accept_ct = 0;
-        self.reject_ct = 0;
+        self.tx_ct = 0
+        self.accept_ct = 0
+        self.reject_ct = 0
         self.error = None
 
     def timeout(self):

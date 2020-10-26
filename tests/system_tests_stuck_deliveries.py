@@ -483,7 +483,7 @@ class TxLinkCreditTest(MessagingHandler):
                 # LinkBlocked
                 #
                 if response.results[0].linksBlocked == 1:
-                    self.receiver = event.container.create_receiver(self.sender_conn, self.addr);
+                    self.receiver = event.container.create_receiver(self.sender_conn, self.addr)
                     self.stage = 2
                     self.process()
                     return

@@ -164,7 +164,7 @@ class TestService(MessagingHandler):
         self._container.start()
         while self._container.process():
             if self._conn is None and self._container.quiesced:
-                break;
+                break
         self._container.stop()
         self._container.process()
 

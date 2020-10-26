@@ -2798,7 +2798,7 @@ class MulticastUnsettledTest(MessagingHandler):
                                                          options=AtLeastOnce())
         self.receiver2 = event.container.create_receiver(self.conn, self.dest,
                                                          name="B",
-                                                         options=AtLeastOnce());
+                                                         options=AtLeastOnce())
         self.receiver1.flow(self.count)
         self.receiver2.flow(self.count)
 

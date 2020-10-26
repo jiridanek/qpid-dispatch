@@ -182,7 +182,7 @@ class HostAddr(object):
         for i in range(0,len(a)):
             if a[i] > b[i]:
                 res = 1
-                break;
+                break
             elif a[i] < b[i]:
                 res = -1
                 break

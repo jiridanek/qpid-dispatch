@@ -928,7 +928,7 @@ class RouterTestSslInterRouterWithInvalidPathToCA(RouterTestSslBase):
                 e2_lines = [s for s in log_lines if pattern in s and host_port_2 in s]
                 verified = len(e1_lines) > 0 and len(e2_lines) > 0
                 if verified:
-                    break;
+                    break
             time.sleep(sleep_time)
         self.assertTrue(verified, "Log line containing '%s' not seen for both connectors in QDR.B log" % pattern)
 
@@ -944,7 +944,7 @@ class RouterTestSslInterRouterWithInvalidPathToCA(RouterTestSslBase):
                 e2_lines = [s for s in log_lines if pattern2 in s]
                 verified = len(e1_lines) > 0 and len(e2_lines) > 0
                 if verified:
-                    break;
+                    break
             time.sleep(sleep_time)
         self.assertTrue(verified, "Log line containing '%s' or '%s' not seen in QDR.B log" % (pattern1, pattern2))
 
@@ -1079,7 +1079,7 @@ class RouterTestSslInterRouterWithoutHostnameVerificationAndMismatchedCA(RouterT
                 e_lines = [s for s in log_lines if pattern in s]
                 verified = len(e_lines) > 0
                 if verified:
-                    break;
+                    break
             time.sleep(sleep_time)
         self.assertTrue(verified, "Log line containing '%s' not seen in QDR.B log" % pattern)
 

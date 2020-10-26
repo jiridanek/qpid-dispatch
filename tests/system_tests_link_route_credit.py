@@ -430,7 +430,7 @@ class LRDestSenderFlowTest(MessagingHandler):
 
     def on_message(self, event):
         if event.receiver == self.probe_receiver:
-            response = self.proxy.response(event.message);
+            response = self.proxy.response(event.message)
             self.last_action = "Handling probe response: remote: %d container: %d" \
                                % (response.remoteCount, response.containerCount)
             if response.status_code == 200 and response.remoteCount + response.containerCount == 1:
@@ -541,7 +541,7 @@ class LRDestReceiverFlowTest(MessagingHandler):
 
     def on_message(self, event):
         if event.receiver == self.probe_receiver:
-            response = self.proxy.response(event.message);
+            response = self.proxy.response(event.message)
             self.last_action = "Handling probe response: remote: %d container: %d" \
                                % (response.remoteCount, response.containerCount)
             if response.status_code == 200 and response.remoteCount + response.containerCount == 1:

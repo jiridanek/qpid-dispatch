@@ -1147,7 +1147,7 @@ class ManageAutolinksTest(MessagingHandler):
         self.route_conn  = event.container.connect(self.route_address)
         self.normal_conn = event.container.connect(self.normal_address)
         self.reply       = event.container.create_receiver(self.normal_conn, dynamic=True)
-        self.agent       = event.container.create_sender(self.normal_conn, "$management");
+        self.agent       = event.container.create_sender(self.normal_conn, "$management")
 
     def on_link_opening(self, event):
         if event.sender:

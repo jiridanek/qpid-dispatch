@@ -341,7 +341,7 @@ class SenderReceiverLimits(TestCase):
                 close_lines = [s for s in log_lines if "senders_denied=1, receivers_denied=1" in s]
                 verified = len(close_lines) == 1
             if verified:
-                break;
+                break
             print("system_tests_policy, SenderReceiverLimits, test_verify_z_connection_stats: delay to wait for log to be written")
             sys.stdout.flush()
             time.sleep(1)
@@ -1399,7 +1399,7 @@ class ConnectorPolicyMisconfigured(TestCase):
     def setUpClass(cls):
         """Start the router"""
         super(ConnectorPolicyMisconfigured, cls).setUpClass()
-        cls.remoteListenerPort = cls.tester.get_port();
+        cls.remoteListenerPort = cls.tester.get_port()
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR.Policy'}),
             ('listener', {'port': cls.tester.get_port()}),
@@ -1593,7 +1593,7 @@ class ConnectorPolicySrcTgt(TestCase):
     def setUpClass(cls):
         """Start the router"""
         super(ConnectorPolicySrcTgt, cls).setUpClass()
-        cls.remoteListenerPort = cls.tester.get_port();
+        cls.remoteListenerPort = cls.tester.get_port()
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR.Policy'}),
             ('listener', {'port': cls.tester.get_port()}),
@@ -1690,7 +1690,7 @@ class ConnectorPolicyNSndrRcvr(TestCase):
     def setUpClass(cls):
         """Start the router"""
         super(ConnectorPolicyNSndrRcvr, cls).setUpClass()
-        cls.remoteListenerPort = cls.tester.get_port();
+        cls.remoteListenerPort = cls.tester.get_port()
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR.Policy'}),
             ('listener', {'port': cls.tester.get_port()}),

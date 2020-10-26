@@ -79,7 +79,7 @@ def NumKMG(value, base=1000):
     # round down to a power of base:
     sx = SUFFIX[base]
     for i in range(len(sx)):
-        value /= float(base);
+        value /= float(base)
         if value < base:
             return _numCell(value, sx[i])
     return _numCell(value, sx[-1])

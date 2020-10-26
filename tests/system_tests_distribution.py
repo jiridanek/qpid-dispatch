@@ -3394,7 +3394,7 @@ class RoutingTest ( MessagingHandler ):
                     self.sender_container = event.container
                     self.event_injector.trigger ( self.address_ready_event )
                     self.status = "address ready"
-                    self.sent_address_ready = True;
+                    self.sent_address_ready = True
             elif self.done == True                   and \
                  response.status_code == 200         and \
                  self.waiting_for_address_to_go_away and \
@@ -3528,7 +3528,7 @@ class WaypointTest ( MessagingHandler ):
 
     def send_from_client ( self, sender, n_messages, sender_index ):
         n_sent = 0
-        self.debug_print ( "send_from_client -------------------" );
+        self.debug_print ( "send_from_client -------------------" )
         while sender.credit > 0 and n_sent < n_messages:
             n_sent      += 1
             self.n_sent += 1

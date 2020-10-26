@@ -386,7 +386,7 @@ class TwoRouterTest(TestCase):
                 rx.queue.get(timeout=TIMEOUT)
                 i -= 1
             except AsyncTestReceiver.Empty:
-                break;
+                break
         self.assertEqual(0, i)
         rx.stop()
 
@@ -2024,8 +2024,8 @@ class TwoRouterExtensionStateTest(TestCase):
                 super(MyExtendedService, self).__init__(url, container_id)
 
             def on_message(self, event):
-                self.remote_state = event.delivery.remote_state;
-                self.remote_data = event.delivery.remote.data;
+                self.remote_state = event.delivery.remote_state
+                self.remote_data = event.delivery.remote.data
                 super(MyExtendedService, self).on_message(event)
 
 

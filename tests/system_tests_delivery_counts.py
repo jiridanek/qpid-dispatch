@@ -52,7 +52,7 @@ def _link_stats_are_zero(statistics, keys):
     for key in keys:
         if statistics.get(key) != 0:
             return False
-    return True;
+    return True
 
 
 class OneRouterModifiedTest(TestCase):

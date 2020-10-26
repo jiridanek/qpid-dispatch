@@ -71,7 +71,7 @@ class FakeBroker(MessagingHandler):
                 rc = self._deliver_to(c)
                 count += rc
                 if rc == 0:
-                    break;
+                    break
             return count
 
         def _deliver_to(self, consumers):

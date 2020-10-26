@@ -421,7 +421,7 @@ class ConnectionBaseEntity(EntityAdapter):
             role = self.attributes.get('role', 'normal')
             if role in ['inter-router', 'edge']:
                 raise ValidationError("openProperties not allowed for role %s"
-                                      % role);
+                                      % role)
 
 
 class ListenerEntity(ConnectionBaseEntity):

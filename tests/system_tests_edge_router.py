@@ -2966,7 +2966,7 @@ class StreamingMessageTest(TestCase):
                ])
         cls.EB1 = cls.routers[3]
         cls.EB1.listener = cls.EB1.addresses[0]
-        cls.EB1.route_container = cls.EB1.connector_addresses[1];
+        cls.EB1.route_container = cls.EB1.connector_addresses[1]
 
         cls.INT_A.wait_router_connected('INT.B')
         cls.INT_B.wait_router_connected('INT.A')
@@ -3217,7 +3217,7 @@ class StreamingMessageTest(TestCase):
                                   address="closest/test-address",
                                   expect=self.SIG_TERM)
 
-        self.INT_A.wait_address("closest/test-address");
+        self.INT_A.wait_address("closest/test-address")
 
         clogger = self.spawn_clogger(self.EA1,
                                      count=1,

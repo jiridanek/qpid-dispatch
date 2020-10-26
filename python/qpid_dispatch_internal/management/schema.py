@@ -171,7 +171,7 @@ class PropertiesType(Type):
 
     def validate(self, value):
         if not isinstance(value, dict):
-            raise ValidationError("Properties must be a map");
+            raise ValidationError("Properties must be a map")
 
         for key in value.keys():
             if (not isinstance(key, PY_STRING_TYPE)
@@ -638,7 +638,7 @@ class Schema(object):
         entities = []
         for a in attribute_maps:
             self.validate_add(a, entities)
-            entities.append(a);
+            entities.append(a)
 
     def validate_add(self, attributes, entities):
         """

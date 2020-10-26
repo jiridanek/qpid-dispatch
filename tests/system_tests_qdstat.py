@@ -772,7 +772,7 @@ try:
             See test_ssl_* below.
             """
             args = self.get_ssl_args()
-            addrs = [self.router.addresses[i] for i in range(4)];
+            addrs = [self.router.addresses[i] for i in range(4)]
             urls = dict(zip(['none', 'strict', 'unsecured', 'auth'], addrs))
             urls.update(zip(['none_s', 'strict_s', 'unsecured_s', 'auth_s'],
                             (Url(a, scheme="amqps") for a in addrs)))
@@ -945,7 +945,7 @@ try:
                 client_pass = ['--ssl-password', 'client-password'])
             args['client_cert_all'] = args['client_cert'] + args['client_key'] + args['client_pass']
 
-            addrs = [self.router.addresses[i] for i in range(4)];
+            addrs = [self.router.addresses[i] for i in range(4)]
             urls = dict(zip(['none', 'strict', 'unsecured', 'auth'], addrs))
             urls.update(zip(['none_s', 'strict_s', 'unsecured_s', 'auth_s'],
                             (Url(a, scheme="amqps") for a in addrs)))

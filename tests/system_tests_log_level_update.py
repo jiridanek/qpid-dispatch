@@ -86,7 +86,7 @@ class ManyLogFilesTest(TestCase):
                     parts = line.split(" ")
                     if (parts[3] != "SERVER"):
                         all_server_logs = False
-                        break;
+                        break
         except:
             server_log_found = False
 
@@ -101,7 +101,7 @@ class ManyLogFilesTest(TestCase):
                     parts = line.split(" ")
                     if (parts[3] != "PROTOCOL"):
                         all_protocol_logs = False
-                        break;
+                        break
         except:
             protocol_log_found = False
 
@@ -116,7 +116,7 @@ class ManyLogFilesTest(TestCase):
                     parts = line.split(" ")
                     if parts[3] != "ROUTER_CORE" and parts[3] != "ROUTER":
                         all_core_router_logs = False
-                        break;
+                        break
 
         except:
             core_router_log_found = False

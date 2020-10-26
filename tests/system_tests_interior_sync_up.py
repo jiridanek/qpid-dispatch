@@ -186,7 +186,7 @@ class InteriorSyncUpTest(MessagingHandler):
 
     def on_message(self, event):
         if event.receiver == self.probe_receiver:
-            response = self.proxy.response(event.message);
+            response = self.proxy.response(event.message)
 
             if response.status_code < 200 or response.status_code > 299:
                 self.fail("Unexpected operation failure: (%d) %s" % (response.status_code, response.status_description))

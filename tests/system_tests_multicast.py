@@ -490,8 +490,8 @@ class MulticastBase(MessagingHandler):
         self.body = body
 
         # totals
-        self.n_senders = 0;
-        self.n_receivers = 0;
+        self.n_senders = 0
+        self.n_receivers = 0
         self.n_sent = 0
         self.n_received = 0
         self.n_settled = 0

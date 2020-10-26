@@ -284,7 +284,7 @@ class Process(subprocess.Popen):
             with open(self.outfile + '.out') as f:
                 raise RuntimeError("Process %s error: %s\n%s\n%s\n>>>>\n%s<<<<" % (
                     self.pid, msg, ' '.join(self.args),
-                    self.outfile + '.cmd', f.read()));
+                    self.outfile + '.cmd', f.read()))
 
         status = self.poll()
         if status is None:      # Still running
@@ -530,7 +530,7 @@ class Qdrouterd(Process):
                                      self.config.router_id)
                     tail = tail_file(os.path.join(self.outdir, self.logfile))
                     for ln in tail:
-                        sys.stderr.write("%s" % ln);
+                        sys.stderr.write("%s" % ln)
                     sys.stderr.write("\n<<<<\n")
                 sys.stderr.flush()
             except OSError:
@@ -1043,7 +1043,7 @@ class AsyncTestSender(MessagingHandler):
             self._conn = None
 
     def on_accepted(self, event):
-        self.accepted += 1;
+        self.accepted += 1
         event.delivery.settle()
 
     def on_released(self, event):
