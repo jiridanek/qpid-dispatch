@@ -406,7 +406,7 @@ class LargePresettledReleasedLinkCounterTest(MessagingHandler):
         self.receiver_dropoff_count = 50
         self.num_messages = 200
         self.num_attempts = 0
-        self.n_sent= 0
+        self.n_sent = 0
         self.done = False
         self.n_received = 0
         self.count_check_timer = None

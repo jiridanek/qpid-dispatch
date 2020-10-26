@@ -185,7 +185,7 @@ class ConnectionHandler(MessagingHandler):
     def on_sendable(self, event):
         if self.sent < self.count:
             self.sent += 1
-            event.sender.send(Message(body='msg-%s' %self.sent))
+            event.sender.send(Message(body='msg-%s' % self.sent))
 
     def on_link_error(self, event):
         self.errors.append(event.link.remote_condition.name)

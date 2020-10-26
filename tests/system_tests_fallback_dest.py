@@ -804,5 +804,5 @@ class ReceiverFirstAutoLinkTest(MessagingHandler):
         Container(self).run()
 
 
-if __name__== '__main__':
+if __name__ == '__main__':
     unittest.main(main_module())

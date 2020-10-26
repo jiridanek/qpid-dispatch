@@ -1262,7 +1262,7 @@ class EchoDetachReceived(MessagingHandler):
     def on_link_opened(self, event):
         if event.receiver:
             if event.receiver.name in list(self.receiver_dict):
-                self.receiver_attaches+=1
+                self.receiver_attaches += 1
             # The response receiver attaches have been received. The receiver sent attaches which was link routed
             # all the way to the 'broker' router and the response attaches have come back.
             # It is now time to create the sender.
@@ -1820,7 +1820,7 @@ class ConnectionLinkRouteTest(TestCase):
                            'saslMechanisms': 'ANONYMOUS'})]
             ]
 
-        cls.routers=[]
+        cls.routers = []
         for c in configs:
             config = Qdrouterd.Config(c)
             cls.routers.append(cls.tester.qdrouterd(config=config, wait=False))
@@ -2428,7 +2428,7 @@ class LinkRoute3Hop(TestCase):
             ]
         ]
 
-        cls.routers=[]
+        cls.routers = []
         for c in configs:
             config = Qdrouterd.Config(c)
             cls.routers.append(cls.tester.qdrouterd(config=config, wait=False))

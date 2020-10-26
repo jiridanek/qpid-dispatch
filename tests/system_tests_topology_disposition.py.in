@@ -583,8 +583,8 @@ class DeleteSpuriousConnector ( MessagingHandler ):
         self.reactor = event.reactor
 
         # This stopwatch will end the test.
-        stopwatch_name='test'
-        init_time=60
+        stopwatch_name = 'test'
+        init_time = 60
         self.timers[stopwatch_name] = \
             Stopwatch ( name = stopwatch_name, \
                         timer = event.reactor.schedule(init_time, Timeout(self, stopwatch_name)), \
@@ -593,8 +593,8 @@ class DeleteSpuriousConnector ( MessagingHandler ):
                       )
 
         # This stopwatch calls the sender.
-        stopwatch_name='sender'
-        init_time=2
+        stopwatch_name = 'sender'
+        init_time = 2
         self.timers[stopwatch_name] = \
             Stopwatch ( name = stopwatch_name, \
                         timer = event.reactor.schedule(init_time, Timeout(self, stopwatch_name)), \
@@ -1005,7 +1005,7 @@ class TopologyDisposition ( MessagingHandler ):
         for _ in range ( self.send_burst_size ) :
             if self.sender.credit > 0 :
                 msg = Message ( body=self.n_sent )
-                msg_tag=str(self.n_sent)
+                msg_tag = str(self.n_sent)
                 dlv = self.sender.send ( msg, tag = msg_tag )
                 if dlv == None :
                     self.debug_print ( "send failed" )

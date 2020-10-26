@@ -61,7 +61,7 @@ class ManagementTest(system_test.TestCase):
     def setUpClass(cls):
         super(ManagementTest, cls).setUpClass()
         # Stand-alone router
-        conf0=Qdrouterd.Config([
+        conf0 = Qdrouterd.Config([
             ('router', { 'mode': 'standalone', 'id': 'solo', 'metadata': 'selftest;solo'}),
             ('listener', {'name': 'l0', 'port':cls.get_port(), 'role':'normal'}),
             # Extra listeners to exercise managment query
@@ -90,7 +90,7 @@ class ManagementTest(system_test.TestCase):
         cls._routers = [cls.tester.qdrouterd(config=c, wait=False) for c in [conf0, conf1, conf2]]
 
         # Standalone router for logging tests (avoid interfering with logging for other tests.)
-        conflog=Qdrouterd.Config([
+        conflog = Qdrouterd.Config([
             ('router', { 'mode': 'standalone', 'id': 'logrouter'}),
             ('listener', {'port':cls.get_port(), 'role':'normal'}),
         ])
@@ -148,7 +148,7 @@ class ManagementTest(system_test.TestCase):
 
     def test_query_type_attributes(self):
         """Query with type and attribute names"""
-        attribute_names=['type', 'name', 'port']
+        attribute_names = ['type', 'name', 'port']
         response = self.node.query(type=LISTENER, attribute_names=attribute_names)
         self.assertEqual(attribute_names, response.attribute_names)
         expect = [[LISTENER, 'l%s' % i, str(self.router.ports[i])] for i in range(3)]
@@ -158,7 +158,7 @@ class ManagementTest(system_test.TestCase):
 
     def test_query_attributes(self):
         """Query with attributes only"""
-        attribute_names=['type', 'name', 'port']
+        attribute_names = ['type', 'name', 'port']
         response = self.node.query(attribute_names=attribute_names)
         self.assertEqual(attribute_names, response.attribute_names)
         expect = [[LISTENER, 'l%s' % i, str(self.router.ports[i])] for i in range(3)]

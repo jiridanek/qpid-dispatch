@@ -1347,7 +1347,7 @@ class RouterTest(TestCase):
                                    address=self.routers[0].addresses[0])
             except Exception as e:
                 if "error: argument --all-entities: not allowed with argument -c/--connections" in str(e):
-                    has_error=True
+                    has_error = True
 
             self.assertTrue(has_error)
 
@@ -1357,7 +1357,7 @@ class RouterTest(TestCase):
                                        address=self.routers[0].addresses[0])
             except Exception as e:
                 if "error: argument --all-routers: not allowed with argument -r/--router" in str(e):
-                    has_error=True
+                    has_error = True
 
             self.assertTrue(has_error)
 
@@ -2835,7 +2835,7 @@ class MobileAddressEventTest(MessagingHandler):
 
     def on_settled(self, event):
         if self.n_rcvd1 + self.n_rcvd2 + self.n_rcvd3 == self.count and \
-                self.n_rcvd2 !=0 and self.n_rcvd3 !=0:
+                self.n_rcvd2 != 0 and self.n_rcvd3 != 0:
             self.timer.cancel()
             self.receiver1_conn.close()
             self.receiver2_conn.close()
@@ -2879,7 +2879,7 @@ class EdgeListenerSender(TestCase):
         addr = self.routers[0].addresses[0]
         blocking_connection = BlockingConnection(addr)
         blocking_sender = blocking_connection.create_sender(address="multicast")
-        self.assertTrue(blocking_sender!=None)
+        self.assertTrue(blocking_sender != None)
 
 
 class StreamingMessageTest(TestCase):
@@ -3377,5 +3377,5 @@ class StreamingMessageTest(TestCase):
         self._wait_address_gone(self.INT_B,  "balanced/test-address")
 
 
-if __name__== '__main__':
+if __name__ == '__main__':
     unittest.main(main_module())

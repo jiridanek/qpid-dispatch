@@ -29,7 +29,7 @@ import re
 from qpid_dispatch_internal.management.schema import EnumType
 from qpid_dispatch_internal.management.qdrouter import QdSchema
 
-copyright="""/*
+copyright = """/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
