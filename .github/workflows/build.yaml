@@ -112,11 +112,11 @@ jobs:
         run: |
           bash ./macports.sh
           export COLUMNS=80
-          yes | sudo port install cmake swig swig-python libuv jsoncpp libwebsockets cyrus-sasl2 pkgconfig python37 py37-pip
+          yes | sudo /opt/local/bin/port install cmake swig swig-python libuv jsoncpp libwebsockets cyrus-sasl2 pkgconfig python37 py37-pip
           # set aliases for CMake's PythonInterp and PythonLibs to find MacPort's `python` on the path first
-          sudo port select --set python python37
-          sudo port select --set python3 python37
-          python -m venv p3venv
+          sudo /opt/local/bin/port select --set python python37
+          sudo /opt/local/bin/port select --set python3 python37
+          /opt/local/bin/python -m venv p3venv
           source p3venv/bin/activate
 
       - name: Zero ccache stats
