@@ -20,9 +20,6 @@
 language: c
 cache: ccache
 jobs:
-  fast_finish: true
-  allow_failures:
-    - os: osx
   include:
   - name: "apache-rat:check"
     os: linux
@@ -76,19 +73,6 @@ jobs:
     os: linux
     env:
     - PATH="/usr/bin:$PATH" PROTON_VERSION=0.32.0
-  - os: osx
-    osx_image: xcode11
-    env:
-    - PATH="/opt/local/bin:/opt/local/sbin:/usr/local/bin:$PATH" PROTON_VERSION=master
-    before_install:
-    - bash ./macports.sh
-    - export COLUMNS=80
-    - yes | sudo port install cmake swig swig-python libuv jsoncpp libwebsockets cyrus-sasl2 pkgconfig python37 py37-pip
-    # set aliases for CMake's PythonInterp and PythonLibs to find MacPort's `python` on the path first
-    - sudo port select --set python python37
-    - sudo port select --set python3 python37
-    - python -m venv p3venv
-    - source p3venv/bin/activate
 
 addons:
   apt:
@@ -136,8 +120,6 @@ script:
 - pushd ../qpid-proton
 - echo $(echo "Current proton commit:") $(git rev-parse HEAD) "(${PROTON_VERSION})"
 - popd
-# Workaround on macOS for PROTON-808 Binaries have their library locations stripped
-- if [[ "${OSTYPE}" == "darwin"* ]]; then install_name_tool -add_rpath $PREFIX/lib/. $PREFIX/lib/proton/bindings/python/_cproton.so; fi
 - ctest -V && if [ "$BUILD_TYPE" = "Coverage" ]; then cmake --build . --target coverage; fi
 
 after_success:
