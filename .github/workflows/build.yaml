@@ -50,7 +50,6 @@ jobs:
         -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
         -DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG
         -DCONSOLE_INSTALL=OFF
-        -DUSE_BWRAP=ON
         -DRUNTIME_CHECK=${{matrix.runtimeCheck}}
 
       CCACHE_BASEDIR: ${{github.workspace}}
@@ -102,10 +101,23 @@ jobs:
       - name: Install python dependencies
         run: python -m pip install setuptools wheel tox
 
-      - name: Install Linux dependencies
+      - name: Install dependencies (Linux)
         if: ${{ runner.os == 'Linux' }}
         run: |
           sudo apt install -y swig libpython3-dev libsasl2-dev libjsoncpp-dev libwebsockets-dev ccache ninja-build pixz
+
+      - name: Install dependencies (macOS)
+        if: ${{ runner.os == 'macOS' }}
+        working-directory: ${{env.DispatchBuildDir}}
+        run: |
+          bash ./macports.sh
+          export COLUMNS=80
+          yes | sudo port install cmake swig swig-python libuv jsoncpp libwebsockets cyrus-sasl2 pkgconfig python37 py37-pip
+          # set aliases for CMake's PythonInterp and PythonLibs to find MacPort's `python` on the path first
+          sudo port select --set python python37
+          sudo port select --set python3 python37
+          python -m venv p3venv
+          source p3venv/bin/activate
 
       - name: Zero ccache stats
         run: ccache -z
