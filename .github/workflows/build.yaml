@@ -110,6 +110,7 @@ jobs:
         if: ${{ runner.os == 'macOS' }}
         working-directory: ${{github.workspace}}/qpid-dispatch
         run: |
+          export PATH="/opt/local/bin:/opt/local/sbin:/usr/local/bin:$PATH"
           bash ./macports.sh
           export COLUMNS=80
           yes | sudo /opt/local/bin/port install cmake swig swig-python libuv jsoncpp libwebsockets cyrus-sasl2 pkgconfig python37 py37-pip
