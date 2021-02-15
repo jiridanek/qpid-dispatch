@@ -377,8 +377,7 @@ void qd_dispatch_free(qd_dispatch_t *qd)
     qd_container_free(qd->container);
     qd_server_free(qd->server);
     qd_log_finalize();
-    qd_alloc_finalize();
-    qd_python_finalize();
+    qd_alloc_finalize();  // python objects may use alloc pool objects during finalization? TODO: they do that now  // actually, no, too late to do real work now
     qd_dispatch_set_router_id(qd, NULL);
     qd_dispatch_set_router_area(qd, NULL);
 }
