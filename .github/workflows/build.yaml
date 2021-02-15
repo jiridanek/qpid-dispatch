@@ -48,7 +48,7 @@ jobs:
       DispatchCMakeExtraArgs: >
         -DCMAKE_C_COMPILER_LAUNCHER=ccache
         -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
-        "-DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG -fno-omit-frame-pointer"
+        -DCMAKE_C_FLAGS="-DQD_MEMORY_DEBUG -fno-omit-frame-pointer"
         -DQD_ENABLE_ASSERTIONS=ON
         -DCONSOLE_INSTALL=OFF
         -DUSE_BWRAP=ON
@@ -118,7 +118,7 @@ jobs:
             "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" \
             "-DCMAKE_BUILD_TYPE=${BuildType}" \
             "-GNinja" \
-            ${ProtonCMakeExtraArgs}
+            ${{env.ProtonCMakeExtraArgs}}
 
       - name: qpid-proton cmake build/install
         run: cmake --build "${ProtonBuildDir}" --config ${BuildType} -t install
@@ -133,7 +133,7 @@ jobs:
             "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" \
             "-DCMAKE_BUILD_TYPE=${BuildType}" \
             "-GNinja" \
-            ${DispatchCMakeExtraArgs}
+            ${{env.DispatchCMakeExtraArgs}}
 
       - name: qpid-dispatch cmake build/install
         run: cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
