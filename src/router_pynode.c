@@ -307,11 +307,12 @@ static PyMethodDef RouterAdapter_methods[] = {
 
 static PyTypeObject RouterAdapterType = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    .tp_name = "dispatch.RouterAdapter",  /* tp_name*/
-    .tp_basicsize = sizeof(RouterAdapter),     /* tp_basicsize*/
-    .tp_flags = Py_TPFLAGS_DEFAULT,        /* tp_flags*/
-    .tp_doc = "Dispatch Router Adapter", /* tp_doc */
-    .tp_methods = RouterAdapter_methods,     /* tp_methods */
+    .tp_name = "dispatch.RouterAdapter",
+    .tp_basicsize = sizeof(RouterAdapter),
+    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_doc = "Dispatch Router Adapter",
+    .tp_methods = RouterAdapter_methods,
+    .tp_new = PyType_GenericNew,
 };
 
 
@@ -392,7 +393,6 @@ qd_error_t qd_router_python_setup(qd_router_t *router)
         return QD_ERROR_NONE;
 
     PyObject *pDispatchModule = qd_python_module();
-    RouterAdapterType.tp_new = PyType_GenericNew;
     PyType_Ready(&RouterAdapterType);
     QD_ERROR_PY_RET();
 
@@ -444,6 +444,10 @@ qd_error_t qd_router_python_setup(qd_router_t *router)
     // Instantiate the router
     //
     pyRouter = PyObject_CallObject(pClass, pArgs);
+    Py_DECREF(pId);
+    Py_DECREF(pArea);
+    Py_DECREF(pMaxRouters);
+    Py_DECREF(pClass);
     Py_DECREF(pArgs);
     Py_DECREF(adapterType);
     QD_ERROR_PY_RET();
@@ -452,11 +456,17 @@ qd_error_t qd_router_python_setup(qd_router_t *router)
     pySetMobileSeq   = PyObject_GetAttrString(pyRouter, "setMobileSeq"); QD_ERROR_PY_RET();
     pySetMyMobileSeq = PyObject_GetAttrString(pyRouter, "setMyMobileSeq"); QD_ERROR_PY_RET();
     pyLinkLost       = PyObject_GetAttrString(pyRouter, "linkLost"); QD_ERROR_PY_RET();
+//    Py_DECREF(adapterInstance);  // TODO: why not this? get python exceptions if I try
     return qd_error_code();
 }
 
 void qd_router_python_free(qd_router_t *router) {
-    // empty
+    Py_XDECREF(pyRouter);
+    Py_XDECREF(pyTick);
+    Py_XDECREF(pySetMobileSeq);
+    Py_XDECREF(pySetMyMobileSeq);
+    Py_XDECREF(pyLinkLost);
+//    qd_python_finalize();
 }
 
 

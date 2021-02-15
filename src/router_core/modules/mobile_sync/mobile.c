@@ -934,11 +934,13 @@ static void qcm_mobile_sync_final_CT(void *module_context)
 {
     qdrm_mobile_sync_t *msync = (qdrm_mobile_sync_t*) module_context;
 
+    qdr_core_unsubscribe(msync->message_sub1);
+    qdr_core_unsubscribe(msync->message_sub2);
     qdrc_event_unsubscribe_CT(msync->core, msync->event_sub);
     qdr_core_timer_free_CT(msync->core, msync->timer);
 
     //
-    // Don't explicitly unsubscribe the addresses, these are already gone at module-final time.
+    // Don't explicitly unsubscribe the addresses, these are already gone at module-final time.  // TODO: appears not?
     //
 
     free(msync);
