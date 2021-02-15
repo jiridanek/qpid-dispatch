@@ -38,12 +38,20 @@ leak:sys_mutex
 
 # expected, not a bug:
 #
-leak:qdr_core_subscribe
+#leak:qdr_core_subscribe
 
 # Ubuntu 16.04 (Xenial)
 #
 leak:_ctypes_alloc_format_string
 leak:__strdup
+
+# to be triaged; system_tests_http
+leak:^callback_healthz$
+leak:^callback_metrics$
+
+# to be triaged; system_tests_http1_adaptor
+leak:^pn_condition$
+leak:^pn_raw_connection$
 
 ####
 #### Miscellaneous 3rd party libraries:
