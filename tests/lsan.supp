@@ -40,6 +40,14 @@ leak:sys_mutex
 leak:_ctypes_alloc_format_string
 leak:__strdup
 
+# to be triaged; system_tests_http
+leak:^callback_healthz$
+leak:^callback_metrics$
+
+# to be triaged; system_tests_http1_adaptor
+leak:^pn_condition$
+leak:^pn_raw_connection$
+
 ####
 #### Miscellaneous 3rd party libraries:
 ####

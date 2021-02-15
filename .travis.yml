@@ -54,6 +54,7 @@ jobs:
     - QPID_SYSTEM_TEST_SKIP_FALLBACK_SWITCHOVER_TEST=True
     - PATH="/usr/bin:$PATH" PROTON_VERSION=main BUILD_TYPE=Debug
     - DISPATCH_CMAKE_ARGS='-DRUNTIME_CHECK=asan'
+    - PYTHON_EXECUTABLE=/usr/bin/python2.7-dbg
   - name: "qdrouterd:Coverage"
     os: linux
     env:
@@ -67,6 +68,7 @@ jobs:
     - QPID_SYSTEM_TEST_SKIP_FALLBACK_SWITCHOVER_TEST=True
     - PATH="/usr/bin:$PATH" PROTON_VERSION=0.36.0 BUILD_TYPE=RelWithDebInfo
     - DISPATCH_CMAKE_ARGS='-DRUNTIME_CHECK=asan -DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG'
+    - PYTHON_EXECUTABLE=/usr/bin/python2.7-dbg
   - name: "qdrouterd:RelWithDebInfo+MemoryDebug (clang on focal)"
     os: linux
     dist: focal
@@ -225,7 +227,7 @@ install:
 # Build and install proton from source.
 - mkdir qpid-proton/build
 - pushd qpid-proton/build
-- cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DBUILD_BINDINGS=python
+- cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython2.7_d.so -DBUILD_BINDINGS=python
 - cmake --build . --target install -- -j $NPROC
 - popd
 
@@ -233,7 +235,7 @@ before_script:
 - source qpid-proton/build/config.sh
 - mkdir build
 - pushd build
-- cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${DISPATCH_CMAKE_ARGS}
+- cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython2.7_d.so ${DISPATCH_CMAKE_ARGS}
 - . config.sh
 - make -j $NPROC
 
