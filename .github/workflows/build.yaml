@@ -48,7 +48,7 @@ jobs:
       DispatchCMakeExtraArgs: >
         -DCMAKE_C_COMPILER_LAUNCHER=ccache
         -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
-        '-DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG -fno-omit-frame-pointer'
+        -DCMAKE_C_FLAGS='-DQD_MEMORY_DEBUG -fno-omit-frame-pointer'
         -DQD_ENABLE_ASSERTIONS=ON
         -DCONSOLE_INSTALL=OFF
         -DUSE_BWRAP=ON
