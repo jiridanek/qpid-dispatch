@@ -51,20 +51,6 @@ leak:^_PyObject_GC_Resize$
 # Python uses these alloc functions if you define PYTHONDEVMODE=1
 leak:^_PyMem_DebugRawAlloc$
 leak:^_PyMem_DebugRawRealloc$
-# All the rest
-leak:^list_append$
-leak:^list_resize$
-leak:^_PyBytes_Resize$
-leak:^resize_compact$
-# Python 2.7
-leak:^PyString_FromStringAndSize$
-leak:^PyString_FromString$
-leak:^PyObject_Realloc$
-leak:^_PyObject_GC_Malloc$
-leak:^_PyString_Resize$
-leak:^PyUnicodeUCS4_FromUnicode$
-leak:^PyList_Append$
-leak:^PyList_New$
 
 # Wholesale library suppressions, avoid doing this if at all possible
 #  one reason we may not be able to avoid doing this is compatibility with multiple versions of libs on many operating systems
