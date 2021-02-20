@@ -347,9 +347,20 @@ void qdr_core_free(qdr_core_t *core)
     // Drain the general work lists
     qdr_general_handler(core);
 
+    // at this point all the conn identifiers have been freed
+    qd_hash_free(core->conn_id_hash);
+
+    qdr_agent_free(core->mgmt_agent);
+
     //
     // Free the core resources
     //
+    if (core->routers_by_mask_bit)       free(core->routers_by_mask_bit);
+    if (core->control_links_by_mask_bit) free(core->control_links_by_mask_bit);
+    if (core->data_links_by_mask_bit)    free(core->data_links_by_mask_bit);
+    if (core->neighbor_free_mask)        qd_bitmask_free(core->neighbor_free_mask);
+    if (core->rnode_conns_by_mask_bit)   free(core->rnode_conns_by_mask_bit);
+
     sys_thread_free(core->thread);
     sys_cond_free(core->action_cond);
     sys_mutex_free(core->action_lock);
@@ -362,17 +373,6 @@ void qdr_core_free(qdr_core_t *core)
             free(core->forwarders[i]);
         }
     }
-
-    // at this point all the conn identifiers have been freed
-    qd_hash_free(core->conn_id_hash);
-
-    qdr_agent_free(core->mgmt_agent);
-
-    if (core->routers_by_mask_bit)       free(core->routers_by_mask_bit);
-    if (core->control_links_by_mask_bit) free(core->control_links_by_mask_bit);
-    if (core->data_links_by_mask_bit)    free(core->data_links_by_mask_bit);
-    if (core->neighbor_free_mask)        qd_bitmask_free(core->neighbor_free_mask);
-    if (core->rnode_conns_by_mask_bit)   free(core->rnode_conns_by_mask_bit);
 
     free(core);
 }
