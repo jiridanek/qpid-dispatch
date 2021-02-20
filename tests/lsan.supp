@@ -32,6 +32,23 @@ leak:^pgetaddrinfo$
 # to be triaged; system_tests_link_routes
 leak:^pni_init_default_logger$
 
+# to be triaged; unit_tests
+leak:http-libwebsockets.c
+
+# to be triaged; pretty much all tests
+leak:^IoAdapter_init$
+
+# to be triaged; system_tests_http
+leak:^callback_healthz$
+leak:^callback_metrics$
+
+# to be triaged; system_tests_http1_adaptor
+leak:^pn_condition$
+leak:^pn_raw_connection$
+
+# Ignore test code
+leak:run_unit_tests.c
+
 # DISPATCH-1844 - shutdown leak
 leak:sys_mutex
 
