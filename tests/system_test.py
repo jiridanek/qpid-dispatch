@@ -39,6 +39,8 @@ import re
 import shutil
 import socket
 import subprocess
+import sys
+import time
 from copy import copy
 from datetime import datetime
 from subprocess import PIPE, STDOUT
@@ -191,10 +193,13 @@ def port_available(port, protocol_family='IPv4'):
 def wait_port(port, protocol_family='IPv4', **retry_kwargs):
     """Wait up to timeout for port (on host) to be connectable.
     Takes same keyword arguments as retry to control the timeout"""
+
     def check(e):
         """Only retry on connection refused"""
-        if not isinstance(e, socket.error) or not e.errno == errno.ECONNREFUSED:
-            raise
+        # TODO(DISPATCH-1539): in Python 3.3+ it is sufficient to catch only OSError
+        if isinstance(e, (socket.error, IOError, OSError)) and e.errno == errno.ECONNREFUSED:
+            return
+        raise
 
     host = None
 
@@ -338,7 +343,11 @@ class Http2Server(HttpServer):
             self.args += self.cl_args
         super(Http2Server, self).__init__(self.args, name=name, expect=expect)
         if wait:
-            self.wait_ready()
+            try:
+                self.wait_ready()
+            except Exception:
+                self.teardown()
+                raise
 
     def wait_ready(self, **retry_kwargs):
         """
@@ -463,7 +472,6 @@ class Qdrouterd(Process):
         elif env_home:
             args += ['-I', os.path.join(env_home, 'python')]
 
-        args = os.environ.get('QPID_DISPATCH_RUNNER', '').split() + args
         super(Qdrouterd, self).__init__(args, name=name, expect=expect)
         self._management = None
         self._wait_ready = False
