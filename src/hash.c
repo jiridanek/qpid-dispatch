@@ -106,6 +106,7 @@ qd_hash_t *qd_hash(int bucket_exponent, int batch_size, int value_is_const)
 //remove the given item from the given bucket of the given hash
 //return the key if non-null key pointer given, otherwise, free the memory
 static void qd_hash_internal_remove_item(qd_hash_t *h, bucket_t *bucket, qd_hash_item_t *item, unsigned char **key) {
+    printf("freeing item %p with key %s\n", (void*)item, item->key);
     if (key) {
         *key = item->key;
     }
@@ -122,6 +123,7 @@ static void qd_hash_internal_remove_item(qd_hash_t *h, bucket_t *bucket, qd_hash
     // The item and the hash_handle can be freed independent of one another.
     //
     if (item->handle) {
+        printf("zeroing the handle pointer, of value %p\n", (void*) item->handle->item);
         item->handle->item   = 0;
     }
     free_qd_hash_item_t(item);
@@ -152,7 +154,7 @@ size_t qd_hash_size(qd_hash_t *h)
 }
 
 
-// ownership of key is transfered to the qd_hash_item_t
+// ownership of key is transferred to the qd_hash_item_t
 static qd_hash_item_t *qd_hash_internal_insert(qd_hash_t *h, bucket_t *bucket, unsigned char *key, int *exists, qd_hash_handle_t **handle)
 {
     qd_hash_item_t *item = DEQ_HEAD(bucket->items);
@@ -214,6 +216,7 @@ qd_error_t qd_hash_insert(qd_hash_t *h, qd_iterator_t *key, void *val, qd_hash_h
     int       exists = 0;
     bucket_t *bucket = qd_hash_get_bucket_iter(h, key);
     unsigned char *k = qd_iterator_copy(key);
+    printf("inserting key %s\n", k);
 
     if (!k)
         return QD_ERROR_ALLOC;
@@ -446,8 +449,10 @@ qd_error_t qd_hash_remove_str(qd_hash_t *h, const unsigned char *key)
 
 void qd_hash_handle_free(qd_hash_handle_t *handle)
 {
-    if (handle)
+    if (handle) {
+        printf("freeing hash handle %p for item %p\n", (void*) handle, (void*)handle->item);
         free_qd_hash_handle_t(handle);
+    }
 }
 
 
