@@ -3,9 +3,6 @@
 #
 
 # to be triaged; pretty much all tests
-leak:^IoAdapter_init$
-
-# to be triaged; pretty much all tests
 leak:^load_server_config$
 leak:^qd_dispatch_configure_connector$
 
