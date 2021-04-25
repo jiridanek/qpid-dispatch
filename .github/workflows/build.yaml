@@ -180,7 +180,6 @@ jobs:
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
       DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
       InstallPrefix: ${{github.workspace}}/install
-      LD_LIBRARY_PATH: ${{github.workspace}}/install/lib
     steps:
 
       - name: Show environment (Linux)
