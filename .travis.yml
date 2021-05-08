@@ -150,7 +150,10 @@ jobs:
     env:
     - QPID_SYSTEM_TEST_TIMEOUT=300
     - QPID_SYSTEM_TEST_SKIP_FALLBACK_SWITCHOVER_TEST=True
+    # use MacPorts binaries and libs
     - PATH="/opt/local/bin:/opt/local/sbin:/usr/local/bin:$PATH" PROTON_VERSION=main
+    - CMAKE_INCLUDE_PATH=/opt/local/include
+    - CMAKE_LIBRARY_PATH=/opt/local/lib
     - DISPATCH_CMAKE_ARGS='-DRUNTIME_CHECK=asan -DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG -DQD_ENABLE_ASSERTIONS=ON -DDISPATCH_TEST_TIMEOUT=500'
     # exclude tests that require raw_connection functionality; not available in libuv proactor
     before_install:
