@@ -182,7 +182,7 @@ jobs:
         include:
           # exclude tests that require raw_connection functionality; not available in libuv proactor
           - proactor: libuv
-            ctest_extra: "-E 'system_tests_tcp_adaptor|system_tests_http1_adaptor|system_tests_http2|system_tests_grpc'"
+            ctest_extra: "-E 'system_tests_tcp_adaptor|system_tests_http1_over_tcp|system_tests_http1_adaptor|system_tests_http2|system_tests_grpc'"
     env:
       BuildType: ${{matrix.buildType}}
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
