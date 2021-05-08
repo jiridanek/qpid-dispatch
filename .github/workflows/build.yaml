@@ -182,14 +182,14 @@ jobs:
         include:
           # exclude tests that require raw_connection functionality; not available in libuv proactor
           - proactor: libuv
-            ctest_extra: "-E 'system_tests_tcp_adaptor|system_tests_http1_over_tcp|system_tests_http1_adaptor|system_tests_http2|system_tests_grpc'"
+            ctest_extra_exclusions: "system_tests_tcp_adaptor|system_tests_http1_over_tcp|system_tests_http1_adaptor|system_tests_http2|system_tests_grpc"
     env:
       BuildType: ${{matrix.buildType}}
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
       DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
       InstallPrefix: ${{github.workspace}}/install
       # TODO(DISPATCH-2078) re-enable system_tests_authz_service_plugin when the GHA failure is understood and fixed
-      DispatchCTestExtraArgs: "-E 'system_tests_authz_service_plugin|system_tests_http1_adaptor|system_tests_http2|system_tests_grpc'"
+      DispatchCTestExtraArgs: "-E 'system_tests_authz_service_plugin|system_tests_http1_adaptor|system_tests_http2|system_tests_grpc|${{matrix.ctest_extra_exclusions}}'"
       LD_LIBRARY_PATH: ${{github.workspace}}/install/lib
     steps:
 
@@ -226,7 +226,7 @@ jobs:
         working-directory: ${{env.DispatchBuildDir}}
         run: |
           ulimit -c unlimited
-          ctest -C ${BuildType} -V -T Test --no-compress-output -I ${{matrix.shard}},,${{matrix.shards}} ${{matrix.ctest_extra}} -j2 ${{env.DispatchCTestExtraArgs}}
+          ctest -C ${BuildType} -V -T Test --no-compress-output -I ${{matrix.shard}},,${{matrix.shards}} -j2 ${{env.DispatchCTestExtraArgs}}
 
       - name: Upload test results
         uses: actions/upload-artifact@v2
