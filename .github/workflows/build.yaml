@@ -59,11 +59,14 @@ jobs:
       # TODO(DISPATCH-2078) re-enable system_tests_authz_service_plugin when the GHA failure is understood and fixed
       DispatchCTestExtraArgs: "-E 'system_tests_authz_service_plugin|system_tests_http1_adaptor|system_tests_http2|system_tests_grpc'"
 
+      # TODO(DISPATCH-2144) use -DPython_EXECUTABLE=/usr/bin/python3-debug when issue is fixed,
+      #  as that allows for -DSANITIZE_3RD_PARTY=ON on Fedora
+      # TODO(https://github.com/google/sanitizers/issues/1385) some targeted asan suppressions don't work on Fedora
       ProtonCMakeExtraArgs: >
         -DCMAKE_C_COMPILER_LAUNCHER=ccache
         -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
         -DBUILD_BINDINGS=python
-        -DPython_EXECUTABLE=/usr/bin/python3-debug
+        -DPython_EXECUTABLE=/usr/bin/python3
         -DBUILD_EXAMPLES=OFF
         -DBUILD_TESTING=OFF
         -DENABLE_FUZZ_TESTING=OFF
@@ -71,11 +74,10 @@ jobs:
       DispatchCMakeExtraArgs: >
         -DCMAKE_C_COMPILER_LAUNCHER=ccache
         -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
-        -DPython_EXECUTABLE=/usr/bin/python3-debug
+        -DPython_EXECUTABLE=/usr/bin/python3
         -DQD_ENABLE_ASSERTIONS=ON
         -DCONSOLE_INSTALL=OFF
         -DRUNTIME_CHECK=${{matrix.runtimeCheck}}
-        -DSANITIZE_3RD_PARTY=ON
 
       CCACHE_BASEDIR: ${{github.workspace}}
       CCACHE_DIR: ${{github.workspace}}/.ccache
@@ -106,10 +108,10 @@ jobs:
       - name: Install Linux build dependencies
         if: ${{ runner.os == 'Linux' }}
         run: |
-          yum install -y gcc gcc-c++ cmake libuuid-devel openssl-devel cyrus-sasl-devel cyrus-sasl-plain swig python3-debug python3-devel make libwebsockets-devel ccache libasan libubsan libtsan
+          yum install -y gcc gcc-c++ cmake libuuid-devel openssl-devel cyrus-sasl-devel cyrus-sasl-plain swig python3-devel make libwebsockets-devel ccache libasan libubsan libtsan
 
       - name: Install Python build dependencies
-        run: python3-debug -m pip install setuptools wheel tox
+        run: python3 -m pip install setuptools wheel tox
 
       # https://cristianadam.eu/20200113/speeding-up-c-plus-plus-github-actions-using-ccache/
       - name: Prepare ccache timestamp
@@ -168,7 +170,7 @@ jobs:
         run: env -0 | sort -z | tr '\0' '\n'
 
       - name: Install Python runtime/test dependencies
-        run: python3-debug -m pip install tox quart selectors protobuf pytest
+        run: python3 -m pip install tox quart selectors protobuf pytest
 
       - name: Install Python runtime/test dependencies (Fedora)
         if: ${{ matrix.container == 'library/fedora:34' }}
