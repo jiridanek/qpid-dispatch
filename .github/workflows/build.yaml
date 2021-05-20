@@ -23,19 +23,28 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
   compile:
-    name: "Compile (${{matrix.os}}, ${{matrix.runtimeCheck}})"
+    name: "Compile and Test (${{matrix.os}}, ${{matrix.runtimeCheck}}), container ${{matrix.container}}, shard ${{matrix.shard}} of ${{matrix.shards}})"
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
         buildType: [RelWithDebInfo]
-        runtimeCheck: [asan]
+        runtimeCheck: [asan, tsan]
+        shard: [ 1, 2 ]
+        shards: [ 2 ]
+        include:
+          - os: ubuntu-20.04
+            container: 'centos:7'
+            runtimeCheck: OFF
+
     env:
       BuildType: ${{matrix.buildType}}
       ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
       DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
       InstallPrefix: ${{github.workspace}}/install
+      # TODO(DISPATCH-2078) re-enable system_tests_authz_service_plugin when the GHA failure is understood and fixed
+      DispatchCTestExtraArgs: "-E 'system_tests_authz_service_plugin|system_tests_http1_adaptor|system_tests_http2|system_tests_grpc'"
 
       ProtonCMakeExtraArgs: >
         -DCMAKE_C_COMPILER_LAUNCHER=ccache
@@ -48,7 +57,6 @@ jobs:
       DispatchCMakeExtraArgs: >
         -DCMAKE_C_COMPILER_LAUNCHER=ccache
         -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
-        -DCMAKE_C_FLAGS=-DQD_MEMORY_DEBUG
         -DQD_ENABLE_ASSERTIONS=ON
         -DCONSOLE_INSTALL=OFF
         -DUSE_BWRAP=ON
@@ -59,6 +67,8 @@ jobs:
       CCACHE_DIR: ${{github.workspace}}/.ccache
       CCACHE_COMPRESS: 'true'
       CCACHE_MAXSIZE: '400MB'
+    container:
+      image: '${{ matrix.container }}'
     steps:
 
       - name: Show environment (Linux)
@@ -143,63 +153,9 @@ jobs:
       - name: Display ccache stats
         run: ccache -s
 
-      # github actions/upload-artifact@v2 does not preserve executable permission on binaries
-      - name: Compress build
-        working-directory: ${{github.workspace}}
-        run: >
-          tar \
-            -I pixz \
-            -cf /tmp/archive.tar.xz \
-            --exclude '*.o' \
-            --exclude '*.pyc' \
-            --exclude '.git' \
-            --exclude='qpid-dispatch/build/console' \
-            qpid-dispatch \
-            install \
-            qpid-proton/build/python/pkgs
-
-      - name: Upload archive
-        uses: actions/upload-artifact@v2
-        with:
-          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}_${{matrix.runtimeCheck}}
-          path: /tmp/archive.tar.xz
-
-  test:
-    name: 'Test (${{matrix.os}}, ${{matrix.runtimeCheck}}, shard ${{matrix.shard}} of ${{matrix.shards}})'
-    runs-on: ${{ matrix.os }}
-    needs: [compile]
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-20.04]
-        buildType: [RelWithDebInfo]
-        runtimeCheck: [asan]
-        shard: [1, 2]
-        shards: [2]
-    env:
-      BuildType: ${{matrix.buildType}}
-      ProtonBuildDir: ${{github.workspace}}/qpid-proton/build
-      DispatchBuildDir: ${{github.workspace}}/qpid-dispatch/build
-      InstallPrefix: ${{github.workspace}}/install
-      # TODO(DISPATCH-2078) re-enable system_tests_authz_service_plugin when the GHA failure is understood and fixed
-      DispatchCTestExtraArgs: "-E 'system_tests_authz_service_plugin|system_tests_http1_adaptor|system_tests_http2|system_tests_grpc'"
-      LD_LIBRARY_PATH: ${{github.workspace}}/install/lib
-    steps:
-
       - name: Show environment (Linux)
         if: ${{ always() && runner.os == 'Linux' }}
         run: env -0 | sort -z | tr '\0' '\n'
-
-      - name: Download Build
-        uses: actions/download-artifact@v2
-        with:
-          name: qpid_dispatch_wrk_${{matrix.os}}_${{matrix.buildType}}_${{matrix.runtimeCheck}}
-
-      - name: Setup python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.7
-          architecture: x64
 
       - name: Install Python runtime/test dependencies
         run: python -m pip install tox quart selectors grpcio protobuf pytest
@@ -208,9 +164,6 @@ jobs:
         if: ${{ runner.os == 'Linux' }}
         run: |
           sudo apt install -y libsasl2-2 libsasl2-modules sasl2-bin libjsoncpp1 libwebsockets15 pixz bubblewrap curl
-
-      - name: Unpack archive
-        run: tar -I pixz -xf archive.tar.xz
 
       - name: install qpid-proton python wheel
         run: python -m pip install ${ProtonBuildDir}/python/pkgs/python_qpid_proton*.whl
