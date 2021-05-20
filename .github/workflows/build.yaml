@@ -181,7 +181,7 @@ jobs:
       - name: Install Linux runtime/test dependencies (debuginfo for sanitizers)
         if: ${{ matrix.runtimeCheck != 'OFF' }}
         run: |
-          dnf install -y dnf-plugins-core llvm
+          dnf install -y dnf-plugins-core binutils
           dnf debuginfo-install -y python3-devel
 
       - name: install qpid-proton python wheel
