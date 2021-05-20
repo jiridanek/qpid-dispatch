@@ -48,6 +48,8 @@ jobs:
 
     container:
       image: '${{ matrix.container }}'
+      volumes:
+        - ${{github.workspace}}:${{github.workspace}}
 
     env:
       BuildType: ${{matrix.buildType}}
