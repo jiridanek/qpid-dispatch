@@ -38,6 +38,13 @@ jobs:
           - os: ubuntu-20.04
             container: 'library/centos:7'
             runtimeCheck: OFF
+            shard: 1
+            shards: 2
+          - os: ubuntu-20.04
+            container: 'library/centos:7'
+            runtimeCheck: OFF
+            shard: 2
+            shards: 2
 
     container:
       image: '${{ matrix.container }}'
@@ -63,7 +70,6 @@ jobs:
         -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
         -DQD_ENABLE_ASSERTIONS=ON
         -DCONSOLE_INSTALL=OFF
-        -DUSE_BWRAP=ON
         -DRUNTIME_CHECK=${{matrix.runtimeCheck}}
         -DSANITIZE_3RD_PARTY=ON
 
@@ -88,6 +94,14 @@ jobs:
         with:
           path: 'qpid-dispatch'
 
+      - name: Install Linux build dependencies
+        if: ${{ runner.os == 'Linux' }}
+        run: |
+          sudo yum install -y gcc gcc-c++ cmake libuuid-devel openssl-devel cyrus-sasl-devel cyrus-sasl-plain swig python3-devel git make libwebsockets-devel ccache
+
+      - name: Install Python build dependencies
+        run: python3 -m pip install setuptools wheel tox
+
       # https://cristianadam.eu/20200113/speeding-up-c-plus-plus-github-actions-using-ccache/
       - name: Prepare ccache timestamp
         id: ccache_cache_timestamp
@@ -108,20 +122,6 @@ jobs:
       - name: Create Build and Install directories
         run: mkdir -p "${ProtonBuildDir}" "${DispatchBuildDir}" "{InstallPrefix}"
 
-      - name: Setup python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.7
-          architecture: x64
-
-      - name: Install Python build dependencies
-        run: python -m pip install setuptools wheel tox
-
-      - name: Install Linux build dependencies
-        if: ${{ runner.os == 'Linux' }}
-        run: |
-          sudo apt install -y swig libpython3-dev libsasl2-dev libjsoncpp-dev libwebsockets-dev libnghttp2-dev ccache ninja-build pixz
-
       - name: Zero ccache stats
         run: ccache -z
 
@@ -131,7 +131,6 @@ jobs:
           cmake "${{github.workspace}}/qpid-proton" \
             "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" \
             "-DCMAKE_BUILD_TYPE=${BuildType}" \
-            "-GNinja" \
             ${ProtonCMakeExtraArgs}
 
       - name: qpid-proton cmake build/install
@@ -147,7 +146,6 @@ jobs:
             "-DCMAKE_INSTALL_PREFIX=${InstallPrefix}" \
             "-DCMAKE_BUILD_TYPE=${BuildType}" \
             "-DPYTHON_TEST_COMMAND='-m;pytest;-vs;--junit-prefix=pytest.\${py_test_module};--junit-xml=junitxmls/\${py_test_module}.xml;--pyargs;\${py_test_module}'" \
-            "-GNinja" \
             ${DispatchCMakeExtraArgs}
 
       - name: qpid-dispatch cmake build/install
@@ -161,12 +159,12 @@ jobs:
         run: env -0 | sort -z | tr '\0' '\n'
 
       - name: Install Python runtime/test dependencies
-        run: python -m pip install tox quart selectors grpcio protobuf pytest
+        run: python3 -m pip install tox quart selectors grpcio protobuf pytest
 
       - name: Install Linux runtime/test dependencies
         if: ${{ runner.os == 'Linux' }}
         run: |
-          sudo apt install -y libsasl2-2 libsasl2-modules sasl2-bin libjsoncpp1 libwebsockets15 pixz bubblewrap curl
+          sudo yum install -y curl
 
       - name: install qpid-proton python wheel
         run: python -m pip install ${ProtonBuildDir}/python/pkgs/python_qpid_proton*.whl
