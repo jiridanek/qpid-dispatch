@@ -156,7 +156,7 @@ jobs:
             ${DispatchCMakeExtraArgs}
 
       - name: qpid-dispatch cmake build/install
-        run: cmake --build "${DispatchBuildDir}" --config ${BuildType} -t install
+        run: cmake --build "${DispatchBuildDir}" --config ${BuildType} --target install
 
       - name: Display ccache stats
         run: ccache -s
