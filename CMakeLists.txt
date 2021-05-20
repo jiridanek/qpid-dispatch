@@ -215,7 +215,7 @@ if(QD_ENABLE_ASSERTIONS)
     if(NOT uppercase_CMAKE_BUILD_TYPE STREQUAL "DEBUG")
         # NOTE: use `add_compile_options` rather than `add_definitions` since
         # `add_definitions` does not support generator expressions.
-        if(${CMAKE_VERSION} VERSION_LESS_EQUAL "2.8.12")
+        if(${CMAKE_VERSION} VERSION_LESS "3.11.4")
             add_compile_options(-UNDEBUG)
         else()
             add_compile_options($<$<OR:$<COMPILE_LANGUAGE:C>,$<COMPILE_LANGUAGE:CXX>>:-UNDEBUG>)
