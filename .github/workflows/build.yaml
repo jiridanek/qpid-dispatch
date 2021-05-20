@@ -68,6 +68,7 @@ jobs:
       CCACHE_COMPRESS: 'true'
       CCACHE_MAXSIZE: '400MB'
     container:
+      if: '${{ true }}'
       image: '${{ matrix.container }}'
     steps:
 
