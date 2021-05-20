@@ -104,7 +104,7 @@ jobs:
       - name: Install Linux build dependencies
         if: ${{ runner.os == 'Linux' }}
         run: |
-          yum install -y gcc gcc-c++ cmake libuuid-devel openssl-devel cyrus-sasl-devel cyrus-sasl-plain swig python3-devel make libwebsockets-devel ccache libasan libtsan
+          yum install -y gcc gcc-c++ cmake libuuid-devel openssl-devel cyrus-sasl-devel cyrus-sasl-plain swig python3-devel make libwebsockets-devel ccache libasan libubsan libtsan
 
       - name: Install Python build dependencies
         run: python3 -m pip install setuptools wheel tox
@@ -141,7 +141,7 @@ jobs:
             ${ProtonCMakeExtraArgs}
 
       - name: qpid-proton cmake build/install
-        run: cmake --build "${ProtonBuildDir}" --config ${BuildType} -t install
+        run: cmake --build "${ProtonBuildDir}" --config ${BuildType} --target install
 
       - name: Display ccache stats
         run: ccache -s
