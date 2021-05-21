@@ -86,4 +86,5 @@ race:qdr_delivery_mcast_outbound_disposition_CT
 # TBD: discuss with proton devs, JIRA if necessary
 deadlock:pni_timer_set
 
-
+# DISPATCH-2150, PROTON-2133
+race:^check_earmark_override$
