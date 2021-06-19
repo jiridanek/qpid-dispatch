@@ -175,7 +175,15 @@ else()
   set(QPID_DISPATCH_LIB_LINK_FLAGS "-Wl,-z,defs ${QPID_DISPATCH_LIB_LINK_FLAGS}")
 endif()
 
-add_library(qpid-dispatch OBJECT ${qpid_dispatch_SOURCES})
+if(${CMAKE_VERSION} VERSION_LESS "3.12")
+  # object libraries cannot be used with target_link_libraries()
+  add_library(qpid-dispatch STATIC ${qpid_dispatch_SOURCES})
+  target_link_libraries(qpid-dispatch INTERFACE
+          "$<$<CXX_COMPILER_ID:Clang>:-Wl,-force_load $<TARGET_LINKER_FILE:qpid-dispatch>>"
+          "$<$<CXX_COMPILER_ID:GNU>:-Wl,--whole-archive $<TARGET_LINKER_FILE:qpid-dispatch> -Wl,--no-whole-archive>")
+else()
+  add_library(qpid-dispatch OBJECT ${qpid_dispatch_SOURCES})
+endif()
 target_include_directories(qpid-dispatch PRIVATE ${qpid_dispatch_INCLUDES})
 target_link_libraries(qpid-dispatch ${qpid_dispatch_LIBRARIES})
 set_target_properties(qpid-dispatch PROPERTIES
