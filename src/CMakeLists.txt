@@ -175,7 +175,14 @@ else()
   set(QPID_DISPATCH_LIB_LINK_FLAGS "-Wl,-z,defs ${QPID_DISPATCH_LIB_LINK_FLAGS}")
 endif()
 
-add_library(qpid-dispatch OBJECT ${qpid_dispatch_SOURCES})
+if(${CMAKE_VERSION} VERSION_LESS "3.12")
+  # object libraries cannot be used with target_link_libraries()
+  set(QPID_DISPATCH_LIB_TYPE STATIC)
+else()
+  set(QPID_DISPATCH_LIB_TYPE OBJECT)
+endif()
+
+add_library(qpid-dispatch ${QPID_DISPATCH_LIB_TYPE} ${qpid_dispatch_SOURCES})
 target_include_directories(qpid-dispatch PRIVATE ${qpid_dispatch_INCLUDES})
 target_link_libraries(qpid-dispatch ${qpid_dispatch_LIBRARIES})
 set_target_properties(qpid-dispatch PROPERTIES
