@@ -165,9 +165,6 @@ if ((DEFINED ASAN_LIBRARY) OR (DEFINED UBSAN_LIBRARY) OR (DEFINED TSAN_LIBRARY))
   set(USING_SANITIZERS TRUE)
 endif()
 
-#cmake_policy(SET CMP0022 NEW)
-#cmake_policy(SET CMP0111 NEW)
-
 # Create a static library wrapped in interface library (to specify linking options)
 #  needed because CMake < 3.12 does not allow object libraries in target_link_libraries
 add_library(_qpid-dispatch STATIC ${qpid_dispatch_SOURCES})
@@ -176,8 +173,8 @@ target_link_libraries(_qpid-dispatch ${qpid_dispatch_LIBRARIES})
 add_library(qpid-dispatch INTERFACE)
 target_link_libraries(qpid-dispatch INTERFACE
         ${qpid_dispatch_LIBRARIES}
-        "$<$<CXX_COMPILER_ID:Clang>:-Wl,-force_load $<TARGET_LINKER_FILE:_qpid-dispatch>>"
-        "$<$<CXX_COMPILER_ID:GNU>:-Wl,--whole-archive $<TARGET_LINKER_FILE:_qpid-dispatch> -Wl,--no-whole-archive>")
+        "$<$<C_COMPILER_ID:Clang>:-Wl,-force_load $<TARGET_LINKER_FILE:_qpid-dispatch>>"
+        "$<$<C_COMPILER_ID:GNU>:-Wl,--whole-archive $<TARGET_LINKER_FILE:_qpid-dispatch> -Wl,--no-whole-archive>")
 
 # check for various function availability
 check_symbol_exists(getrlimit sys/resource.h QD_HAVE_GETRLIMIT)
