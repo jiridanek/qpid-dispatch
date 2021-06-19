@@ -175,7 +175,7 @@ else()
   set(QPID_DISPATCH_LIB_LINK_FLAGS "-Wl,-z,defs ${QPID_DISPATCH_LIB_LINK_FLAGS}")
 endif()
 
-add_library(qpid-dispatch SHARED ${qpid_dispatch_SOURCES})
+add_library(qpid-dispatch OBJECT ${qpid_dispatch_SOURCES})
 target_include_directories(qpid-dispatch PRIVATE ${qpid_dispatch_INCLUDES})
 target_link_libraries(qpid-dispatch ${qpid_dispatch_LIBRARIES})
 set_target_properties(qpid-dispatch PROPERTIES

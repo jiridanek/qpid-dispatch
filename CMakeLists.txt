@@ -275,9 +275,6 @@ install(FILES
   README
   DESTINATION ${QD_DOC_INSTALL_DIR})
 
-add_subdirectory(src) # Build src first so other subdirs can use QPID_DISPATCH_LIB
-
-# run.py environment runner script - needs QPID_DISPATCH_LIB
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/run.py.in ${CMAKE_CURRENT_BINARY_DIR}/run.py)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/run.py.in ${CMAKE_CURRENT_BINARY_DIR}/tests/run.py)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/system_tests_http.py.in ${CMAKE_CURRENT_SOURCE_DIR}/tests/system_tests_http.py)
@@ -289,6 +286,7 @@ if (NOT UNITTEST_MISSING)
   file(COPY ${SCRAPER_SRC} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/tests/scraper/)
   add_subdirectory(tests)
 endif(NOT UNITTEST_MISSING)
+add_subdirectory(src)
 add_subdirectory(python)
 add_subdirectory(router)
 add_subdirectory(docs)
