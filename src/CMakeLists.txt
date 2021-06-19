@@ -178,9 +178,9 @@ endif()
 if(${CMAKE_VERSION} VERSION_LESS "3.12")
   # object libraries cannot be used with target_link_libraries()
   add_library(qpid-dispatch STATIC ${qpid_dispatch_SOURCES})
-  target_link_libraries(qpid-dispatch INTERFACE
-          "$<$<CXX_COMPILER_ID:Clang>:-Wl,-force_load $<TARGET_LINKER_FILE:qpid-dispatch>>"
-          "$<$<CXX_COMPILER_ID:GNU>:-Wl,--whole-archive $<TARGET_LINKER_FILE:qpid-dispatch> -Wl,--no-whole-archive>")
+  target_link_libraries(qpid-dispatch
+          "$<$<CXX_COMPILER_ID:Clang>:-Wl,-force_load qpid-dispatch>"
+          "$<$<CXX_COMPILER_ID:GNU>:-Wl,--whole-archive qpid-dispatch -Wl,--no-whole-archive>")
 else()
   add_library(qpid-dispatch OBJECT ${qpid_dispatch_SOURCES})
 endif()
