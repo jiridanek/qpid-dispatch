@@ -180,8 +180,6 @@ target_include_directories(qpid-dispatch PRIVATE ${qpid_dispatch_INCLUDES})
 target_link_libraries(qpid-dispatch ${qpid_dispatch_LIBRARIES})
 set_target_properties(qpid-dispatch PROPERTIES
     LINK_FLAGS "${QPID_DISPATCH_LIB_LINK_FLAGS}")
-install(TARGETS qpid-dispatch
-    LIBRARY DESTINATION ${QPID_DISPATCH_HOME})
 
 # check for various function availability
 check_symbol_exists(getrlimit sys/resource.h QD_HAVE_GETRLIMIT)
