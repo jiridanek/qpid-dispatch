@@ -164,30 +164,20 @@ endif (CMAKE_C_COMPILER_ID STREQUAL "GNU")
 if ((DEFINED ASAN_LIBRARY) OR (DEFINED UBSAN_LIBRARY) OR (DEFINED TSAN_LIBRARY))
   set(USING_SANITIZERS TRUE)
 endif()
-if (APPLE)
-  # DISPATCH-1384 - for macOS use flat_namespace instead of 2 level
-  #  namespace (acts more like linux)
-  set(QPID_DISPATCH_LIB_LINK_FLAGS "-Wl,-flat_namespace ${QPID_DISPATCH_LIB_LINK_FLAGS}")
-elseif(CMAKE_C_COMPILER_ID MATCHES "Clang" AND USING_SANITIZERS)
-  # https://github.com/google/sanitizers/issues/380 - can't enable error on
-  #  undefined symbols when linking sanitizers with Clang
-else()
-  set(QPID_DISPATCH_LIB_LINK_FLAGS "-Wl,-z,defs ${QPID_DISPATCH_LIB_LINK_FLAGS}")
-endif()
 
-if(${CMAKE_VERSION} VERSION_LESS "3.12")
-  # object libraries cannot be used with target_link_libraries()
-  add_library(qpid-dispatch STATIC ${qpid_dispatch_SOURCES})
-  target_link_libraries(qpid-dispatch
-          "$<$<CXX_COMPILER_ID:Clang>:-Wl,-force_load qpid-dispatch>"
-          "$<$<CXX_COMPILER_ID:GNU>:-Wl,--whole-archive qpid-dispatch -Wl,--no-whole-archive>")
-else()
-  add_library(qpid-dispatch OBJECT ${qpid_dispatch_SOURCES})
-endif()
-target_include_directories(qpid-dispatch PRIVATE ${qpid_dispatch_INCLUDES})
-target_link_libraries(qpid-dispatch ${qpid_dispatch_LIBRARIES})
-set_target_properties(qpid-dispatch PROPERTIES
-    LINK_FLAGS "${QPID_DISPATCH_LIB_LINK_FLAGS}")
+#cmake_policy(SET CMP0022 NEW)
+#cmake_policy(SET CMP0111 NEW)
+
+# Create a static library wrapped in interface library (to specify linking options)
+#  needed because CMake < 3.12 does not allow object libraries in target_link_libraries
+add_library(_qpid-dispatch STATIC ${qpid_dispatch_SOURCES})
+target_include_directories(_qpid-dispatch PRIVATE ${qpid_dispatch_INCLUDES})
+target_link_libraries(_qpid-dispatch ${qpid_dispatch_LIBRARIES})
+add_library(qpid-dispatch INTERFACE)
+target_link_libraries(qpid-dispatch INTERFACE
+        ${qpid_dispatch_LIBRARIES}
+        "$<$<CXX_COMPILER_ID:Clang>:-Wl,-force_load $<TARGET_LINKER_FILE:_qpid-dispatch>>"
+        "$<$<CXX_COMPILER_ID:GNU>:-Wl,--whole-archive $<TARGET_LINKER_FILE:_qpid-dispatch> -Wl,--no-whole-archive>")
 
 # check for various function availability
 check_symbol_exists(getrlimit sys/resource.h QD_HAVE_GETRLIMIT)
