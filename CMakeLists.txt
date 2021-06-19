@@ -236,14 +236,6 @@ if(QD_ENABLE_ASSERTIONS)
     endif()
 endif()
 
-function(target_link_object_library target library)
-  if(${CMAKE_VERSION} VERSION_LESS "3.12")
-    target_sources(${target} $<TARGET_OBJECTS:${library}>)
-  else()
-    target_link_libraries(${target} ${library})
-  endif()
-endfunction()
-
 # Set up extra coverage analysis options for gcc and clang
 if (CMAKE_BUILD_TYPE MATCHES "Coverage")
  set (CMAKE_C_FLAGS_COVERAGE "-g -O0 --coverage")
