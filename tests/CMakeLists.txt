@@ -42,6 +42,9 @@ set(unit_test_SOURCES
 
 add_executable(unit_tests ${unit_test_SOURCES})
 target_link_object_library(unit_tests  qpid-dispatch)
+# allow overriding qd functions with stubs
+set_target_properties(unit_tests PROPERTIES
+        LINK_FLAGS "-Wl,--allow-multiple-definition")
 
 set(unit_test_size_SOURCES
     field_test.c
@@ -66,6 +69,9 @@ target_link_libraries(clogger ${Proton_LIBRARIES})
 
 add_executable(threaded_timer_test threaded_timer_test.c)
 target_link_object_library(threaded_timer_test qpid-dispatch)
+# allow overriding qd functions with stubs
+set_target_properties(threaded_timer_test PROPERTIES
+        LINK_FLAGS "-Wl,--allow-multiple-definition")
 
 # Bubblewrap is an unprivileged sandboxing tool for Linux. Setting --unshare-net allows
 # running tests in parallel (the ctest -j option) without port clashes

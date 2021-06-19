@@ -202,7 +202,6 @@ void qd_timer_free(qd_timer_t *timer)
 }
 
 
-__attribute__((noinline)) // permit replacement by dummy implementation in unit_tests
 qd_timestamp_t qd_timer_now()
 {
     struct timespec tv;
