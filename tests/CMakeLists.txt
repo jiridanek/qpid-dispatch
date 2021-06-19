@@ -41,7 +41,7 @@ set(unit_test_SOURCES
     )
 
 add_executable(unit_tests ${unit_test_SOURCES})
-target_link_libraries(unit_tests  qpid-dispatch)
+target_link_object_library(unit_tests  qpid-dispatch)
 
 set(unit_test_size_SOURCES
     field_test.c
@@ -52,10 +52,11 @@ set(unit_test_size_SOURCES
     )
 
 add_executable(unit_tests_size ${unit_test_size_SOURCES})
-target_link_libraries(unit_tests_size qpid-dispatch)
+target_link_object_library(unit_tests_size qpid-dispatch)
 
 add_executable(test-sender test-sender.c)
-target_link_libraries(test-sender ${Proton_LIBRARIES} qpid-dispatch)
+target_link_libraries(test-sender ${Proton_LIBRARIES})
+target_link_object_library(test-sender qpid-dispatch)
 
 add_executable(test-receiver test-receiver.c)
 target_link_libraries(test-receiver ${Proton_LIBRARIES})
@@ -64,7 +65,7 @@ add_executable(clogger clogger.c)
 target_link_libraries(clogger ${Proton_LIBRARIES})
 
 add_executable(threaded_timer_test threaded_timer_test.c)
-target_link_libraries(threaded_timer_test qpid-dispatch)
+target_link_object_library(threaded_timer_test qpid-dispatch)
 
 # Bubblewrap is an unprivileged sandboxing tool for Linux. Setting --unshare-net allows
 # running tests in parallel (the ctest -j option) without port clashes
