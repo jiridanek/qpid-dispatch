@@ -281,12 +281,12 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/system_tests_http.py.in ${CMAKE
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/python/qpid_dispatch_internal/management/agent.py.in ${CMAKE_CURRENT_SOURCE_DIR}/python/qpid_dispatch_internal/management/agent.py)
 execute_process(COMMAND ${RUN} --sh OUTPUT_FILE config.sh)
 
+add_subdirectory(src)
 if (NOT UNITTEST_MISSING)
   file(GLOB SCRAPER_SRC ${CMAKE_CURRENT_SOURCE_DIR}/tools/scraper/*.py)
   file(COPY ${SCRAPER_SRC} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/tests/scraper/)
   add_subdirectory(tests)
 endif(NOT UNITTEST_MISSING)
-add_subdirectory(src)
 add_subdirectory(python)
 add_subdirectory(router)
 add_subdirectory(docs)
