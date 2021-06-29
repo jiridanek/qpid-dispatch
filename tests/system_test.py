@@ -693,6 +693,7 @@ class Qdrouterd(Process):
         return self
 
     def is_router_connected(self, router_id, **retry_kwargs):
+        node = None
         try:
             self.management.read(identity="router.node/%s" % router_id)
             # TODO aconway 2015-01-29: The above check should be enough, we
@@ -704,6 +705,9 @@ class Qdrouterd(Process):
             return retry_exception(lambda: node.query('org.apache.qpid.dispatch.router'))
         except:
             return False
+        finally:
+            if node:
+                node.close()
 
     def wait_router_connected(self, router_id, **retry_kwargs):
         retry(lambda: self.is_router_connected(router_id), **retry_kwargs)
