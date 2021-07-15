@@ -707,7 +707,11 @@ class Qdrouterd(Process):
             return False
         finally:
             if node:
-                node.close()
+                try:
+                    node.close()
+                except Exception:
+                    pass
+                node = None
 
     def wait_router_connected(self, router_id, **retry_kwargs):
         retry(lambda: self.is_router_connected(router_id), **retry_kwargs)
