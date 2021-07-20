@@ -153,7 +153,9 @@ tcpConnector {
     router_config << R"END(
 log {
     module: DEFAULT
-    enable: warn+
+    enable: info+
+    outputFile : alog_)END"
+                  << routerId << R"END(
 })END";
 
     return router_config;
