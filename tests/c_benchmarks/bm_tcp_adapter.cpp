@@ -110,6 +110,16 @@ connector {
 })END";
     }
 
+    if (routerId == "QDRL1") {
+        router_config << R"END(
+listener {
+    host: 0.0.0.0
+        port : )END" << 5672
+                      << R"END(
+    role: normal
+        })END";
+    }
+
     for (auto listenerPort : listenerPorts) {
         router_config << R"END(
 listener {
@@ -127,7 +137,6 @@ tcpListener {
     port : )END" << tcpListenerPort
                       << R"END(
     address : ES
-    siteId : siteId
 })END";
     }
     if (tcpConnectorPort != 0) {
