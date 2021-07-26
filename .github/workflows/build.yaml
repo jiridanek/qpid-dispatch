@@ -256,10 +256,13 @@ jobs:
         container: ['fedora']
         containerTag: ['34']
         buildType: [RelWithDebInfo]
+        enableAssertions: [ON]
         runtimeCheck: [asan, tsan]
         shard: [ 1, 2 ]
         shards: [ 2 ]
         include:
+          - runtimeCheck: tsan
+            enableAssertions: [OFF]
           - os: ubuntu-20.04
             container: 'centos'
             containerTag: 7
@@ -302,7 +305,7 @@ jobs:
         -DCMAKE_C_COMPILER_LAUNCHER=ccache
         -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
         -DPython_EXECUTABLE=/usr/bin/python3
-        -DQD_ENABLE_ASSERTIONS=ON
+        -DQD_ENABLE_ASSERTIONS=${{matrix.enableAssertions}}
         -DCONSOLE_INSTALL=OFF
         -DRUNTIME_CHECK=${{matrix.runtimeCheck}}
 
