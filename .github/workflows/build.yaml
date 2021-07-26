@@ -262,7 +262,7 @@ jobs:
         shards: [ 2 ]
         include:
           - runtimeCheck: tsan
-            enableAssertions: [OFF]
+            enableAssertions: OFF
           - os: ubuntu-20.04
             container: 'centos'
             containerTag: 7
