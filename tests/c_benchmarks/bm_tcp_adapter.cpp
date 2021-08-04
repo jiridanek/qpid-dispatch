@@ -427,9 +427,12 @@ static void BM_TCPEchoServerLatencyNQDRSubprocess(benchmark::State &state)
 
 BENCHMARK(BM_TCPEchoServerLatencyNQDRSubprocess)
     ->Unit(benchmark::kMillisecond)
-    //    ->Arg(2)
-    //    ->Arg(3)
+    ->Arg(2)
+    ->Arg(3)
     ->Arg(4)
     ->Arg(5)
+    ->Arg(6)
+    ->Arg(7)
     //    ->Arg(12)
+    //
     ;
