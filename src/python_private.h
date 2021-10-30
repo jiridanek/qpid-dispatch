@@ -1,5 +1,5 @@
-#ifndef __python_internal_h__
-#define __python_internal_h__ 1
+#ifndef _python_internal_h_
+#define _python_internal_h_ 1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file

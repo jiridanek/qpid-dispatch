@@ -1,5 +1,5 @@
-#ifndef __dispatch_private_h__
-#define __dispatch_private_h__
+#ifndef _dispatch_private_h_
+#define _dispatch_private_h_ 1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file

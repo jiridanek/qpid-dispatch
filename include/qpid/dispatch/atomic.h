@@ -1,5 +1,5 @@
-#ifndef __sys_atomic_h__
-#define __sys_atomic_h__ 1
+#ifndef _sys_atomic_h_
+#define _sys_atomic_h_ 1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file

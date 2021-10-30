@@ -1,5 +1,5 @@
-#ifndef __dispatch_bitmask_h__
-#define __dispatch_bitmask_h__ 1
+#ifndef _dispatch_bitmask_h_
+#define _dispatch_bitmask_h_ 1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file

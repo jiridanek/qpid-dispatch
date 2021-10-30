@@ -1,5 +1,5 @@
-#ifndef __policy_h__
-#define __policy_h__
+#ifndef _policy_h_
+#define _policy_h_ 1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file

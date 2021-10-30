@@ -1,5 +1,5 @@
-#ifndef __dispatch_dispatch_h__
-#define __dispatch_dispatch_h__ 1
+#ifndef _dispatch_dispatch_h_
+#define _dispatch_dispatch_h_ 1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file

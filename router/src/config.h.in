@@ -1,5 +1,5 @@
-#ifndef __router_src_config_h_in__
-#define __router_src_config_h_in__
+#ifndef _router_src_config_h_in_
+#define _router_src_config_h_in_ 1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file

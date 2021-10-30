@@ -1,5 +1,5 @@
-#ifndef __log_private_h__
-#define __log_private_h__ 1
+#ifndef _log_private_h_
+#define _log_private_h_ 1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
