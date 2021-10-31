@@ -21,6 +21,7 @@
 #include "http1_private.h"
 
 #include <proton/proactor.h>
+#include <strings.h>
 
 //
 // This file contains code specific to HTTP server processing.  The raw

@@ -29,6 +29,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 
 //
 // This file contains code for encoding/decoding an HTTP/1.x data stream.  See

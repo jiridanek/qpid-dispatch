@@ -24,6 +24,7 @@
 
 #include <proton/listener.h>
 #include <proton/proactor.h>
+#include <strings.h>
 
 
 //

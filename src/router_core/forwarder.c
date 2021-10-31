@@ -17,10 +17,10 @@
  * under the License.
  */
 
+#include <stdio.h>
 #include "forwarder.h"
 
 #include "delivery.h"
-#include "router_core_private.h"
 
 #include <inttypes.h>
 #include <strings.h>
