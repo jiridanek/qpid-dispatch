@@ -35,7 +35,11 @@
 #include <proton/event.h>
 #include <proton/ssl.h>
 
-#include <netdb.h>              /* For NI_MAXHOST/NI_MAXSERV */
+#include "dispatch_private.h"
+#include "timer_private.h"
+#include "http.h"
+
+#include "../win32/networking.h"
 
 qd_dispatch_t* qd_server_dispatch(qd_server_t *server);
 void qd_server_timeout(qd_server_t *server, qd_duration_t delay);

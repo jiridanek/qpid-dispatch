@@ -33,14 +33,22 @@
 #include "proton/session.h"
 #include "proton/transport.h"
 
-#include <arpa/inet.h>
 #include <inttypes.h>
 #include <signal.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef _WIN32
+#pragma comment(lib, "Ws2_32.lib")
+#define WIN32_LEAN_AND_MEAN 1
+#include <winsock2.h>
+#include <windows.h>
+#else
+#include <arpa/inet.h>
 #include <unistd.h>
+#endif
 
 #define DEFAULT_MAX_FRAME  65535
 #define BOOL2STR(b) ((b)?"true":"false")
@@ -113,11 +121,11 @@ void debug(const char *format, ...)
 static void signal_handler(int signum)
 {
     signal(SIGINT,  SIG_IGN);
-    signal(SIGQUIT, SIG_IGN);
+//    signal(SIGQUIT, SIG_IGN);
 
     switch (signum) {
     case SIGINT:
-    case SIGQUIT:
+//    case SIGQUIT:
         stop = true;
         if (reactor) pn_reactor_wakeup(reactor);
         break;
@@ -333,37 +341,37 @@ static void usage(const char *prog)
 
 int main(int argc, char** argv)
 {
-    /* command line options */
-    opterr = 0;
-    int c;
-    while ((c = getopt(argc, argv, "ha:c:i:ns:t:uDP:")) != -1) {
-        switch(c) {
-        case 'h': usage(argv[0]); break;
-        case 'a': host_address = optarg; break;
-        case 'c':
-            if (sscanf(optarg, "%"SCNu64, &limit) != 1)
-                usage(argv[0]);
-            break;
-        case 'i': container_name = optarg; break;
-        case 'n': use_anonymous = true; break;
-        case 's':
-            if (sscanf(optarg, "%"SCNu32, &body_length) != 1)
-                usage(argv[0]);
-            break;
-        case 't': target_address = optarg; break;
-        case 'u': presettle = true; break;
-        case 'D': verbose = true; break;
-        case 'P':
-            if (sscanf(optarg, "%"SCNu32, &pause_msec) != 1)
-                usage(argv[0]);
-            break;
-        default:
-            usage(argv[0]);
-            break;
-        }
-    }
+//    /* command line options */
+//    opterr = 0;
+//    int c;
+//    while ((c = getopt(argc, argv, "ha:c:i:ns:t:uDP:")) != -1) {
+//        switch(c) {
+//        case 'h': usage(argv[0]); break;
+//        case 'a': host_address = optarg; break;
+//        case 'c':
+//            if (sscanf(optarg, "%"SCNu64, &limit) != 1)
+//                usage(argv[0]);
+//            break;
+//        case 'i': container_name = optarg; break;
+//        case 'n': use_anonymous = true; break;
+//        case 's':
+//            if (sscanf(optarg, "%"SCNu32, &body_length) != 1)
+//                usage(argv[0]);
+//            break;
+//        case 't': target_address = optarg; break;
+//        case 'u': presettle = true; break;
+//        case 'D': verbose = true; break;
+//        case 'P':
+//            if (sscanf(optarg, "%"SCNu32, &pause_msec) != 1)
+//                usage(argv[0]);
+//            break;
+//        default:
+//            usage(argv[0]);
+//            break;
+//        }
+//    }
 
-    signal(SIGQUIT, signal_handler);
+//    signal(SIGQUIT, signal_handler);
     signal(SIGINT,  signal_handler);
 
     // test infrastructure may add a "amqp[s]://" prefix to the address string.

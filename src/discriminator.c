@@ -24,9 +24,9 @@
 void qd_generate_discriminator(char *string)
 {
     static const char *table = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+_";
-    long int rnd1 = random();
-    long int rnd2 = random();
-    long int rnd3 = random();
+    long int rnd1 = rand();
+    long int rnd2 = rand();
+    long int rnd3 = rand();
     int      idx;
     int      cursor = 0;
 

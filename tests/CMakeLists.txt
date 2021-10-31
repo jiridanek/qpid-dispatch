@@ -274,8 +274,8 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/config-2
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ssl_certs
         DESTINATION ${QPID_DISPATCH_HOME_INSTALLED}/tests)
 
-add_subdirectory(c_unittests)
-
-if(BUILD_BENCHMARKS)
-  add_subdirectory(c_benchmarks)
-endif()
+#add_subdirectory(c_unittests)
+#
+#if(BUILD_BENCHMARKS)
+#  add_subdirectory(c_benchmarks)
+#endif()

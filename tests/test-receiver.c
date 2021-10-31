@@ -33,7 +33,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>
+//#include <unistd.h>
 
 #define BOOL2STR(b) ((b)?"true":"false")
 
@@ -60,11 +60,11 @@ uint64_t limit = 0;   // if > 0 stop after limit messages arrive
 static void signal_handler(int signum)
 {
     signal(SIGINT,  SIG_IGN);
-    signal(SIGQUIT, SIG_IGN);
+//    signal(SIGQUIT, SIG_IGN);
 
     switch (signum) {
     case SIGINT:
-    case SIGQUIT:
+//    case SIGQUIT:
         stop = true;
         break;
     default:
@@ -172,32 +172,32 @@ int main(int argc, char** argv)
     pn_handler_add(handler, pn_handshaker());
 
     /* command line options */
-    opterr = 0;
-    int c;
-    while((c = getopt(argc, argv, "i:a:s:hdw:c:E")) != -1) {
-        switch(c) {
-        case 'h': usage(); break;
-        case 'a': host_address = optarg; break;
-        case 'c':
-            if (sscanf(optarg, "%"PRIu64, &limit) != 1)
-                usage();
-            break;
-        case 'i': container_name = optarg; break;
-        case 's': source_address = optarg; break;
-        case 'w':
-            if (sscanf(optarg, "%d", &credit_window) != 1 || credit_window <= 0)
-                usage();
-            break;
-        case 'E': drop_connection = true;  break;
-        case 'd': verbose = true;          break;
-
-        default:
-            usage();
-            break;
-        }
-    }
-
-    signal(SIGQUIT, signal_handler);
+//    opterr = 0;
+//    int c;
+//    while((c = getopt(argc, argv, "i:a:s:hdw:c:E")) != -1) {
+//        switch(c) {
+//        case 'h': usage(); break;
+//        case 'a': host_address = optarg; break;
+//        case 'c':
+//            if (sscanf(optarg, "%"PRIu64, &limit) != 1)
+//                usage();
+//            break;
+//        case 'i': container_name = optarg; break;
+//        case 's': source_address = optarg; break;
+//        case 'w':
+//            if (sscanf(optarg, "%d", &credit_window) != 1 || credit_window <= 0)
+//                usage();
+//            break;
+//        case 'E': drop_connection = true;  break;
+//        case 'd': verbose = true;          break;
+//
+//        default:
+//            usage();
+//            break;
+//        }
+//    }
+//
+//    signal(SIGQUIT, signal_handler);
     signal(SIGINT,  signal_handler);
 
     char *host = host_address;

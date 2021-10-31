@@ -40,7 +40,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>
+//#include <unistd.h>
 
 #define BOOL2STR(b) ((b)?"true":"false")
 
@@ -222,11 +222,11 @@ void generate_message(void)
 static void signal_handler(int signum)
 {
     signal(SIGINT,  SIG_IGN);
-    signal(SIGQUIT, SIG_IGN);
-
+//    signal(SIGQUIT, SIG_IGN);
+//
     switch (signum) {
     case SIGINT:
-    case SIGQUIT:
+//    case SIGQUIT:
         stop = true;
         break;
     default:
@@ -365,46 +365,46 @@ static void usage(void)
 int main(int argc, char** argv)
 {
     /* command line options */
-    opterr = 0;
-    int c;
-    while ((c = getopt(argc, argv, "ha:c:i:ns:t:udMEp:X:")) != -1) {
-        switch(c) {
-        case 'h': usage(); break;
-        case 'a': host_address = optarg; break;
-        case 'c':
-            if (sscanf(optarg, "%"PRIu64, &limit) != 1)
-                usage();
-            break;
-        case 'i': container_name = optarg; break;
-        case 'n': use_anonymous = true; break;
-        case 's':
-            switch (optarg[0]) {
-            case 's': body_size = BODY_SIZE_SMALL; break;
-            case 'm': body_size = BODY_SIZE_MEDIUM; break;
-            case 'l': body_size = BODY_SIZE_LARGE; break;
-            case 'x': body_size = BODY_SIZE_HUGE; break;
-            default:
-                usage();
-            }
-            break;
-        case 't': target_address = optarg; break;
-        case 'd': verbose = true;          break;
-        case 'u': presettle = true;        break;
-        case 'M': add_annotations = true;  break;
-        case 'E': drop_connection = true;  break;
-        case 'X': body_data_pattern = optarg[0];  break;
-        case 'p':
-            if (sscanf(optarg, "%u", &priority) != 1)
-                usage();
-            break;
+//    opterr = 0;
+//    int c;
+//    while ((c = getopt(argc, argv, "ha:c:i:ns:t:udMEp:X:")) != -1) {
+//        switch(c) {
+//        case 'h': usage(); break;
+//        case 'a': host_address = optarg; break;
+//        case 'c':
+//            if (sscanf(optarg, "%"PRIu64, &limit) != 1)
+//                usage();
+//            break;
+//        case 'i': container_name = optarg; break;
+//        case 'n': use_anonymous = true; break;
+//        case 's':
+//            switch (optarg[0]) {
+//            case 's': body_size = BODY_SIZE_SMALL; break;
+//            case 'm': body_size = BODY_SIZE_MEDIUM; break;
+//            case 'l': body_size = BODY_SIZE_LARGE; break;
+//            case 'x': body_size = BODY_SIZE_HUGE; break;
+//            default:
+//                usage();
+//            }
+//            break;
+//        case 't': target_address = optarg; break;
+//        case 'd': verbose = true;          break;
+//        case 'u': presettle = true;        break;
+//        case 'M': add_annotations = true;  break;
+//        case 'E': drop_connection = true;  break;
+//        case 'X': body_data_pattern = optarg[0];  break;
+//        case 'p':
+//            if (sscanf(optarg, "%u", &priority) != 1)
+//                usage();
+//            break;
+//
+//        default:
+//            usage();
+//            break;
+//        }
+//    }
 
-        default:
-            usage();
-            break;
-        }
-    }
-
-    signal(SIGQUIT, signal_handler);
+//    signal(SIGQUIT, signal_handler);
     signal(SIGINT,  signal_handler);
 
     char *host = host_address;

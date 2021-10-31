@@ -41,8 +41,31 @@
 #define pnx_sasl_set_failed(X)  pnx_sasl_fail_authentication(X)
 #define remote_sasl_process_outcome(X, Y) remote_sasl_process_outcome(X)
 #endif
-#include "qpid/dispatch/ctools.h"
-#include "qpid/dispatch/log.h"
+#include <qpid/dispatch/log.h>
+#include <qpid/dispatch/ctools.h>
+#include <stddef.h>
+
+// not sure what brought it here
+#undef min
+
+// add consts to the answers TODO
+// https://stackoverflow.com/questions/6062822/whats-wrong-with-strndup
+
+char *strndup(const char *str, unsigned int chars)
+{
+    char *buffer;
+    int n;
+
+    buffer = (char *) malloc(chars +1);
+    if (buffer)
+    {
+        for (n = 0; ((n < chars) && (str[n] != 0)) ; n++) buffer[n] = str[n];
+        buffer[n] = 0;
+    }
+
+    return buffer;
+}
+
 
 static qd_log_source_t* auth_service_log;
 

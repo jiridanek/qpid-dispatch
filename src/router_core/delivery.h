@@ -1,5 +1,5 @@
-#ifndef __delivery_h__
-#define __delivery_h__ 1
+#ifndef _delivery_h_
+#define _delivery_h_ 1
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one

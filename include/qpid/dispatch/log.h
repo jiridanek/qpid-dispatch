@@ -18,8 +18,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include <stdarg.h>
 #include <stdbool.h>
+#include <stdarg.h>
+
+// to get the same struct timeval; todo wrong header file to put it in
+#include <WinSock2.h>
 
 /**@file
  * Sending debug/administrative log messages.

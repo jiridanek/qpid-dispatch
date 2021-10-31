@@ -20,10 +20,10 @@
 #include "qpid/dispatch/amqp.h"
 
 #include <errno.h>
-#include <netdb.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#include "../win32/networking.h"
 
 const char * const QD_MA_PREFIX  = "x-opt-qd.";
 const char * const QD_MA_INGRESS = "x-opt-qd.ingress";
@@ -105,7 +105,7 @@ const char * const QD_AMQP_DFLT_PROTO = "tcp";
 /// Needed because getservbyname is thread safe on macOS, and getservbyname_r is not defined there.
 static inline int qd_getservbyname(const char *name, const char *proto);
 
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(WIN32)
 static inline int qd_getservbyname(const char *name, const char *proto) {
     struct servent *serv_info = getservbyname(name, proto);
     if (serv_info) {

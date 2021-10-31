@@ -70,7 +70,6 @@ set(qpid_dispatch_SOURCES
   policy.c
   proton_utils.c
   remote_sasl.c
-  posix/threading.c
   python_embedded.c
   router_agent.c
   router_config.c
@@ -123,6 +122,18 @@ set(qpid_dispatch_SOURCES
   trace_mask.c
   python_utils.c
   )
+
+#set(qpid_dispatch_SOURCES $qpid_dispatch_SOURCES
+#  posix/threading.c)
+
+set(qpid_dispatch_SOURCES ${qpid_dispatch_SOURCES}
+  dlfcn_win.h
+  syslog.h
+  win32/syslog.c
+  win32/getopt.c
+  c.h
+  router_core/strings.h
+  win32/threading.c)
 
 set(qpid_dispatch_INCLUDES
   ${CMAKE_CURRENT_SOURCE_DIR}

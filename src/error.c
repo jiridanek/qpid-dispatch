@@ -198,6 +198,8 @@ qd_error_t qd_error_py_impl(const char *file, int line) {
     return qd_error_code();
 }
 
+#define strerror_r(errno,buf,len) strerror_s(buf,len,errno)
+
 qd_error_t qd_error_errno_impl(int errnum, const char *file, int line, const char *fmt, ...) {
     if (errnum) {
         ts.error_code = QD_ERROR_SYSTEM;

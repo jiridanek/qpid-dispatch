@@ -116,9 +116,9 @@ class WithNoMemoryLeaks
     {
         this->fail = fail;
 #if QD_MEMORY_DEBUG
-        int fd = mkstemp(path_ptr.get());
-        (void) fd;  // unused
-        REQUIRE(fd != -1);
+//        int fd = mkstemp(path_ptr.get());
+//        (void) fd;  // unused
+//        REQUIRE(fd != -1);
         qd_alloc_debug_dump(path_ptr.get());
 #endif  // QD_MEMORY_DEBUG
     }

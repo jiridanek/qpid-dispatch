@@ -17,6 +17,7 @@
  * under the License.
  */
 
+#include <qpid/dispatch/discriminator.h>
 #include "python_private.h"
 #include "qpid/dispatch/python_embedded.h"
 
@@ -30,17 +31,62 @@
 #include "log_private.h"
 #include "message_private.h"
 #include "policy.h"
-#include "router_private.h"
+#include "entity.h"
+#include "entity_cache.h"
+//#include <dlfcn.h>
 
-#include "qpid/dispatch/alloc.h"
-#include "qpid/dispatch/ctools.h"
-#include "qpid/dispatch/discriminator.h"
-#include "qpid/dispatch/server.h"
-#include "qpid/dispatch/static_assert.h"
+// https://stackoverflow.com/questions/735126/are-there-alternate-implementations-of-gnu-getline-interface/735472#735472
+// https://stackoverflow.com/a/47067149
 
-#include <dlfcn.h>
-#include <inttypes.h>
-#include <stdlib.h>
+// http://cvsweb.netbsd.org/bsdweb.cgi/pkgsrc/pkgtools/libnbcompat/files/getdelim.c?only_with_tag=MAIN
+static inline ssize_t
+getdelim(char **buf, size_t *bufsiz, int delimiter, FILE *fp)
+{
+    char *ptr, *eptr;
+
+
+    if (*buf == NULL || *bufsiz == 0) {
+        *bufsiz = BUFSIZ;
+        if ((*buf = malloc(*bufsiz)) == NULL)
+            return -1;
+    }
+
+    for (ptr = *buf, eptr = *buf + *bufsiz;;) {
+        int c = fgetc(fp);
+        if (c == -1) {
+            if (feof(fp)) {
+                ssize_t diff = (ssize_t)(ptr - *buf);
+                if (diff != 0) {
+                    *ptr = '\0';
+                    return diff;
+                }
+            }
+            return -1;
+        }
+        *ptr++ = c;
+        if (c == delimiter) {
+            *ptr = '\0';
+            return ptr - *buf;
+        }
+        if (ptr + 2 >= eptr) {
+            char *nbuf;
+            size_t nbufsiz = *bufsiz * 2;
+            ssize_t d = ptr - *buf;
+            if ((nbuf = realloc(*buf, nbufsiz)) == NULL)
+                return -1;
+            *buf = nbuf;
+            *bufsiz = nbufsiz;
+            eptr = nbuf + nbufsiz;
+            ptr = nbuf + d;
+        }
+    }
+}
+
+static inline ssize_t
+getline(char **buf, size_t *bufsiz, FILE *fp)
+{
+    return getdelim(buf, bufsiz, '\n', fp);
+}
 
 /**
  * Private Function Prototypes
@@ -79,8 +125,8 @@ qd_dispatch_t *qd_dispatch(const char *python_pkgdir, bool test_hooks)
     // Seed the random number generator
     //
     struct timeval time;
-    gettimeofday(&time, NULL);
-    srandom((unsigned int)time.tv_sec + ((unsigned int)time.tv_usec << 11));
+//    gettimeofday(&time, NULL);
+//    srandom((unsigned int)time.tv_sec + ((unsigned int)time.tv_usec << 11));
     
     qd = NEW(qd_dispatch_t);
     ZERO(qd);
@@ -119,9 +165,13 @@ qd_dispatch_t *qd_dispatch(const char *python_pkgdir, bool test_hooks)
 qd_error_t qd_dispatch_load_config(qd_dispatch_t *qd, const char *config_path)
 {
     // `dlopen(NULL, ...)` opens the current executable; qdrouterd used to dlopen libqpid-dispatch.so here before
-    qd->dl_handle = dlopen(NULL, RTLD_LAZY | RTLD_NOLOAD);
+//    qd->dl_handle = dlopen(NULL, RTLD_LAZY | RTLD_NOLOAD);
+    qd->dl_handle = GetModuleHandle(NULL);
     if (!qd->dl_handle)
         return qd_error(QD_ERROR_RUNTIME, "Failed to dlopen the current executable");
+
+//    FARPROC addr = GetProcAddress(qd->dl_handle, "qd_error_message");
+//    printf("proc %ld\n", addr);
 
     qd_python_lock_state_t lock_state = qd_python_lock();
     PyObject *module = PyImport_ImportModule("qpid_dispatch_internal.management.config");

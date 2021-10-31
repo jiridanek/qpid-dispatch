@@ -26,7 +26,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
+#include <win32/aliases.h>
+//#include <unistd.h>
 
 #define thread_count 10
 static sys_thread_t *threads[thread_count] = {0};
