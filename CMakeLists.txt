@@ -57,10 +57,26 @@ if (NOT HAVE_STDATOMIC_H)
     add_definitions(-D__STDC_NO_ATOMICS__)
 endif()
 
-# Set warning compile flags
-set(C_WARNING_GNU -Wall -Wextra -Werror -Wpedantic -pedantic-errors -Wno-empty-body -Wno-implicit-fallthrough -Wno-unused-parameter -Wno-ignored-qualifiers -Wno-missing-field-initializers -Wno-sign-compare -Wno-type-limits)
-set(C_WARNING_Clang -Wall -Wextra -Werror -Wpedantic -Wno-unused-parameter -Wno-ignored-qualifiers -Wno-missing-field-initializers -Wno-sign-compare -Wno-gnu-statement-expression)
-set(C_WARNING_SunPro -errwarn=%all)
+if (WIN32)
+    # Set linker compile flags
+    set(C_LINKER_Clang /force:multiple)
+
+    # Set warning compile flags
+    set(C_WARNING_Clang -Wall -Wextra -Werror -Wpedantic -Wno-old-style-cast -Wno-zero-as-null-pointer-constant -Wno-extra-semi -Wno-global-constructors -Wno-exit-time-destructors -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unreachable-code-return -Wno-missing-noreturn -Wno-macro-redefined -Wno-c++-compat -Wno-vla -Wno-gnu-empty-struct -Wno-incompatible-pointer-types-discards-qualifiers -Wno-unused-value -Wno-unused-function -Wno-extra-semi-stmt -Wno-implicit-fallthrough -Wno-covered-switch-default -Wno-bad-function-cast -Wno-int-to-pointer-cast -Wno-int-to-void-pointer-cast -Wno-undef -Wno-double-promotion -Wno-incompatible-library-redeclaration -Wno-implicit-int-conversion -Wno-format-nonliteral -Wno-tautological-unsigned-zero-compare -Wno-unused-variable -Wno-cast-align -Wno-visibility -Wno-unused-macros -Wno-shadow -Wno-switch-enum -Wno-missing-variable-declarations -Wno-implicit-function-declaration -Wno-shorten-64-to-32 -Wno-sign-conversion -Wno-atomic-implicit-seq-cst -Wno-deprecated-declarations -Wno-nonportable-system-include-path -Wno-cast-qual -Wno-documentation -Wno-unreachable-code-break -Wno-conditional-uninitialized -Wno-missing-prototypes -Wno-reserved-id-macro -Wno-language-extension-token -Wno-documentation-unknown-command -Wno-strict-prototypes -Wno-unused-parameter -Wno-ignored-qualifiers -Wno-missing-field-initializers -Wno-sign-compare -Wno-gnu-statement-expression)
+else()
+    # Set linker compile flags
+    set(C_LINKER_GNU "")
+    set(C_LINKER_Clang "")
+    set(C_LINKER_SunPro "")
+
+    # Set warning compile flags
+    set(C_WARNING_GNU -Wall -Wextra -Werror -Wpedantic -pedantic-errors -Wno-empty-body -Wno-implicit-fallthrough -Wno-unused-parameter -Wno-ignored-qualifiers -Wno-missing-field-initializers -Wno-sign-compare -Wno-type-limits)
+    set(C_WARNING_Clang -Wall -Wextra -Werror -Wpedantic -Wno-unused-parameter -Wno-ignored-qualifiers -Wno-missing-field-initializers -Wno-sign-compare -Wno-gnu-statement-expression)
+    set(C_WARNING_SunPro -errwarn=%all)
+endif()
+
+set(C_LINKER_FLAGS ${C_LINKER_${CMAKE_C_COMPILER_ID}})
+add_link_options(${C_LINKER_FLAGS})
 
 set(C_WARNING_FLAGS ${C_WARNING_${CMAKE_C_COMPILER_ID}})
 add_compile_options(${C_WARNING_FLAGS})
@@ -96,11 +112,11 @@ include(CMakeDependentOption)
 ##
 ## Find dependencies
 ##
-if (NOT APPLE)
-  find_library(rt_lib rt)
-else (NOT APPLE)
-  set(rt "")
-endif (NOT APPLE)
+if (APPLE OR WIN32)
+    set(rt "")
+else (APPLE OR WIN32)
+    find_library(rt_lib rt)
+endif (APPLE OR WIN32)
 
 # This setting mirrors FindPythonInterp behavior on Windows/macOS, which did not consult registry/frameworks first.
 if (NOT DEFINED Python_FIND_REGISTRY)
