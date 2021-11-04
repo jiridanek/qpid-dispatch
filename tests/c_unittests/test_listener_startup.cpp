@@ -120,33 +120,33 @@ TEST_CASE("Start AMQP listener with zero port and a name")
     );
 }
 
-TEST_CASE("Start HTTP listener with zero port")
-{
-    qd_server_config_t config{};
-    config.port      = strdup("0");
-    config.host      = strdup("localhost");
-    config.host_port = strdup("localhost:0");
-    config.http      = true;
-
-    check_http_listener_startup_log_message(
-        config,
-        R"EOS(SERVER \(notice\) Listening for HTTP on localhost:(\d\d+))EOS",
-        R"EOS(SERVER \(notice\) Stopped listening for HTTP on localhost:0)EOS"
-    );
-}
-
-TEST_CASE("Start HTTP listener with zero port and a name")
-{
-    qd_server_config_t config{};
-    config.name      = strdup("pepa");
-    config.port      = strdup("0");
-    config.host      = strdup("localhost");
-    config.host_port = strdup("localhost:0");
-    config.http      = true;
-
-    check_http_listener_startup_log_message(
-        config,
-        R"EOS(SERVER \(notice\) Listening for HTTP on localhost:(\d\d+))EOS",
-        R"EOS(SERVER \(notice\) Stopped listening for HTTP on localhost:0)EOS"
-    );
-}
+//TEST_CASE("Start HTTP listener with zero port")
+//{
+//    qd_server_config_t config{};
+//    config.port      = strdup("0");
+//    config.host      = strdup("localhost");
+//    config.host_port = strdup("localhost:0");
+//    config.http      = true;
+//
+//    check_http_listener_startup_log_message(
+//        config,
+//        R"EOS(SERVER \(notice\) Listening for HTTP on localhost:(\d\d+))EOS",
+//        R"EOS(SERVER \(notice\) Stopped listening for HTTP on localhost:0)EOS"
+//    );
+//}
+//
+//TEST_CASE("Start HTTP listener with zero port and a name")
+//{
+//    qd_server_config_t config{};
+//    config.name      = strdup("pepa");
+//    config.port      = strdup("0");
+//    config.host      = strdup("localhost");
+//    config.host_port = strdup("localhost:0");
+//    config.http      = true;
+//
+//    check_http_listener_startup_log_message(
+//        config,
+//        R"EOS(SERVER \(notice\) Listening for HTTP on localhost:(\d\d+))EOS",
+//        R"EOS(SERVER \(notice\) Stopped listening for HTTP on localhost:0)EOS"
+//    );
+//}
