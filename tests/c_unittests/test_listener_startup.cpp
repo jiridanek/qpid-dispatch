@@ -25,39 +25,12 @@
 #include <regex>
 #include <thread>
 
-extern "C" {
-void qd_connection_manager_delete_listener(qd_dispatch_t *qd, void *impl);
-}
-
 #include <unistd.h>
 
-void check_http_listener_startup_log_message(qd_server_config_t config, std::string listen, std::string stop)
-{
-    std::thread([&] {
-        QDR qdr{};
-        CaptureCStream css{&stderr};
-        qdr.initialize("");
-        css.restore();
-
-        qd_listener_t listener{};
-        qd_listener_t *li = &listener;
-        li->server = qdr.qd->server;
-        li->config = config;
-
-        const size_t checkpoint = css.checkpoint();
-        CHECK(qd_listener_listen(li));
-
-        /* Websocket is opened immediately, no need to even start the worker threads */
-        qd_lws_listener_close(li->http);
-        qdr.deinitialize();
-
-        free(li->http);
-        qd_server_config_free(&li->config);
-
-        std::string logging = css.str(checkpoint);
-        CHECK_MESSAGE(std::regex_search(logging, std::regex{listen}), listen, " not found in ", logging);
-        CHECK_MESSAGE(std::regex_search(logging, std::regex{stop}), stop, " not found in ", logging);
-    }).join();
+/// GCC 4.8 made a questionable choice to implement std::regex_search to always
+/// return false. Meaning that tests cannot use regex on RHEL 7
+static bool regex_is_broken() {
+    return !std::regex_search("", std::regex(""));
 }
 
 void check_amqp_listener_startup_log_message(qd_server_config_t config, std::string listen, std::string stop)
@@ -91,11 +64,44 @@ void check_amqp_listener_startup_log_message(qd_server_config_t config, std::str
     qdr.deinitialize();
 
     std::string logging = css.str(checkpoint);
-    CHECK_MESSAGE(std::regex_search(logging, std::regex(listen)), listen, " not found in ", logging);
-    CHECK_MESSAGE(std::regex_search(logging, std::regex(stop)), stop, " not found in ", logging);
+    CHECK_MESSAGE(std::regex_search(logging, std::regex(listen)),
+                  listen, " not found in ", logging);
+    CHECK_MESSAGE(std::regex_search(logging, std::regex(stop)),
+                  stop, " not found in ", logging);
 }
 
-TEST_CASE("Start AMQP listener with zero port")
+void check_http_listener_startup_log_message(qd_server_config_t config, std::string listen, std::string stop)
+{
+    std::thread([&] {
+      QDR qdr{};
+      CaptureCStream css{&stderr};
+      qdr.initialize("");
+      css.restore();
+
+      qd_listener_t listener{};
+      qd_listener_t *li = &listener;
+      li->server = qdr.qd->server;
+      li->config = config;
+
+      const size_t checkpoint = css.checkpoint();
+      CHECK(qd_listener_listen(li));
+
+      /* Websocket is opened immediately, no need to even start the worker threads */
+      qd_lws_listener_close(li->http);
+      qdr.deinitialize();
+
+      free(li->http);
+      qd_server_config_free(&li->config);
+
+      std::string logging = css.str(checkpoint);
+      CHECK_MESSAGE(std::regex_search(logging, std::regex(listen, std::regex::extended)),
+                    listen, " not found in ", logging);
+      CHECK_MESSAGE(std::regex_search(logging, std::regex(stop, std::regex::extended)),
+                    stop, " not found in ", logging);
+    }).join();
+}
+
+TEST_CASE("Start AMQP listener with zero port" * doctest::skip(regex_is_broken()))
 {
     std::thread([] {
         qd_server_config_t config{};
