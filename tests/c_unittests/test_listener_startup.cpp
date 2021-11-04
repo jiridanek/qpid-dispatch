@@ -34,6 +34,35 @@ void check_http_listener_startup_log_message(qd_server_config_t config, std::str
     std::thread([&] {
         QDR qdr{};
         CaptureCStream css{&stderr};
+        qdr.initialize("");
+        css.restore();
+
+        qd_listener_t listener{};
+        qd_listener_t *li = &listener;
+        li->server = qdr.qd->server;
+        li->config = config;
+
+        const size_t checkpoint = css.checkpoint();
+        CHECK(qd_listener_listen(li));
+
+        /* Websocket is opened immediately, no need to even start the worker threads */
+        qd_lws_listener_close(li->http);
+        qdr.deinitialize();
+
+        free(li->http);
+        qd_server_config_free(&li->config);
+
+        std::string logging = css.str(checkpoint);
+        CHECK_MESSAGE(std::regex_search(logging, std::regex{listen}), listen, " not found in ", logging);
+        CHECK_MESSAGE(std::regex_search(logging, std::regex{stop}), stop, " not found in ", logging);
+    }).join();
+}
+
+void check_amqp_listener_startup_log_message(qd_server_config_t config, std::string listen, std::string stop)
+{
+    std::thread([&] {
+        QDR qdr{};
+        CaptureCStream css{&stderr};
         qdr.initialize("./minimal_trace.conf");
         css.restore();
 
@@ -44,18 +73,15 @@ void check_http_listener_startup_log_message(qd_server_config_t config, std::str
         const size_t checkpoint = css.checkpoint();
         CHECK(qd_listener_listen(li));
 
-        if (config.http) {
-            /* Websocket is opened immediately, no need to even start the worker threads */
-            qd_lws_listener_close(li->http);
-        } else {  // AMQP
+        {
             /* AMQP socket is opened only when proactor loop runs; meaning router has to be started */
             pn_listener_close(li->pn_listener);
             auto timer = qdr.schedule_stop(0);
             qdr.run();
-
-            qd_server_config_free(&li->config);
-            free_qd_listener_t(li);
         }
+
+        qd_server_config_free(&li->config);
+        free_qd_listener_t(li);
 
         qdr.deinitialize();
 
@@ -72,7 +98,7 @@ TEST_CASE("Start AMQP listener with zero port")
     config.host      = strdup("localhost");
     config.host_port = strdup("localhost:0");
 
-    check_http_listener_startup_log_message(
+    check_amqp_listener_startup_log_message(
         config,
         R"EOS(SERVER \(notice\) Listening on (127.0.0.1)|(::1):(\d\d+))EOS",
         R"EOS(SERVER \(trace\) Listener closed on localhost:0)EOS"
@@ -87,7 +113,7 @@ TEST_CASE("Start AMQP listener with zero port and a name")
     config.host      = strdup("localhost");
     config.host_port = strdup("localhost:0");
 
-    check_http_listener_startup_log_message(
+    check_amqp_listener_startup_log_message(
         config,
         R"EOS(SERVER \(notice\) Listening on (127.0.0.1)|(::1):(\d\d+) \(pepa\))EOS",
         R"EOS(SERVER \(trace\) Listener closed on localhost:0)EOS"
@@ -120,7 +146,7 @@ TEST_CASE("Start HTTP listener with zero port and a name")
 
     check_http_listener_startup_log_message(
         config,
-        R"EOS(SERVER \(notice\) Listening for HTTP on localhost:(\d\d+) \(pepa\))EOS",
+        R"EOS(SERVER \(notice\) Listening for HTTP on localhost:(\d\d+))EOS",
         R"EOS(SERVER \(notice\) Stopped listening for HTTP on localhost:0)EOS"
     );
 }

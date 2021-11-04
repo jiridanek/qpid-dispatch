@@ -33,12 +33,15 @@ add_executable(c_unittests
         helpers.cpp
         helpers.hpp
         test_amqp.cpp
+        test_listener_startup.cpp
         test_router_startup.cpp
         test_terminus.cpp
         $<TARGET_OBJECTS:qpid-dispatch>)
 target_link_libraries(c_unittests pthread qpid-dispatch-libraries)
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/minimal_silent.conf
+file(COPY
+        ${CMAKE_CURRENT_SOURCE_DIR}/minimal_silent.conf
+        ${CMAKE_CURRENT_SOURCE_DIR}/minimal_trace.conf
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 add_test(
