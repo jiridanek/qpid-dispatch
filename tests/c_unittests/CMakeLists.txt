@@ -32,10 +32,10 @@ add_executable(c_unittests
         qdr_doctest.hpp
         helpers.cpp
         helpers.hpp
-#        test_amqp.cpp
+        test_amqp.cpp
         test_listener_startup.cpp
-#        test_router_startup.cpp
-#        test_terminus.cpp
+        test_router_startup.cpp
+        test_terminus.cpp
         $<TARGET_OBJECTS:qpid-dispatch>)
 target_link_libraries(c_unittests pthread qpid-dispatch-libraries)
 
