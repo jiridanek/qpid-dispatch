@@ -91,8 +91,8 @@ void check_amqp_listener_startup_log_message(qd_server_config_t config, std::str
     qdr.deinitialize();
 
     std::string logging = css.str(checkpoint);
-    CHECK_MESSAGE(std::regex_search(logging, std::regex{listen}), listen, " not found in ", logging);
-    CHECK_MESSAGE(std::regex_search(logging, std::regex{stop}), stop, " not found in ", logging);
+    CHECK_MESSAGE(std::regex_search(logging, std::regex(listen)), listen, " not found in ", logging);
+    CHECK_MESSAGE(std::regex_search(logging, std::regex(stop)), stop, " not found in ", logging);
 }
 
 TEST_CASE("Start AMQP listener with zero port")
