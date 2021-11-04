@@ -90,9 +90,9 @@ void check_http_listener_startup_log_message(qd_server_config_t config, std::str
       qd_server_config_free(&li->config);
 
       std::string logging = css.str(checkpoint);
-      CHECK_MESSAGE(std::regex_search(logging, std::regex(listen, std::regex::extended)),
+      CHECK_MESSAGE(std::regex_search(logging, std::regex(listen)),
                     listen, " not found in ", logging);
-      CHECK_MESSAGE(std::regex_search(logging, std::regex(stop, std::regex::extended)),
+      CHECK_MESSAGE(std::regex_search(logging, std::regex(stop)),
                     stop, " not found in ", logging);
     }).join();
 }
@@ -105,54 +105,62 @@ TEST_CASE("Start AMQP listener with zero port" * doctest::skip(regex_is_broken()
         config.host      = strdup("localhost");
         config.host_port = strdup("localhost:0");
 
-        check_amqp_listener_startup_log_message(config,
-                                                R"EOS(SERVER \(notice\) Listening on (127.0.0.1)|(::1):(\d\d+))EOS",
-                                                R"EOS(SERVER \(trace\) Listener closed on localhost:0)EOS");
+        check_amqp_listener_startup_log_message(
+            config,
+            R"EOS(SERVER \(notice\) Listening on (127.0.0.1)|(::1):(\d\d+))EOS",
+            R"EOS(SERVER \(trace\) Listener closed on localhost:0)EOS"
+        );
     }).join();
 }
 
-//TEST_CASE("Start AMQP listener with zero port and a name")
-//{
-//    qd_server_config_t config{};
-//    config.name      = strdup("pepa");
-//    config.port      = strdup("0");
-//    config.host      = strdup("localhost");
-//    config.host_port = strdup("localhost:0");
-//
-//    check_amqp_listener_startup_log_message(
-//        config,
-//        R"EOS(SERVER \(notice\) Listening on (127.0.0.1)|(::1):(\d\d+) \(pepa\))EOS",
-//        R"EOS(SERVER \(trace\) Listener closed on localhost:0)EOS"
-//    );
-//}
+TEST_CASE("Start AMQP listener with zero port and a name" * doctest::skip(regex_is_broken()))
+{
+    std::thread([] {
+        qd_server_config_t config{};
+        config.name      = strdup("pepa");
+        config.port      = strdup("0");
+        config.host      = strdup("localhost");
+        config.host_port = strdup("localhost:0");
 
-//TEST_CASE("Start HTTP listener with zero port")
-//{
-//    qd_server_config_t config{};
-//    config.port      = strdup("0");
-//    config.host      = strdup("localhost");
-//    config.host_port = strdup("localhost:0");
-//    config.http      = true;
-//
-//    check_http_listener_startup_log_message(
-//        config,
-//        R"EOS(SERVER \(notice\) Listening for HTTP on localhost:(\d\d+))EOS",
-//        R"EOS(SERVER \(notice\) Stopped listening for HTTP on localhost:0)EOS"
-//    );
-//}
-//
-//TEST_CASE("Start HTTP listener with zero port and a name")
-//{
-//    qd_server_config_t config{};
-//    config.name      = strdup("pepa");
-//    config.port      = strdup("0");
-//    config.host      = strdup("localhost");
-//    config.host_port = strdup("localhost:0");
-//    config.http      = true;
-//
-//    check_http_listener_startup_log_message(
-//        config,
-//        R"EOS(SERVER \(notice\) Listening for HTTP on localhost:(\d\d+))EOS",
-//        R"EOS(SERVER \(notice\) Stopped listening for HTTP on localhost:0)EOS"
-//    );
-//}
+        check_amqp_listener_startup_log_message(
+            config,
+            R"EOS(SERVER \(notice\) Listening on (127.0.0.1)|(::1):(\d\d+) \(pepa\))EOS",
+            R"EOS(SERVER \(trace\) Listener closed on localhost:0)EOS"
+        );
+    }).join();
+}
+
+TEST_CASE("Start HTTP listener with zero port" * doctest::skip(regex_is_broken()))
+{
+    std::thread([] {
+        qd_server_config_t config{};
+        config.port      = strdup("0");
+        config.host      = strdup("localhost");
+        config.host_port = strdup("localhost:0");
+        config.http      = true;
+
+        check_http_listener_startup_log_message(
+            config,
+            R"EOS(SERVER \(notice\) Listening for HTTP on localhost:(\d\d+))EOS",
+            R"EOS(SERVER \(notice\) Stopped listening for HTTP on localhost:0)EOS"
+        );
+    }).join();
+}
+
+TEST_CASE("Start HTTP listener with zero port and a name" * doctest::skip(regex_is_broken()))
+{
+    std::thread([] {
+        qd_server_config_t config{};
+        config.name      = strdup("pepa");
+        config.port      = strdup("0");
+        config.host      = strdup("localhost");
+        config.host_port = strdup("localhost:0");
+        config.http      = true;
+
+        check_http_listener_startup_log_message(
+            config,
+            R"EOS(SERVER \(notice\) Listening for HTTP on localhost:(\d\d+))EOS",
+            R"EOS(SERVER \(notice\) Stopped listening for HTTP on localhost:0)EOS"
+        );
+    }).join();
+}
