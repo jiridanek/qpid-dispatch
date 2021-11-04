@@ -144,6 +144,9 @@ class WithNoMemoryLeaks
 /// Submits an action to the router's action list. When action runs, we know router finished all previous actions.
 ///
 /// This can be used to detect the router finished starting (i.e., performed all previously scheduled actions).
+///
+/// Enqueued actions get processed on the router core thread, one by one. These qdr_actions are different from Proton
+/// proactor events that get processed in router's worker threads. Use qd timeouts to schedule on worker threads.
 class RouterStartupLatch
 {
    public:
@@ -211,6 +214,7 @@ class QDR
         } else {
             // this is the abbreviated setup load_config() calls from Python, this way we can sometimes skip loading a
             // config file
+            qd->thread_count = 1;
             REQUIRE(qd_dispatch_prepare(qd) == QD_ERROR_NONE);
             qd_router_setup_late(qd);  // sets up e.g. qd->router->router_core
         }
@@ -235,6 +239,19 @@ class QDR
     void stop() const
     {
         qd_server_stop(qd);
+    }
+
+    /// Schedules QDR.stop using qd_timer
+    ///
+    /// The returned value must outlive the end of timer activation!
+    std::unique_ptr<qd_timer_t, void (*)(qd_timer_t *)> schedule_stop(int timeout = 0) const
+    {
+        qd_timer_t *timer = qd_timer(qd, [](void* context) {
+                QDR *that = static_cast<QDR*>(context);
+                that->stop();
+            }, (void*)this);
+        qd_timer_schedule(timer, timeout);
+        return qd_make_unique(timer, qd_timer_free);
     }
 
     /// Frees the router and optionally checks for leaks.
@@ -286,6 +303,44 @@ class QDRMinimalEnv
         qd_log_finalize();
         qd_alloc_finalize();
         qd_entity_cache_free_entries();
+    }
+};
+
+class CaptureCStream
+{
+    FILE **mStream;
+    FILE *mOriginal;
+
+    char *buf;
+    size_t size;
+   public:
+    CaptureCStream(FILE **stream) : mStream(stream), mOriginal(*stream) {
+        *stream = open_memstream(&buf, &size);
+    }
+
+    void restore() {
+        *mStream = mOriginal;
+    }
+
+    size_t checkpoint() {\
+        fflush(*mStream);
+        return size;
+    }
+
+    std::string str() {
+        fflush(*mStream);
+        return std::string(buf, size);
+    }
+
+    std::string str(size_t begin) {
+        fflush(*mStream);
+        return std::string(buf + begin, size - begin);
+    }
+
+    ~CaptureCStream() {
+        fclose(*mStream);
+        restore();
+        free(buf);
     }
 };
 

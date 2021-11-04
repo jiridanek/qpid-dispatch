@@ -383,15 +383,24 @@ static void listener_start(qd_lws_listener_t *hl, qd_http_server_t *hs) {
     }
     info.vhost_name = hl->listener->config.host_port;
     hl->vhost = lws_create_vhost(hs->context, &info);
-    if (hl->vhost) {
-        /* Store hl pointer in vhost */
-        void *vp = lws_protocol_vh_priv_zalloc(hl->vhost, &protocols[0], sizeof(hl));
-        memcpy(vp, &hl, sizeof(hl));
-        qd_log(hs->log, QD_LOG_NOTICE, "Listening for HTTP on %s", config->host_port);
-        return;
-    } else {
+    if (!hl->vhost) {
         qd_log(hs->log, QD_LOG_NOTICE, "Error listening for HTTP on %s", config->host_port);
         goto error;
+    }
+
+    /* Store hl pointer in vhost */
+    void *vp = lws_protocol_vh_priv_zalloc(hl->vhost, &protocols[0], sizeof(hl));
+    memcpy(vp, &hl, sizeof(hl));
+
+    if (port == 0) {
+        // If a 0 (zero) is specified for a port, get the actual listening port from the listener.
+        const int resolved_port = lws_get_vhost_port(hl->vhost);
+        if (config->name)
+            qd_log(hs->log, QD_LOG_NOTICE, "Listening for HTTP on %s:%d (%s)", config->host, resolved_port, config->name);
+        else
+            qd_log(hs->log, QD_LOG_NOTICE, "Listening for HTTP on %s:%d", config->host, resolved_port);
+    } else {
+        qd_log(hs->log, QD_LOG_NOTICE, "Listening for HTTP on %s", config->host_port);
     }
     return;
 
