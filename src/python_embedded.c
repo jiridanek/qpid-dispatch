@@ -57,14 +57,9 @@ void qd_python_initialize(qd_dispatch_t *qd, const char *python_pkgdir)
     if (python_pkgdir)
         dispatch_python_pkgdir = PyUnicode_FromString(python_pkgdir);
 
-    fprintf(stdout, "py1111\n");
-
     qd_python_lock_state_t ls = qd_python_lock();
-    fprintf(stdout, "py2222\n");
     Py_Initialize();
-    fprintf(stdout, "py3333\n");
     qd_python_setup();
-    fprintf(stdout, "py4444\n");
     qd_python_unlock(ls);
 }
 

@@ -35,14 +35,10 @@ static bool regex_is_broken() {
 
 void check_amqp_listener_startup_log_message(qd_server_config_t config, std::string listen, std::string stop)
 {
-    printf("isatty %d\n", isatty(fileno(stderr)));
     QDR qdr{};
     CaptureCStream css{&stderr};
-    printf("isatty %d\n", isatty(fileno(stderr)));
-    fprintf(stdout, "aaaa\n");
     qdr.initialize("./minimal_trace.conf");
     css.restore();
-    fprintf(stdout, "bbbb\n");
 
     qd_listener_t *li = qd_server_listener(qdr.qd->server);
     li->server = qdr.qd->server;
