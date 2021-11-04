@@ -91,6 +91,7 @@ qd_dispatch_t *qd_dispatch(const char *python_pkgdir, bool test_hooks)
     qd_error_initialize();
     if (qd_error_code()) { qd_dispatch_free(qd); return 0; }
 
+    fprintf(stdout, "3333\n");
     if (python_pkgdir) {
         struct stat st;
         if (stat(python_pkgdir, &st)) {
@@ -101,6 +102,7 @@ qd_dispatch_t *qd_dispatch(const char *python_pkgdir, bool test_hooks)
             return NULL;
         }
     }
+    fprintf(stdout, "4444\n");
 
     qd_dispatch_set_router_area(qd, strdup("0"));
     qd_dispatch_set_router_id(qd, strdup("0"));
@@ -108,11 +110,17 @@ qd_dispatch_t *qd_dispatch(const char *python_pkgdir, bool test_hooks)
     qd->default_treatment   = QD_TREATMENT_LINK_BALANCED;
     qd->test_hooks          = test_hooks;
 
+    fprintf(stdout, "5555\n");
+
     qd_python_initialize(qd, python_pkgdir);
+    fprintf(stdout, "5566\n");
     if (qd_error_code()) { qd_dispatch_free(qd); return 0; }
+    fprintf(stdout, "6666\n");
     qd_message_initialize();
+    fprintf(stdout, "7777\n");
     if (qd_error_code()) { qd_dispatch_free(qd); return 0; }
     qd->dl_handle = 0;
+    fprintf(stdout, "9999\n");
     return qd;
 }
 

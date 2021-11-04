@@ -32,10 +32,10 @@ add_executable(c_unittests
         qdr_doctest.hpp
         helpers.cpp
         helpers.hpp
-        test_amqp.cpp
+#        test_amqp.cpp
         test_listener_startup.cpp
-        test_router_startup.cpp
-        test_terminus.cpp
+#        test_router_startup.cpp
+#        test_terminus.cpp
         $<TARGET_OBJECTS:qpid-dispatch>)
 target_link_libraries(c_unittests pthread qpid-dispatch-libraries)
 
@@ -47,4 +47,5 @@ file(COPY
 add_test(
     NAME c_unittests
     COMMAND ${TEST_WRAP} $<TARGET_FILE:c_unittests>
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )

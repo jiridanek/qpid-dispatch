@@ -203,8 +203,10 @@ class QDR
         const std::lock_guard<std::mutex> lock(QDR::startup_shutdown_lock);
 
         qd = qd_dispatch(nullptr, false);
+        fprintf(stdout, "2222\n");
         REQUIRE(qd != nullptr);
 
+        fprintf(stdout, "xxxx\n");
         // qd can be configured at this point, e.g. qd->thread_count
         if (!config_path.empty()) {
             // call qd_dispatch_load_config to get management agent initialized
@@ -325,19 +327,23 @@ class CaptureCStream
     size_t checkpoint() {\
         fflush(*mStream);
         return size;
+//        return 0;
     }
 
     std::string str() {
         fflush(*mStream);
         return std::string(buf, size);
+//        return "lek";
     }
 
     std::string str(size_t begin) {
         fflush(*mStream);
         return std::string(buf + begin, size - begin);
+//        return "lek";
     }
 
     ~CaptureCStream() {
+        fflush(*mStream);
         fclose(*mStream);
         restore();
         free(buf);
