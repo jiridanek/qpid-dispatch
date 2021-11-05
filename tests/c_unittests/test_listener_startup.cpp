@@ -25,6 +25,11 @@
 #include <regex>
 #include <thread>
 
+extern "C" {
+qd_listener_t *qd_dispatch_configure_listener(qd_dispatch_t *qd, qd_entity_t *entity);
+void qd_connection_manager_delete_listener(qd_dispatch_t *qd, void *impl);
+}
+
 
 /// GCC 4.8 made a questionable choice to implement std::regex_search to always
 /// return false. Meaning that tests cannot use regex on RHEL 7
