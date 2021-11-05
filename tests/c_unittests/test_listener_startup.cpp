@@ -25,7 +25,6 @@
 #include <regex>
 #include <thread>
 
-#include <unistd.h>
 
 /// GCC 4.8 made a questionable choice to implement std::regex_search to always
 /// return false. Meaning that tests cannot use regex on RHEL 7
@@ -52,9 +51,7 @@ void check_amqp_listener_startup_log_message(qd_server_config_t config, std::str
         qdr.run();
     }
 
-    qd_server_config_free(&li->config);
-    free_qd_listener_t(li);
-
+    qd_listener_decref(li);
     qdr.deinitialize();
 
     std::string logging = css.str();
@@ -67,26 +64,24 @@ void check_amqp_listener_startup_log_message(qd_server_config_t config, std::str
 void check_http_listener_startup_log_message(qd_server_config_t config, std::string listen, std::string stop)
 {
     QDR qdr{};
-    CaptureCStream css{&stderr};
-    qdr.initialize("");
+    CaptureCStream css(&stderr);
+    qdr.initialize("./minimal_trace.conf");
 
-    qd_listener_t *li2 = qd_server_listener(qdr.qd->server);
-    free_qd_listener_t(li2);
-
-    qd_listener_t listener{};
-    qd_listener_t *li = &listener;
+    qd_listener_t *li = qd_server_listener(qdr.qd->server);
     li->server = qdr.qd->server;
     li->config = config;
 
     CHECK(qd_listener_listen(li));
-
-    /* Websocket is opened immediately, no need to even start the worker threads */
-    qd_lws_listener_close(li->http);
     qdr.wait();
-    qdr.deinitialize();
 
-    free(li->http);
-    qd_server_config_free(&li->config);
+    {
+        qd_lws_listener_close(li->http);
+        auto timer = qdr.schedule_stop(0);
+        qdr.run();
+    }
+
+    qd_listener_decref(li);
+    qdr.deinitialize();
 
     std::string logging = css.str();
     CHECK_MESSAGE(std::regex_search(logging, std::regex(listen)),
@@ -127,38 +122,38 @@ TEST_CASE("Start AMQP listener with zero port and a name" * doctest::skip(regex_
         );
     }).join();
 }
-//
-//TEST_CASE("Start HTTP listener with zero port" * doctest::skip(regex_is_broken()))
-//{
-//    std::thread([] {
-//        qd_server_config_t config{};
-//        config.port      = strdup("0");
-//        config.host      = strdup("localhost");
-//        config.host_port = strdup("localhost:0");
-//        config.http      = true;
-//
-//        check_http_listener_startup_log_message(
-//            config,
-//            R"EOS(SERVER \(notice\) Listening for HTTP on localhost:(\d\d+))EOS",
-//            R"EOS(SERVER \(notice\) Stopped listening for HTTP on localhost:0)EOS"
-//        );
-//    }).join();
-//}
-//
-//TEST_CASE("Start HTTP listener with zero port and a name" * doctest::skip(regex_is_broken()))
-//{
-//    std::thread([] {
-//        qd_server_config_t config{};
-//        config.name      = strdup("pepa");
-//        config.port      = strdup("0");
-//        config.host      = strdup("localhost");
-//        config.host_port = strdup("localhost:0");
-//        config.http      = true;
-//
-//        check_http_listener_startup_log_message(
-//            config,
-//            R"EOS(SERVER \(notice\) Listening for HTTP on localhost:(\d\d+))EOS",
-//            R"EOS(SERVER \(notice\) Stopped listening for HTTP on localhost:0)EOS"
-//        );
-//    }).join();
-//}
+
+TEST_CASE("Start HTTP listener with zero port" * doctest::skip(regex_is_broken()))
+{
+    std::thread([] {
+        qd_server_config_t config{};
+        config.port      = strdup("0");
+        config.host      = strdup("localhost");
+        config.host_port = strdup("localhost:0");
+        config.http      = true;
+
+        check_http_listener_startup_log_message(
+            config,
+            R"EOS(SERVER \(notice\) Listening for HTTP on localhost:(\d\d+))EOS",
+            R"EOS(SERVER \(notice\) Stopped listening for HTTP on localhost:0)EOS"
+        );
+    }).join();
+}
+
+TEST_CASE("Start HTTP listener with zero port and a name" * doctest::skip(regex_is_broken()))
+{
+    std::thread([] {
+        qd_server_config_t config{};
+        config.name      = strdup("pepa");
+        config.port      = strdup("0");
+        config.host      = strdup("localhost");
+        config.host_port = strdup("localhost:0");
+        config.http      = true;
+
+        check_http_listener_startup_log_message(
+            config,
+            R"EOS(SERVER \(notice\) Listening for HTTP on localhost:(\d\d+))EOS",
+            R"EOS(SERVER \(notice\) Stopped listening for HTTP on localhost:0)EOS"
+        );
+    }).join();
+}
