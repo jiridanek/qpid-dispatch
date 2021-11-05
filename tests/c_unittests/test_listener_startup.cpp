@@ -77,13 +77,12 @@ void check_http_listener_startup_log_message(qd_server_config_t config, std::str
     CHECK(qd_listener_listen(li));
     qdr.wait();
     qd_lws_listener_close(li->http);
-    qdr.wait();
+    qd_listener_decref(li);
     {
         auto timer = qdr.schedule_stop(0);
         qdr.run();
     }
 
-    qd_listener_decref(li);
     qdr.deinitialize();
 
     std::string logging = css.str();
