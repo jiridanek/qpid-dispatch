@@ -322,6 +322,10 @@ class CaptureCStream
         *mStream = mMemstream;
     }
 
+    void reset() {
+        *mStream = mOriginal;
+    }
+
     size_t checkpoint() {
         fflush(mMemstream);
         return size;
@@ -338,7 +342,7 @@ class CaptureCStream
     }
 
     ~CaptureCStream() {
-        *mStream = mOriginal;
+        reset();
         fclose(mMemstream);
         free(buf);
     }

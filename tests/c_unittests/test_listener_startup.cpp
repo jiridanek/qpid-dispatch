@@ -70,6 +70,9 @@ void check_http_listener_startup_log_message(qd_server_config_t config, std::str
     CaptureCStream css{&stderr};
     qdr.initialize("");
 
+    qd_listener_t *li2 = qd_server_listener(qdr.qd->server);
+    free_qd_listener_t(li2);
+
     qd_listener_t listener{};
     qd_listener_t *li = &listener;
     li->server = qdr.qd->server;
