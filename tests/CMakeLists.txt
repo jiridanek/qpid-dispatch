@@ -86,6 +86,8 @@ add_test(unit_tests_size_2     ${TEST_WRAP} unit_tests_size 2)
 add_test(unit_tests_size_1     ${TEST_WRAP} unit_tests_size 1)
 add_test(unit_tests            ${TEST_WRAP} unit_tests ${CMAKE_CURRENT_SOURCE_DIR}/threads4.conf)
 
+add_subdirectory(c_unittests)
+
 # stand alone tests
 add_test(threaded_timer_test   ${TEST_WRAP} threaded_timer_test ${CMAKE_CURRENT_SOURCE_DIR}/dummy.conf)
 
@@ -273,8 +275,6 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/config-2
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ssl_certs
         DESTINATION ${QPID_DISPATCH_HOME_INSTALLED}/tests)
-
-add_subdirectory(c_unittests)
 
 if(BUILD_BENCHMARKS)
   add_subdirectory(c_benchmarks)
