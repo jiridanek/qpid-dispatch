@@ -20,6 +20,8 @@
 #ifndef QPID_DISPATCH_HELPERS_HPP
 #define QPID_DISPATCH_HELPERS_HPP
 
+#include <unistd.h>
+
 #include <cassert>
 #include <condition_variable>
 #include <fstream>
@@ -320,10 +322,6 @@ class CaptureCStream
         *mStream = mMemstream;
     }
 
-    void restore() {
-        *mStream = mOriginal;
-    }
-
     size_t checkpoint() {
         fflush(mMemstream);
         return size;
@@ -340,8 +338,8 @@ class CaptureCStream
     }
 
     ~CaptureCStream() {
+        *mStream = mOriginal;
         fclose(mMemstream);
-        restore();
         free(buf);
     }
 };
