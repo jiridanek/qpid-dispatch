@@ -116,8 +116,6 @@ static qd_log_source_t *wsi_log(struct lws *wsi);
 
 
 /* Declare LWS callbacks and protocol list */
-static int callback_http(struct lws *wsi, enum lws_callback_reasons reason,
-                         void *user, void *in, size_t len);
 static int callback_amqpws(struct lws *wsi, enum lws_callback_reasons reason,
                            void *user, void *in, size_t len);
 static int callback_metrics(struct lws *wsi, enum lws_callback_reasons reason,
@@ -129,7 +127,7 @@ static struct lws_protocols protocols[] = {
     /* HTTP only protocol comes first */
     {
         "http-only",
-        callback_http,
+        lws_callback_http_dummy,
         0,
     },
     /* "amqp" is the official oasis AMQP over WebSocket protocol name */
@@ -314,6 +312,11 @@ static int is_ipv6_address(qd_http_server_t *hs, const char* host, const char* p
     return result;
 }
 
+static void finalizer(struct lws_vhost *vh, void *arg) {
+    qd_lws_listener_t *listener = (qd_lws_listener_t*) arg;
+    qd_lws_listener_free(listener);
+}
+
 static void listener_start(qd_lws_listener_t *hl, qd_http_server_t *hs) {
     log_init();                 /* Update log flags at each listener */
 
@@ -382,6 +385,8 @@ static void listener_start(qd_lws_listener_t *hl, qd_http_server_t *hs) {
             ((config->requireAuthentication && info.ssl_ca_filepath) ? LWS_SERVER_OPTION_REQUIRE_VALID_OPENSSL_CLIENT_CERT : 0);
     }
     info.vhost_name = hl->listener->config.host_port;
+    info.finalize = finalizer;
+    info.finalize_arg = hl;
     hl->vhost = lws_create_vhost(hs->context, &info);
     if (!hl->vhost) {
         qd_log(hs->log, QD_LOG_NOTICE, "Error listening for HTTP on %s", config->host_port);
@@ -423,19 +428,6 @@ static void listener_close(qd_lws_listener_t *hl, qd_http_server_t *hs) {
  * LWS callback for un-promoted HTTP connections.
  * Note main HTTP file serving is handled by the "mount" struct below.
  */
-static int callback_http(struct lws *wsi, enum lws_callback_reasons reason,
-                         void *user, void *in, size_t len)
-{
-    switch (reason) {
-    case LWS_CALLBACK_WSI_DESTROY:
-        qd_lws_listener_free(wsi_listener(wsi));
-        break;
-    default:
-        break;
-    }
-    /* Do default HTTP handling for all the cases we don't care about. */
-    return lws_callback_http_dummy(wsi, reason, user, in, len);
-}
 
 /* Wake up a connection managed by the http server thread */
 static void connection_wake(qd_connection_t *qd_conn)
