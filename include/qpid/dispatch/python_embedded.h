@@ -31,6 +31,9 @@
 #include "qpid/dispatch/iterator.h"
 #include "qpid/dispatch/parse.h"
 
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+
 #include <proton/codec.h>
 
 /**

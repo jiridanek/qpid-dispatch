@@ -31,6 +31,9 @@
 #include <qpid/dispatch/platform.h>
 #include <qpid/dispatch/ctools.h>
 #include <Python.h>  // just  for ssize_t
+// will not give ssize_t on windows?
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
 
 // https://stackoverflow.com/questions/735126/are-there-alternate-implementations-of-gnu-getline-interface/735472#735472
 // https://stackoverflow.com/a/47067149

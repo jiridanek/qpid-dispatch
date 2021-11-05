@@ -22,6 +22,66 @@
 #include "qpid/dispatch/dispatch.h"
 #include "qpid/dispatch/failoverlist.h"
 
+// proton should support this situation; it maybe does, not sure whats wrong
+//
+///* Determine default action */
+//#ifndef _MSC_VER
+///* Not Windows and not using Visual Studio */
+//
+///* MBED_BUILD_TIMESTAMP is used to detect whether Proton is being built on www.mbed.org with
+//the ARM compiler. In that case ssize_t needs to be defined in this file. */
+//#if defined(MBED_BUILD_TIMESTAMP)
+//#  define PNI_DEFINE_SSIZE_T
+//#else
+//#include <sys/types.h>
+//#endif /* defined(MBED_LIBRARY_VERSION) */
+//
+//# ifndef PNI_INCLUDE_STDINT
+//#  define PNI_INCLUDE_STDINT
+//# endif
+//#else
+///* all versions of Visual Studio */
+//# ifndef PNI_DEFINE_SSIZE_T
+///* ssize_t def is needed, unless third party definition interferes, e.g. python/swig */
+//#  ifndef Py_CONFIG_H
+//#   define PNI_DEFINE_SSIZE_T
+//#  endif
+//# endif
+//# endif
+//
+//#ifdef PNI_DEFINE_SSIZE_T
+//# ifdef _MSC_VER
+//#  include <BaseTsd.h>
+//typedef SSIZE_T ssize_t;
+//# else
+//typedef intptr_t ssize_t;
+//# endif
+//#endif /* PNI_DEFINE_SSIZE_T */
+//
+//#ifdef PNI_DEFINE_STDINT
+//# ifdef _MSC_VER
+//
+//typedef signed __int8 int8_t;
+//typedef signed __int16 int16_t;
+//typedef signed __int32 int32_t;
+//typedef signed __int64 int64_t;
+//
+//typedef unsigned __int8 uint8_t;
+//typedef unsigned __int16 uint16_t;
+//typedef unsigned __int32 uint32_t;
+//typedef unsigned __int64 uint64_t;
+//
+//#define INT32_MAX (2147483647)
+//
+//# else /* _MSC_VER */
+//#  error stdint.h definitions not kown
+//# endif
+//#endif /* PNI_DEFINE_SSIZE_T */
+
+#include <sys/types.h>
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+
 #include <proton/engine.h>
 #include <proton/event.h>
 #include <proton/ssl.h>
