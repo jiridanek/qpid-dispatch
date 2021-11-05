@@ -27,7 +27,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.10
+          python-version: 3.9
           architecture: x64
 
       - name: Install python dependencies
@@ -44,16 +44,20 @@ jobs:
 
 
       - name: proton configure
-        run: cmake -S . -B build -G "Visual Studio 16 2019" -A x64 -T ClangCL "${cmake_extra}"
+        run: cmake -S . -B build -G "Visual Studio 16 2019" -A x64 -T ClangCL "${cmake_extra}" -DCMAKE_INSTALL_PREFIX=install
         working-directory: 'qpid-proton'
 
       - name: proton make
         run: cmake --build build --config RelWithDebInfo --parallel 10
         working-directory: 'qpid-proton'
 
+      - name: proton install
+        run: cmake --install build --config RelWithDebInfo
+        working-directory: 'qpid-proton'
+
 
       - name: dispatch configure
-        run: cmake -S . -B build -G "Visual Studio 16 2019" -A x64 -T ClangCL
+        run: cmake -S . -B build -G "Visual Studio 16 2019" -A x64 -T ClangCL -DProton_DIR=%cd%/../qpid-proton/install/lib/cmake/Proton
         working-directory: 'qpid-dispatch'
 
       - name: dispatch make
