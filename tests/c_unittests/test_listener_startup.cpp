@@ -43,10 +43,10 @@ void check_amqp_listener_startup_log_message(qd_server_config_t config, std::str
     li->config = config;
 
     CHECK(qd_listener_listen(li));
+    pn_listener_close(li->pn_listener);
 
     {
-        /* AMQP socket is opened only when proactor loop runs; meaning router has to be started */
-        pn_listener_close(li->pn_listener);
+        /* AMQP socket is opened (and closed) only when proactor loop runs; meaning router has to be started */
         auto timer = qdr.schedule_stop(0);
         qdr.run();
     }
@@ -66,7 +66,6 @@ void check_http_listener_startup_log_message(qd_server_config_t config, std::str
     QDR qdr{};
     CaptureCStream css(&stderr);
     qdr.initialize("./minimal_trace.conf");
-    css.reset();
 
     qd_listener_t *li = qd_server_listener(qdr.qd->server);
     li->server = qdr.qd->server;
@@ -74,9 +73,9 @@ void check_http_listener_startup_log_message(qd_server_config_t config, std::str
 
     CHECK(qd_listener_listen(li));
     qdr.wait();
-
+    qd_lws_listener_close(li->http);
+    qdr.wait();
     {
-        qd_lws_listener_close(li->http);
         auto timer = qdr.schedule_stop(0);
         qdr.run();
     }
