@@ -427,10 +427,10 @@ static int callback_http(struct lws *wsi, enum lws_callback_reasons reason,
                          void *user, void *in, size_t len)
 {
     switch (reason) {
-    case LWS_CALLBACK_PROTOCOL_DESTROY:
+    case LWS_CALLBACK_WSI_DESTROY:
         qd_lws_listener_free(wsi_listener(wsi));
         break;
-      default:
+    default:
         break;
     }
     /* Do default HTTP handling for all the cases we don't care about. */
