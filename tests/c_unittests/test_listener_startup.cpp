@@ -39,12 +39,10 @@ void check_amqp_listener_startup_log_message(qd_server_config_t config, std::str
     qdr.initialize("./minimal_trace.conf");
 
     qd_listener_t *li = qd_server_listener(qdr.qd->server);
-    li->server = qdr.qd->server;
     li->config = config;
 
     CHECK(qd_listener_listen(li));
     pn_listener_close(li->pn_listener);
-
     {
         /* AMQP socket is opened (and closed) only when proactor loop runs; meaning router has to be started */
         auto timer = qdr.schedule_stop(0);
@@ -68,7 +66,6 @@ void check_http_listener_startup_log_message(qd_server_config_t config, std::str
     qdr.initialize("./minimal_trace.conf");
 
     qd_listener_t *li = qd_server_listener(qdr.qd->server);
-    li->server = qdr.qd->server;
     li->config = config;
 
     CHECK(qd_listener_listen(li));
