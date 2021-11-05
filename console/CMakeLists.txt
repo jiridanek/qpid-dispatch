@@ -28,9 +28,9 @@ if(CONSOLE_INSTALL)
   if (NPM_EXECUTABLE)
     execute_process(COMMAND ${NPM_EXECUTABLE} --version
         OUTPUT_VARIABLE NPM_VERSION)
-    if(${NPM_VERSION} VERSION_LESS "3.1.10")
+    if(NPM_VERSION VERSION_LESS "3.1.10")
       message(STATUS "Cannot build console. npm version 3.1.10 or greater is required.")
-    else(${NPM_VERSION} VERSION_LESS "3.1.10")
+    else(NPM_VERSION VERSION_LESS "3.1.10")
           set(CONSOLE_SOURCE_DIR "${CMAKE_SOURCE_DIR}/console/react")
           set(CONSOLE_BUILD_DIR "${CMAKE_BINARY_DIR}/console")
 
@@ -95,7 +95,7 @@ if(CONSOLE_INSTALL)
             PATTERN "*.map" EXCLUDE
           )
 
-    endif(${NPM_VERSION} VERSION_LESS "3.1.10")
+    endif(NPM_VERSION VERSION_LESS "3.1.10")
   endif(NPM_EXECUTABLE)
 
 endif(CONSOLE_INSTALL)
