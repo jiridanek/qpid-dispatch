@@ -1,7 +1,33 @@
+/*
+* Licensed to the Apache Software Foundation (ASF) under one
+* or more contributor license agreements.  See the NOTICE file
+* distributed with this work for additional information
+* regarding copyright ownership.  The ASF licenses this file
+* to you under the Apache License, Version 2.0 (the
+* "License"); you may not use this file except in compliance
+* with the License.  You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
+
+//
+// Enable debug for asserts in this module regardless of what the project-wide
+// setting is.
+//
+#undef NDEBUG
+
 #include "qpid/dispatch/threading.h"
 
 #include "qpid/dispatch/ctools.h"
 
+#include <assert.h>
 #include <stdbool.h>
 #include <windows.h>
 
@@ -119,17 +145,23 @@ struct sys_thread_t {
     void *arg;
 };
 
+// initialize the per-thread _self to a non-zero value.  This dummy value will
+// be returned when sys_thread_self() is called from the process's main thread
+// of execution (which is not a pthread).  Using a non-zero value provides a
+// way to distinguish a thread id from a zero (unset) value.
+//
+static sys_thread_t _main_thread_id;
+static __thread sys_thread_t *_self = &_main_thread_id;
+
 // thread function is forbidden to return void on 64bit Windows, have to wrap
 // https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/ms686736(v=vs.85)#return-value
 DWORD WINAPI sys_thread_function_wrapper(LPVOID lpParam)
 {
     sys_thread_t *thread = (sys_thread_t *) lpParam;
+    _self = thread;
     thread->f(thread->arg);
     return 0;
 }
-
-static sys_thread_t _main_thread_id;
-static __thread sys_thread_t *_self = &_main_thread_id;
 
 sys_thread_t *sys_thread(void *(*run_function)(void *), void *arg)
 {
@@ -144,17 +176,18 @@ sys_thread_t *sys_thread(void *(*run_function)(void *), void *arg)
                                   0,
                                   &thread->id);
 
-    _self = thread;
     return thread;
 }
 
 void sys_thread_free(sys_thread_t *thread)
 {
+    assert(thread != &_main_thread_id);
     CloseHandle(thread->thread);
 }
 
 void sys_thread_join(sys_thread_t *thread)
 {
+    assert(thread != &_main_thread_id);
     WaitForSingleObject(thread->thread, INFINITE);
 }
 
