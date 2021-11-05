@@ -1696,7 +1696,9 @@ bool qd_listener_listen(qd_listener_t *li) {
 
 void qd_listener_decref(qd_listener_t* li)
 {
+    printf("refcount is %d\n", sys_atomic_get(&li->ref_count));
     if (li && sys_atomic_dec(&li->ref_count) == 1) {
+        printf("refcount is %d; freed\n", sys_atomic_get(&li->ref_count));
         qd_server_config_free(&li->config);
         free_qd_listener_t(li);
     }
