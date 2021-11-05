@@ -82,6 +82,7 @@ void check_http_listener_startup_log_message(qd_server_config_t config, std::str
 
     /* Websocket is opened immediately, no need to even start the worker threads */
     qd_lws_listener_close(li->http);
+    qdr.wait();
     qdr.deinitialize();
 
     free(li->http);
