@@ -44,7 +44,7 @@ jobs:
 
 
       - name: proton configure
-        run: cmake -S . -B build -G "Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=install
+        run: cmake -S . -B build -G "Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=install -DBUILD_BINDINGS=python -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DENABLE_FUZZ_TESTING=OFF
         working-directory: 'qpid-proton'
 
       - name: proton make
@@ -57,7 +57,7 @@ jobs:
 
 
       - name: dispatch configure
-        run: cmake -S . -B build -G "Visual Studio 16 2019" -A x64 -T ClangCL -DProton_DIR=%cd%/../qpid-proton/install/lib/cmake/Proton
+        run: cmake -S . -B build -G "Visual Studio 16 2019" -A x64 -T ClangCL -DProton_DIR=D:/a/qpid-dispatch/qpid-dispatch/qpid-proton/install/lib/cmake/Proton
         working-directory: 'qpid-dispatch'
 
       - name: dispatch make
