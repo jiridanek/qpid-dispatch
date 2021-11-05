@@ -66,31 +66,29 @@ void check_amqp_listener_startup_log_message(qd_server_config_t config, std::str
 
 void check_http_listener_startup_log_message(qd_server_config_t config, std::string listen, std::string stop)
 {
-    std::thread([&] {
-      QDR qdr{};
-      CaptureCStream css{&stderr};
-      qdr.initialize("");
+    QDR qdr{};
+    CaptureCStream css{&stderr};
+    qdr.initialize("");
 
-      qd_listener_t listener{};
-      qd_listener_t *li = &listener;
-      li->server = qdr.qd->server;
-      li->config = config;
+    qd_listener_t listener{};
+    qd_listener_t *li = &listener;
+    li->server = qdr.qd->server;
+    li->config = config;
 
-      CHECK(qd_listener_listen(li));
+    CHECK(qd_listener_listen(li));
 
-      /* Websocket is opened immediately, no need to even start the worker threads */
-      qd_lws_listener_close(li->http);
-      qdr.deinitialize();
+    /* Websocket is opened immediately, no need to even start the worker threads */
+    qd_lws_listener_close(li->http);
+    qdr.deinitialize();
 
-      free(li->http);
-      qd_server_config_free(&li->config);
+    free(li->http);
+    qd_server_config_free(&li->config);
 
-      std::string logging = css.str();
-      CHECK_MESSAGE(std::regex_search(logging, std::regex(listen)),
-                    listen, " not found in ", logging);
-      CHECK_MESSAGE(std::regex_search(logging, std::regex(stop)),
-                    stop, " not found in ", logging);
-    }).join();
+    std::string logging = css.str();
+    CHECK_MESSAGE(std::regex_search(logging, std::regex(listen)),
+                  listen, " not found in ", logging);
+    CHECK_MESSAGE(std::regex_search(logging, std::regex(stop)),
+                  stop, " not found in ", logging);
 }
 
 TEST_CASE("Start AMQP listener with zero port" * doctest::skip(regex_is_broken()))
