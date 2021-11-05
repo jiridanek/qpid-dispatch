@@ -309,36 +309,38 @@ class QDRMinimalEnv
 class CaptureCStream
 {
     FILE **mStream;
+    FILE *mMemstream;
     FILE *mOriginal;
 
     char *buf;
     size_t size;
    public:
     CaptureCStream(FILE **stream) : mStream(stream), mOriginal(*stream) {
-        *stream = open_memstream(&buf, &size);
+        mMemstream = open_memstream(&buf, &size);
+        *mStream = mMemstream;
     }
 
     void restore() {
         *mStream = mOriginal;
     }
 
-    size_t checkpoint() {\
-        fflush(*mStream);
+    size_t checkpoint() {
+        fflush(mMemstream);
         return size;
     }
 
     std::string str() {
-        fflush(*mStream);
+        fflush(mMemstream);
         return std::string(buf, size);
     }
 
     std::string str(size_t begin) {
-        fflush(*mStream);
+        fflush(mMemstream);
         return std::string(buf + begin, size - begin);
     }
 
     ~CaptureCStream() {
-        fclose(*mStream);
+        fclose(mMemstream);
         restore();
         free(buf);
     }
