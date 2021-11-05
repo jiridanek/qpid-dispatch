@@ -69,7 +69,7 @@ void check_http_listener_startup_log_message(qd_server_config_t config, std::str
     QDR qdr{};
     CaptureCStream css(&stderr);
     qdr.initialize("./minimal_trace.conf");
-//    css.reset();
+    css.reset();
 
     qd_listener_t *li = qd_server_listener(qdr.qd->server);
     li->config = config;
