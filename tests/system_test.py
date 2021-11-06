@@ -77,9 +77,11 @@ except ImportError as err:
     qm = None  # pylint: disable=invalid-name
     MISSING_MODULES.append(str(err))
 
+
 def qdrouterd_executable():
     suffix = '.exe' if platform.system() == 'Windows' else ""
     return os.path.join(os.environ.get('BUILD_DIR'), 'router', 'qdrouterd' + suffix)
+
 
 def find_exe(program):
     """Find an executable in the system PATH"""
