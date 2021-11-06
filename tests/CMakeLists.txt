@@ -76,18 +76,18 @@ else()
 endif()
 set(TEST_WRAP ${BWRAP_ARGS} ${Python_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/run.py)
 
-add_test(unit_tests_size_10000 ${TEST_WRAP} unit_tests_size 10000)
-add_test(unit_tests_size_512   ${TEST_WRAP} unit_tests_size 512)
-add_test(unit_tests_size_10    ${TEST_WRAP} unit_tests_size 10)
-add_test(unit_tests_size_7     ${TEST_WRAP} unit_tests_size 7)
-add_test(unit_tests_size_5     ${TEST_WRAP} unit_tests_size 5)
-add_test(unit_tests_size_3     ${TEST_WRAP} unit_tests_size 3)
-add_test(unit_tests_size_2     ${TEST_WRAP} unit_tests_size 2)
-add_test(unit_tests_size_1     ${TEST_WRAP} unit_tests_size 1)
-add_test(unit_tests            ${TEST_WRAP} unit_tests ${CMAKE_CURRENT_SOURCE_DIR}/threads4.conf)
+add_test(NAME unit_tests_size_10000 COMMAND ${TEST_WRAP} $<TARGET_FILE:unit_tests_size> 10000)
+add_test(NAME unit_tests_size_512   COMMAND ${TEST_WRAP} $<TARGET_FILE:unit_tests_size> 512)
+add_test(NAME unit_tests_size_10    COMMAND ${TEST_WRAP} $<TARGET_FILE:unit_tests_size> 10)
+add_test(NAME unit_tests_size_7     COMMAND ${TEST_WRAP} $<TARGET_FILE:unit_tests_size> 7)
+add_test(NAME unit_tests_size_5     COMMAND ${TEST_WRAP} $<TARGET_FILE:unit_tests_size> 5)
+add_test(NAME unit_tests_size_3     COMMAND ${TEST_WRAP} $<TARGET_FILE:unit_tests_size> 3)
+add_test(NAME unit_tests_size_2     COMMAND ${TEST_WRAP} $<TARGET_FILE:unit_tests_size> 2)
+add_test(NAME unit_tests_size_1     COMMAND ${TEST_WRAP} $<TARGET_FILE:unit_tests_size> 1)
+add_test(NAME unit_tests            COMMAND ${TEST_WRAP} $<TARGET_FILE:unit_tests> ${CMAKE_CURRENT_SOURCE_DIR}/threads4.conf)
 
 # stand alone tests
-add_test(threaded_timer_test   ${TEST_WRAP} threaded_timer_test ${CMAKE_CURRENT_SOURCE_DIR}/dummy.conf)
+add_test(NAME threaded_timer_test   COMMAND ${TEST_WRAP} $<TARGET_FILE:threaded_timer_test> ${CMAKE_CURRENT_SOURCE_DIR}/dummy.conf)
 
 # Unit test python modules
 foreach(py_test_module
