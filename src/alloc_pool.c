@@ -464,7 +464,7 @@ void qd_dealloc(qd_alloc_type_desc_t *desc, qd_alloc_pool_t **tpool, char *p)
     // thread-local pool for this type.
     //
     if (*tpool == 0) {
-        *tpool = NEW(qd_alloc_pool_t);
+        NEW_CACHE_ALIGNED(qd_alloc_pool_t, *tpool);
         DEQ_ITEM_INIT(*tpool);
         init_stack(&(*tpool)->free_list);
         sys_mutex_lock(desc->lock);
