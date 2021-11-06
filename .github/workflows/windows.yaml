@@ -48,7 +48,7 @@ jobs:
         working-directory: 'qpid-proton'
 
       - name: proton make
-        run: cmake --build build --config RelWithDebInfo --parallel 10
+        run: cmake --build build --config RelWithDebInfo --parallel 4
         working-directory: 'qpid-proton'
 
       - name: proton install
@@ -61,7 +61,7 @@ jobs:
         working-directory: 'qpid-dispatch'
 
       - name: dispatch make
-        run: cmake --build build --config RelWithDebInfo --parallel 10
+        run: cmake --build build --config RelWithDebInfo --parallel 4
         working-directory: 'qpid-dispatch'
 
       - name: dispatch install
