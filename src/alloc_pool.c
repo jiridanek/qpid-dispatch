@@ -582,7 +582,7 @@ void qd_alloc_finalize(void)
             item = pop_stack(&desc->global_pool->free_list);
         }
         free_stack_chunks(&desc->global_pool->free_list);
-        FREE_CACHE_ALIGNED(desc->global_pool);
+        free(desc->global_pool);
         desc->global_pool = 0;
         desc->header = 0;  // reset header, so we can initialize again later in qd_alloc (in subsequent test)
 
