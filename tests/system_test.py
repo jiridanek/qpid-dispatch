@@ -435,7 +435,7 @@ class Qdrouterd(Process):
                                        for k, v in item.items()])
                     result += "%s}" % tabs(level)
                     return result
-                return "%s" %  item
+                return str(item).encode("unicode_escape").decode()
 
             def attributes(e, level):
                 assert(isinstance(e, dict))
