@@ -127,7 +127,6 @@ set(qpid_dispatch_SOURCES
 #  posix/threading.c)
 
 set(qpid_dispatch_SOURCES ${qpid_dispatch_SOURCES}
-  dlfcn_win.h
   syslog.h
   win32/syslog.c
   win32/getopt.c
