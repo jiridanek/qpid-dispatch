@@ -78,8 +78,12 @@ except ImportError as err:
     MISSING_MODULES.append(str(err))
 
 
+# TODO this has to be taken from CMake, the path can vary; there are multiconfig generators
+# D:\a\qpid-dispatch\qpid-dispatch\qpid-dispatch\build\router\RelWithDebInfo\qdrouterd.exe
 def qdrouterd_executable():
     suffix = '.exe' if platform.system() == 'Windows' else ""
+    if platform.system() == 'Windows':  # this is the case on GHA; depends on how you run CMake...
+        return os.path.join(os.environ.get('BUILD_DIR'), 'router', 'RelWithDebInfo', 'qdrouterd' + suffix)
     return os.path.join(os.environ.get('BUILD_DIR'), 'router', 'qdrouterd' + suffix)
 
 
