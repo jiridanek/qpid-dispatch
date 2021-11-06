@@ -31,7 +31,6 @@ int policy_tests(void);
 int failoverlist_tests(void);
 int parse_tree_tests(void);
 int proton_utils_tests(void);
-int version_tests(void);
 int hash_tests(void);
 int thread_tests(void);
 
