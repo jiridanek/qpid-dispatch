@@ -57,11 +57,15 @@ jobs:
 
 
       - name: dispatch configure
-        run: cmake -S . -B build -G "Visual Studio 16 2019" -A x64 -T ClangCL -DProton_DIR=D:/a/qpid-dispatch/qpid-dispatch/qpid-proton/install/lib/cmake/Proton -DCONSOLE_INSTALL=OFF
+        run: cmake -S . -B build -G "Visual Studio 16 2019" -A x64 -T ClangCL -DProton_DIR=D:/a/qpid-dispatch/qpid-dispatch/qpid-proton/install/lib/cmake/Proton -DCMAKE_INSTALL_PREFIX=install -DCONSOLE_INSTALL=OFF
         working-directory: 'qpid-dispatch'
 
       - name: dispatch make
         run: cmake --build build --config RelWithDebInfo --parallel 10
+        working-directory: 'qpid-dispatch'
+
+      - name: dispatch install
+        run: cmake --install build --config RelWithDebInfo
         working-directory: 'qpid-dispatch'
 
       - name: dispatch test
