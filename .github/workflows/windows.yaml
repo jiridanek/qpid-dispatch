@@ -11,7 +11,7 @@ jobs:
 
     env:
       VCPKG_DEFAULT_TRIPLET: x64-windows
-      cmake_extra: '-DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake'
+      cmake_extra: '-DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_C_COMPILER_LAUNCHER=buildcache -DCMAKE_CXX_COMPILER_LAUNCHER=buildcache'
 
     steps:
       - uses: actions/checkout@v2
@@ -47,7 +47,7 @@ jobs:
 
 
       - name: proton configure
-        run: cmake -S . -B build -G "Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=install -DBUILD_BINDINGS=python -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DENABLE_FUZZ_TESTING=OFF
+        run: cmake -S . -B build -G "Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=install -DBUILD_BINDINGS=python -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DENABLE_FUZZ_TESTING=OFF ${cmake_extra}
         working-directory: 'qpid-proton'
 
       - name: proton make
@@ -63,7 +63,7 @@ jobs:
 
 
       - name: dispatch configure
-        run: cmake -S . -B build -G "Visual Studio 16 2019" -A x64 -T ClangCL -DProton_DIR=D:/a/qpid-dispatch/qpid-dispatch/qpid-proton/install/lib/cmake/Proton -DCMAKE_INSTALL_PREFIX=install -DCONSOLE_INSTALL=OFF
+        run: cmake -S . -B build -G "Visual Studio 16 2019" -A x64 -T ClangCL -DProton_DIR=D:/a/qpid-dispatch/qpid-dispatch/qpid-proton/install/lib/cmake/Proton -DCMAKE_INSTALL_PREFIX=install -DCONSOLE_INSTALL=OFF ${cmake_extra}
         working-directory: 'qpid-dispatch'
 
       - name: dispatch make
