@@ -32,7 +32,7 @@
 #include "entity_cache.h"
 #include "parse_tree.h"
 // https://github.com/dlfcn-win32/dlfcn-win32
-#include "dlfcn_win.h"
+//#include "dlfcn_win.h"
 
 typedef struct qd_policy_denial_counts_s qd_policy_denial_counts_t;
 
