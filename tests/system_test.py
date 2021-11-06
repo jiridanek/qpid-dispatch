@@ -29,6 +29,7 @@ Features:
 """
 
 import errno
+import platform
 import sys
 import time
 
@@ -76,6 +77,10 @@ except ImportError as err:
     qm = None  # pylint: disable=invalid-name
     MISSING_MODULES.append(str(err))
 
+@property
+def qdrouterd_executable():
+    suffix = '.exe' if platform.system() == 'Windows' else ""
+    return os.path.join(os.environ.get('BUILD_DIR'), 'router', 'qdrouterd' + suffix)
 
 def find_exe(program):
     """Find an executable in the system PATH"""
@@ -101,7 +106,7 @@ DIR = os.path.dirname(__file__)
 def _check_requirements():
     """If requirements are missing, return a message, else return empty string."""
     missing = MISSING_MODULES
-    required_exes = ['qdrouterd']
+    required_exes = [qdrouterd_executable]
     missing += ["No exectuable %s" % e for e in required_exes if not find_exe(e)]
 
     if missing:
@@ -464,7 +469,7 @@ class Qdrouterd(Process):
                          'includeSource': 'true', 'outputFile': self.logfile}))
         else:
             self.logfile = default_log[0][1].get('outputfile')
-        args = ['qdrouterd', '-c', config.write(name)] + cl_args
+        args = [qdrouterd_executable, '-c', config.write(name)] + cl_args
         env_home = os.environ.get('QPID_DISPATCH_HOME')
         if pyinclude:
             args += ['-I', pyinclude]

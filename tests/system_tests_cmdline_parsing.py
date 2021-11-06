@@ -27,7 +27,7 @@ to the users.
 import os
 import signal
 from subprocess import PIPE, STDOUT
-from system_test import TestCase, Qdrouterd, main_module, Process, wait_port
+from system_test import TestCase, Qdrouterd, main_module, Process, wait_port, qdrouterd_executable
 from system_test import unittest
 
 
@@ -63,7 +63,7 @@ class CommandLineTest(TestCase):
         :return:
         """
         pipe = self.popen(
-            [os.path.join(os.environ.get('BUILD_DIR'), 'router', 'qdrouterd'), '-d',
+            [qdrouterd_executable, '-d',
              '-I', os.path.join(os.environ.get('SOURCE_DIR'), 'python'),
              '-c', self.config.write(config_file_name), '-P', pid_file_name],
             stdout=PIPE, stderr=STDOUT, expect=Process.EXIT_OK,
@@ -126,7 +126,7 @@ class CommandLineTest2(TestCase):
         :return:
         """
         pipe = self.popen(
-            [os.path.join(os.environ.get('BUILD_DIR'), 'router', 'qdrouterd'), '-d',
+            [qdrouterd_executable, '-d',
              '-I', os.path.join(os.environ.get('SOURCE_DIR'), 'python'),
              '-c', self.config.write(config_file_name), '-P', pid_file_name],
             stdout=PIPE, stderr=STDOUT, expect=Process.EXIT_OK,

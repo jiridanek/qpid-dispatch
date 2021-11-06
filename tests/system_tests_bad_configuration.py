@@ -26,7 +26,7 @@ For example, unresolvable host names.
 import os
 from threading import Timer
 from subprocess import PIPE, STDOUT
-from system_test import TestCase, Qdrouterd, TIMEOUT, Process
+from system_test import TestCase, Qdrouterd, TIMEOUT, Process, qdrouterd_executable
 
 
 class RouterTestBadConfiguration(TestCase):
@@ -191,7 +191,7 @@ class RouterTestIdFailCtrlChar(TestCase):
             router_conf.write("}")
         lib_include_path = os.path.join(os.environ["QPID_DISPATCH_HOME"], "python")
         p = self.popen(
-            ['qdrouterd', '-c', conf_path, '-I', lib_include_path],
+            [qdrouterd_executable, '-c', conf_path, '-I', lib_include_path],
             stdin=PIPE, stdout=PIPE, stderr=STDOUT, expect=Process.EXIT_FAIL,
             universal_newlines=True)
         out = p.communicate(timeout=5)[0]
@@ -233,7 +233,7 @@ class RouterTestIdFailWhiteSpace(TestCase):
             router_conf.write("}")
         lib_include_path = os.path.join(os.environ["QPID_DISPATCH_HOME"], "python")
         p = self.popen(
-            ['qdrouterd', '-c', conf_path, '-I', lib_include_path],
+            [qdrouterd_executable, '-c', conf_path, '-I', lib_include_path],
             stdin=PIPE, stdout=PIPE, stderr=STDOUT, expect=Process.EXIT_FAIL,
             universal_newlines=True)
         out = p.communicate(timeout=5)[0]
