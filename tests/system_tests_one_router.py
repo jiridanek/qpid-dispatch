@@ -18,7 +18,7 @@
 #
 
 from proton import Condition, Message, Delivery, Url, symbol, Timeout
-from system_test import TestCase, Qdrouterd, main_module, TIMEOUT, DIR, Process, unittest, QdManager, TestTimeout
+from system_test import TestCase, Qdrouterd, main_module, TIMEOUT, DIR, Process, unittest, QdManager, TestTimeout, qdmanage_executable
 from proton.handlers import MessagingHandler, TransactionHandler
 from proton.reactor import Container, AtMostOnce, AtLeastOnce
 from proton.utils import BlockingConnection, SyncRequestResponse
@@ -343,7 +343,7 @@ class OneRouterTest(TestCase):
 
     def run_qdmanage(self, cmd, input=None, expect=Process.EXIT_OK, address=None):
         p = self.popen(
-            ['qdmanage'] + cmd.split(' ') + ['--bus', address or self.address, '--indent=-1', '--timeout', str(TIMEOUT)],
+            qdmanage_executable() + cmd.split(' ') + ['--bus', address or self.address, '--indent=-1', '--timeout', str(TIMEOUT)],
             stdin=PIPE, stdout=PIPE, stderr=STDOUT, expect=expect,
             universal_newlines=True)
         out = p.communicate(input)[0]

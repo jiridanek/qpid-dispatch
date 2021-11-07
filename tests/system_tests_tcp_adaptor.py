@@ -32,6 +32,7 @@ from system_test import Qdrouterd
 from system_test import TestCase
 from system_test import TIMEOUT
 from system_test import unittest
+from system_test import qdstat_executable
 
 from subprocess import PIPE
 from subprocess import STDOUT
@@ -511,7 +512,7 @@ class TcpAdaptor(TestCase):
             for rtr in interior_rtrs:
                 # query each interior for addresses
                 p = Process(
-                    ['qdstat', '-b', str(cls.router_dict[rtr].addresses[0]), '-a'],
+                    qdstat_executable() + ['-b', str(cls.router_dict[rtr].addresses[0]), '-a'],
                     name='qdstat-snap1', stdout=PIPE, expect=None,
                     universal_newlines=True)
                 out = p.communicate()[0]

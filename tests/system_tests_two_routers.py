@@ -24,7 +24,7 @@ import logging
 from threading import Timer
 from subprocess import PIPE, STDOUT
 from proton import Message, Delivery, symbol, Condition
-from system_test import Logger, TestCase, Process, Qdrouterd, main_module, TIMEOUT, DIR, TestTimeout
+from system_test import Logger, TestCase, Process, Qdrouterd, main_module, TIMEOUT, DIR, TestTimeout, qdmanage_executable
 from system_test import AsyncTestReceiver
 from system_test import AsyncTestSender
 from system_test import get_inter_router_links
@@ -106,7 +106,7 @@ class TwoRouterTest(TestCase):
 
     def run_qdmanage(self, cmd, input=None, expect=Process.EXIT_OK, address=None):
         p = self.popen(
-            ['qdmanage'] + cmd.split(' ') + ['--bus', address or self.address(), '--indent=-1', '--timeout', str(TIMEOUT)],
+            qdmanage_executable() + cmd.split(' ') + ['--bus', address or self.address(), '--indent=-1', '--timeout', str(TIMEOUT)],
             stdin=PIPE, stdout=PIPE, stderr=STDOUT, expect=expect,
             universal_newlines=True)
         out = p.communicate(input)[0]
@@ -1777,7 +1777,7 @@ class TwoRouterConnection(TestCase):
 
     def run_qdmanage(self, cmd, input=None, expect=Process.EXIT_OK, address=None):
         p = self.popen(
-            ['qdmanage'] + cmd.split(' ') + ['--bus', address or self.address(), '--indent=-1', '--timeout', str(TIMEOUT)],
+            qdmanage_executable() + cmd.split(' ') + ['--bus', address or self.address(), '--indent=-1', '--timeout', str(TIMEOUT)],
             stdin=PIPE, stdout=PIPE, stderr=STDOUT, expect=expect,
             universal_newlines=True)
         out = p.communicate(input)[0]

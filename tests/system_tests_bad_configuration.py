@@ -26,7 +26,7 @@ For example, unresolvable host names.
 import os
 from threading import Timer
 from subprocess import PIPE, STDOUT
-from system_test import TestCase, Qdrouterd, TIMEOUT, Process, qdrouterd_executable
+from system_test import TestCase, Qdrouterd, TIMEOUT, Process, qdrouterd_executable, qdmanage_executable
 
 
 class RouterTestBadConfiguration(TestCase):
@@ -151,7 +151,7 @@ class RouterTestBadConfiguration(TestCase):
         :return:
         """
         p = self.popen(
-            ['qdmanage', '-b', self.address(), 'query', '--type=router', '--timeout', str(TIMEOUT)],
+            qdmanage_executable() + ['-b', self.address(), 'query', '--type=router', '--timeout', str(TIMEOUT)],
             stdin=PIPE, stdout=PIPE, stderr=STDOUT, expect=Process.EXIT_OK,
             universal_newlines=True)
         out = p.communicate()[0]

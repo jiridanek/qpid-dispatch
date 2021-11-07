@@ -22,7 +22,7 @@ import re
 import unittest
 from subprocess import PIPE
 from proton import Url, SSLDomain, SSLUnavailable, SASL
-from system_test import main_module, TIMEOUT, TestCase, Qdrouterd, DIR
+from system_test import main_module, TIMEOUT, TestCase, Qdrouterd, DIR, qdstat_executable
 from proton.utils import BlockingConnection
 
 
@@ -32,8 +32,8 @@ class QdstatTestBase(TestCase):
     def run_qdstat(self, args, address=None, regex=None):
         if args is None:
             args = []
-        args = ['qdstat',
-                '--bus', str(address or self.address()),
+        args = qdstat_executable() + \
+               ['--bus', str(address or self.address()),
                 '--timeout', str(TIMEOUT)] + args
 
         p = self.popen(args, name='qdstat-' + self.id(), stdout=PIPE,

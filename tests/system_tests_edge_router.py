@@ -31,6 +31,7 @@ from system_test import Logger
 from system_test import QdManager
 from system_test import unittest
 from system_test import Process
+from system_test import qdstat_executable
 from system_tests_link_routes import ConnLinkRouteService
 from test_broker import FakeBroker
 from test_broker import FakeService
@@ -114,7 +115,7 @@ class EdgeRouterTest(TestCase):
 
     def run_qdstat(self, args, regexp=None, address=None):
         p = self.popen(
-            ['qdstat', '--bus', str(address or self.router.addresses[0]),
+            qdstat_executable() + ['--bus', str(address or self.router.addresses[0]),
              '--timeout', str(TIMEOUT)] + args,
             name='qdstat-' + self.id(), stdout=PIPE, expect=None,
             universal_newlines=True)

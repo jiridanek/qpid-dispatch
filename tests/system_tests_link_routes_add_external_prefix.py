@@ -16,11 +16,11 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-
+import sys
 from time import sleep
 from subprocess import PIPE, STDOUT
 
-from system_test import TestCase, Qdrouterd, main_module, TIMEOUT, Process, TestTimeout
+from system_test import TestCase, Qdrouterd, main_module, TIMEOUT, Process, TestTimeout, qdmanage_executable, qdstat_executable
 from system_test import unittest
 
 from proton import Message
@@ -119,7 +119,7 @@ class LinkRouteTest(TestCase):
         sleep(2)
 
     def run_qdstat_linkRoute(self, address, args=None):
-        cmd = ['qdstat', '--bus', str(address), '--timeout', str(TIMEOUT)] + ['--linkroute']
+        cmd = qdstat_executable() + ['--bus', str(address), '--timeout', str(TIMEOUT)] + ['--linkroute']
         if args:
             cmd = cmd + args
         p = self.popen(
@@ -133,7 +133,7 @@ class LinkRouteTest(TestCase):
 
     def run_qdmanage(self, cmd, input=None, expect=Process.EXIT_OK, address=None):
         p = self.popen(
-            ['qdmanage'] + cmd.split(' ') + ['--bus', address or self.address(), '--indent=-1', '--timeout', str(TIMEOUT)],
+            qdmanage_executable() + cmd.split(' ') + ['--bus', address or self.address(), '--indent=-1', '--timeout', str(TIMEOUT)],
             stdin=PIPE, stdout=PIPE, stderr=STDOUT, expect=expect,
             universal_newlines=True)
         out = p.communicate(input)[0]

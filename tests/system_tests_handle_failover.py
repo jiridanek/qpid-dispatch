@@ -24,7 +24,7 @@ import sys
 from subprocess import PIPE, STDOUT
 from threading import Timer
 
-from system_test import TestCase, Qdrouterd, Process, TIMEOUT
+from system_test import TestCase, Qdrouterd, Process, TIMEOUT, qdmanage_executable, qdstat_executable
 from system_test import main_module
 from system_test import unittest
 
@@ -102,7 +102,7 @@ class FailoverTest(TestCase):
 
     def run_qdmanage(self, cmd, input=None, expect=Process.EXIT_OK, address=None):
         p = self.popen(
-            ['qdmanage'] + cmd.split(' ') + ['--bus', address or self.address(), '--indent=-1', '--timeout', str(TIMEOUT)],
+            qdmanage_executable() + cmd.split(' ') + ['--bus', address or self.address(), '--indent=-1', '--timeout', str(TIMEOUT)],
             stdin=PIPE, stdout=PIPE, stderr=STDOUT, expect=expect,
             universal_newlines=True)
         out = p.communicate(input)[0]
@@ -114,7 +114,7 @@ class FailoverTest(TestCase):
 
     def run_qdstat(self, args, regexp=None, address=None):
         p = self.popen(
-            ['qdstat', '--bus', str(address or self.router.addresses[0]), '--timeout', str(TIMEOUT)] + args,
+            qdstat_executable() + ['--bus', str(address or self.router.addresses[0]), '--timeout', str(TIMEOUT)] + args,
             name='qdstat-' + self.id(), stdout=PIPE, expect=None,
             universal_newlines=True)
 

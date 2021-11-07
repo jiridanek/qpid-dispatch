@@ -82,9 +82,22 @@ except ImportError as err:
 # D:\a\qpid-dispatch\qpid-dispatch\qpid-dispatch\build\router\RelWithDebInfo\qdrouterd.exe
 def qdrouterd_executable():
     suffix = '.exe' if platform.system() == 'Windows' else ""
+    if 'GITHUB_ACTION' not in os.environ:
+        return os.path.join(os.environ.get('BUILD_DIR'), 'router', 'qdrouterd' + suffix)
     if platform.system() == 'Windows':  # this is the case on GHA; depends on how you run CMake...
         return os.path.join(os.environ.get('BUILD_DIR'), 'router', 'RelWithDebInfo', 'qdrouterd' + suffix)
-    return os.path.join(os.environ.get('BUILD_DIR'), 'router', 'qdrouterd' + suffix)
+
+
+# on windows, one cannot simply run a text file without any suffix and expect things to work
+
+# these need install dir? actually all tests should use _installed_ qdrouterd, I think that was the idea
+# in the first place
+def qdmanage_executable() -> List[str]:
+    return [sys.executable, os.path.join(os.environ.get('BUILD_DIR'), 'install', 'bin', 'qdmanage')]
+
+
+def qdstat_executable() -> List[str]:
+    return [sys.executable, os.path.join(os.environ.get('BUILD_DIR'), 'install', 'bin', 'qdstat')]
 
 
 def find_exe(program):
@@ -1156,7 +1169,7 @@ class QdManager(object):
                  timeout=None):
         assert address or self._address, "address missing"
         p = self._tester.popen(
-            ['qdmanage'] + cmd.split(' ')
+            qdmanage_executable() + cmd.split(' ')
             + self.router + ['--bus', address or self._address,
                              '--indent=-1',
                              '--timeout', str(timeout or self._timeout)],

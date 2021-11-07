@@ -19,7 +19,7 @@
 
 import json
 from proton import Message, symbol
-from system_test import TestCase, Qdrouterd, Process, TIMEOUT
+from system_test import TestCase, Qdrouterd, Process, TIMEOUT, qdmanage_executable
 from system_test import unittest
 from subprocess import PIPE, STDOUT
 from proton.handlers import MessagingHandler
@@ -30,7 +30,7 @@ from qpid_dispatch_internal.compat import BINARY
 class RouterMessageLogTestBase(TestCase):
     def run_qdmanage(self, cmd, input=None, expect=Process.EXIT_OK, address=None):
         p = self.popen(
-            ['qdmanage'] +
+            qdmanage_executable() +
             cmd.split(' ') +
             ['--bus',
              address or self.address(),

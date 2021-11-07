@@ -16,10 +16,9 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-
 import re
 from subprocess import PIPE
-from system_test import TestCase, Qdrouterd, TIMEOUT, main_module, unittest, TestTimeout
+from system_test import TestCase, Qdrouterd, TIMEOUT, main_module, unittest, TestTimeout, qdstat_executable
 from proton.handlers import MessagingHandler
 from proton.reactor import Container
 from proton import Message
@@ -46,7 +45,7 @@ class DefaultDistributionTest(TestCase):
 
     def run_qdstat(self, args, regexp=None, address=None):
         p = self.popen(
-            ['qdstat', '--bus', str(address or self.address), '--timeout', str(TIMEOUT)] + args,
+            qdstat_executable() + ['--bus', str(address or self.address), '--timeout', str(TIMEOUT)] + args,
             name='qdstat-' + self.id(), stdout=PIPE, expect=None,
             universal_newlines=True)
 
