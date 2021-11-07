@@ -96,7 +96,7 @@ signal.signal(signal.SIGTERM, receive_signal)
 
 sock = socket.socket()
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-sock.bind(('0.0.0.0', int(os.getenv('SERVER_LISTEN_PORT'))))
+sock.bind(('127.0.0.1', int(os.getenv('SERVER_LISTEN_PORT'))))
 sock.listen(5)
 
 while True:

@@ -85,7 +85,7 @@ class PolicyHostAddrTest(TestCase):
 
     def test_policy_hostaddr_ipv4_wildcard(self):
         aaa = HostAddr("*")
-        self.check_hostaddr_match(aaa, "0.0.0.0")
+        self.check_hostaddr_match(aaa, "127.0.0.1")
         self.check_hostaddr_match(aaa, "127.0.0.1")
         self.check_hostaddr_match(aaa, "255.254.253.252")
 
@@ -98,7 +98,7 @@ class PolicyHostAddrTest(TestCase):
         self.check_hostaddr_match(aaa, "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff")
 
     def test_policy_malformed_hostaddr_ipv4(self):
-        self.expect_deny("0.0.0.0.0", "Name or service not known")
+        self.expect_deny("127.0.0.1.0", "Name or service not known")
         self.expect_deny("1.1.1.1,2.2.2.2,3.3.3.3", "arg count")
         self.expect_deny("9.9.9.9,8.8.8.8", "a > b")
 

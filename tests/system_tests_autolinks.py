@@ -444,7 +444,7 @@ class WaypointTest(MessagingHandler):
             link_name_index = out.attribute_names.index('linkName')
 
             for result in out.results:
-                if result[link_type_index] == "endpoint" and result[link_dir_index] == "out" and result[link_name_index] == 'AAA' and result[owning_addr_index] == 'M10.0.0.0/queue.ext':
+                if result[link_type_index] == "endpoint" and result[link_dir_index] == "out" and result[link_name_index] == 'AAA' and result[owning_addr_index] == 'M1127.0.0.1/queue.ext':
                     self.receiver1_phase = True
         elif event.receiver == self.receiver2:
             local_node = Node.connect(self.second_host, timeout=TIMEOUT)
@@ -455,7 +455,7 @@ class WaypointTest(MessagingHandler):
             link_name_index = out.attribute_names.index('linkName')
 
             for result in out.results:
-                if result[link_type_index] == "endpoint" and result[link_dir_index] == "out" and result[link_name_index] == 'BBB' and result[owning_addr_index] == 'M10.0.0.0/queue.ext':
+                if result[link_type_index] == "endpoint" and result[link_dir_index] == "out" and result[link_name_index] == 'BBB' and result[owning_addr_index] == 'M1127.0.0.1/queue.ext':
                     self.receiver2_phase = True
 
         if self.receiver1_phase and self.receiver2_phase:
