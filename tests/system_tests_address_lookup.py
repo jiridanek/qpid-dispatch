@@ -60,7 +60,7 @@ class LinkRouteLookupTest(TestCase):
         def router(name, mode, extra=None):
             config = [
                 ('router', {'mode': mode, 'id': name}),
-                ('listener', {'role': 'normal', 'host': '0.0.0.0', 'port': cls.tester.get_port(), 'saslMechanisms': 'ANONYMOUS'})
+                ('listener', {'role': 'normal', 'host': '127.0.0.1', 'port': cls.tester.get_port(), 'saslMechanisms': 'ANONYMOUS'})
             ]
 
             if extra:

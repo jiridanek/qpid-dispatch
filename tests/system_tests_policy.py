@@ -1080,7 +1080,7 @@ class VhostPolicyFromRouterConfig(TestCase):
             ('listener', {'port': cls.tester.get_port()}),
             ('policy', {'maxConnections': 100, 'enableVhostPolicy': 'true'}),
             ('vhost', {
-                'hostname': '0.0.0.0', 'maxConnections': 2,
+                'hostname': '127.0.0.1', 'maxConnections': 2,
                 'allowUnknownUser': 'true',
                 'groups': {
                     '$default': {
@@ -1192,7 +1192,7 @@ class VhostPolicyConnLimit(TestCase):
             ('listener', {'port': cls.tester.get_port()}),
             ('policy', {'maxConnections': 100, 'enableVhostPolicy': 'true'}),
             ('vhost', {
-                'hostname': '0.0.0.0', 'maxConnections': 100,
+                'hostname': '127.0.0.1', 'maxConnections': 100,
                 'maxConnectionsPerUser': 2,
                 'allowUnknownUser': 'true',
                 'groups': {
@@ -1425,7 +1425,7 @@ class ConnectorPolicyMisconfigured(TestCase):
                            }),
 
             ('vhost', {
-                'hostname': '0.0.0.0', 'maxConnections': 2,
+                'hostname': '127.0.0.1', 'maxConnections': 2,
                 'allowUnknownUser': 'true',
                 'groups': {
                     '$default': {

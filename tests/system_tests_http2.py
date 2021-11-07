@@ -356,7 +356,7 @@ class Http2TestOneStandaloneRouter(Http2TestBase, CommonHttp2Tests):
         }
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
 
             ('httpListener', {'port': cls.tester.get_port(), 'address': 'examples',
                               'host': '127.0.0.1', 'protocolVersion': 'HTTP2'}),
@@ -439,7 +439,7 @@ class Http2TestOneEdgeRouter(Http2TestBase, CommonHttp2Tests):
         }
         config = Qdrouterd.Config([
             ('router', {'mode': 'edge', 'id': 'QDR'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
 
             ('httpListener', {'port': cls.tester.get_port(), 'address': 'examples',
                               'host': '127.0.0.1', 'protocolVersion': 'HTTP2'}),
@@ -477,7 +477,7 @@ class Http2TestOneInteriorRouter(Http2TestBase, CommonHttp2Tests):
         }
         config = Qdrouterd.Config([
             ('router', {'mode': 'interior', 'id': 'QDR'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
 
             ('httpListener', {'port': cls.tester.get_port(), 'address': 'examples',
                               'host': '127.0.0.1', 'protocolVersion': 'HTTP2'}),
@@ -518,7 +518,7 @@ class Http2TestTwoRouter(Http2TestBase, CommonHttp2Tests):
 
         config_qdra = Qdrouterd.Config([
             ('router', {'mode': 'interior', 'id': 'QDR.A'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
             ('httpListener', cls.http_listener_props),
             ('listener', {'role': 'inter-router', 'port': inter_router_port})
         ])
@@ -533,7 +533,7 @@ class Http2TestTwoRouter(Http2TestBase, CommonHttp2Tests):
         }
         config_qdrb = Qdrouterd.Config([
             ('router', {'mode': 'interior', 'id': 'QDR.B'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
             ('httpConnector', cls.connector_props),
             ('connector', {'name': 'connectorToA', 'role': 'inter-router',
                            'port': inter_router_port,
@@ -629,7 +629,7 @@ class Http2TestEdgeInteriorRouter(Http2TestBase, CommonHttp2Tests):
         inter_router_port = cls.tester.get_port()
         config_edgea = Qdrouterd.Config([
             ('router', {'mode': 'edge', 'id': 'EDGE.A'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
             ('httpListener', {'port': cls.tester.get_port(), 'address': 'examples',
                               'host': '127.0.0.1', 'protocolVersion': 'HTTP2'}),
             ('connector', {'name': 'connectorToA', 'role': 'edge',
@@ -639,7 +639,7 @@ class Http2TestEdgeInteriorRouter(Http2TestBase, CommonHttp2Tests):
 
         config_qdrb = Qdrouterd.Config([
             ('router', {'mode': 'interior', 'id': 'QDR.A'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
             ('listener', {'role': 'edge', 'port': inter_router_port}),
             ('httpConnector',
              {'port': os.getenv('SERVER_LISTEN_PORT'), 'address': 'examples',
@@ -671,7 +671,7 @@ class Http2TestInteriorEdgeRouter(Http2TestBase, CommonHttp2Tests):
         inter_router_port = cls.tester.get_port()
         config_edge = Qdrouterd.Config([
             ('router', {'mode': 'edge', 'id': 'EDGE.A'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
             ('httpConnector',
              {'port': os.getenv('SERVER_LISTEN_PORT'), 'address': 'examples',
               'host': '127.0.0.1', 'protocolVersion': 'HTTP2'}),
@@ -682,7 +682,7 @@ class Http2TestInteriorEdgeRouter(Http2TestBase, CommonHttp2Tests):
 
         config_qdra = Qdrouterd.Config([
             ('router', {'mode': 'interior', 'id': 'QDR.A'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
             ('listener', {'role': 'edge', 'port': inter_router_port}),
             ('httpListener',
              {'port': cls.tester.get_port(), 'address': 'examples',
@@ -721,7 +721,7 @@ class Http2TestDoubleEdgeInteriorRouter(Http2TestBase):
         cls.edge_a_http_connector_name = 'httpConnectorFromEdgeAToHttpServer'
         config_edgea = Qdrouterd.Config([
             ('router', {'mode': 'edge', 'id': 'EDGE.A'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
             ('httpConnector',
              {'port': os.getenv('SERVER_LISTEN_PORT'),
               'address': 'examples',
@@ -738,7 +738,7 @@ class Http2TestDoubleEdgeInteriorRouter(Http2TestBase):
         cls.edge_b_http_connector_name = 'httpConnectorFromEdgeBToHttpServer'
         config_edgeb = Qdrouterd.Config([
             ('router', {'mode': 'edge', 'id': 'EDGE.B'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
             ('httpConnector',
              {'port': os.getenv('SERVER_LISTEN_PORT'),
               'address': 'examples',
@@ -753,7 +753,7 @@ class Http2TestDoubleEdgeInteriorRouter(Http2TestBase):
 
         config_qdrc = Qdrouterd.Config([
             ('router', {'mode': 'interior', 'id': 'QDR.A'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
             ('listener', {'role': 'edge', 'port': inter_router_port}),
             ('httpListener', {'port': cls.tester.get_port(),
                               'address': 'examples',
@@ -848,7 +848,7 @@ class Http2TestEdgeToEdgeViaInteriorRouter(Http2TestBase, CommonHttp2Tests):
         inter_router_port = cls.tester.get_port()
         config_edge_b = Qdrouterd.Config([
             ('router', {'mode': 'edge', 'id': 'EDGE.A'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
             ('httpConnector', cls.connector_props),
             ('connector', {'name': 'connectorToA', 'role': 'edge',
                            'port': inter_router_port,
@@ -857,14 +857,14 @@ class Http2TestEdgeToEdgeViaInteriorRouter(Http2TestBase, CommonHttp2Tests):
 
         config_qdra = Qdrouterd.Config([
             ('router', {'mode': 'interior', 'id': 'QDR.A'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
             ('listener', {'role': 'edge', 'port': inter_router_port}),
         ])
 
         config_edge_a = Qdrouterd.Config([
             ('router', {'mode': 'edge', 'id': 'EDGE.B'}),
             ('listener', {'port': cls.tester.get_port(), 'role': 'normal',
-                          'host': '0.0.0.0'}),
+                          'host': '127.0.0.1'}),
             ('httpListener',
              {'port': cls.tester.get_port(), 'address': 'examples',
               'host': '127.0.0.1', 'protocolVersion': 'HTTP2'}),
@@ -908,7 +908,7 @@ class Http2TestGoAway(Http2TestBase):
         }
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
 
             ('httpListener', {'port': cls.tester.get_port(), 'address': 'examples',
                               'host': '127.0.0.1', 'protocolVersion': 'HTTP2'}),
@@ -951,7 +951,7 @@ class Http2Q2OneRouterTest(Http2TestBase):
         }
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
 
             ('httpListener', {'port': cls.tester.get_port(), 'address': 'examples',
                               'host': '127.0.0.1', 'protocolVersion': 'HTTP2'}),
@@ -1000,7 +1000,7 @@ class Http2Q2TwoRouterTest(Http2TestBase):
         inter_router_port = cls.tester.get_port()
         config_qdra = Qdrouterd.Config([
             ('router', {'mode': 'interior', 'id': 'QDR.A'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
             ('httpListener', {'port': cls.tester.get_port(), 'address': 'examples',
                               'host': '127.0.0.1', 'protocolVersion': 'HTTP2'}),
             ('connector', {'name': 'connectorToB', 'role': 'inter-router',

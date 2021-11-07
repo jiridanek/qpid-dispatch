@@ -83,12 +83,12 @@ class RouterTestPlainSaslFailure(RouterTestPlainSaslCommon):
         y_listener_port = cls.tester.get_port()
 
         super(RouterTestPlainSaslFailure, cls).router('X', [
-            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': x_listener_port,
+            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': x_listener_port,
                           'saslMechanisms': 'PLAIN', 'authenticatePeer': 'yes'}),
             # This unauthenticated listener is for qdstat to connect to it.
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port(),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port(),
                           'authenticatePeer': 'no'}),
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port(),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port(),
                           'saslMechanisms': 'PLAIN', 'authenticatePeer': 'yes'}),
             ('router', {'workerThreads': 1,
                         'id': 'QDR.X',
@@ -99,7 +99,7 @@ class RouterTestPlainSaslFailure(RouterTestPlainSaslCommon):
         ])
 
         super(RouterTestPlainSaslFailure, cls).router('Y', [
-            ('connector', {'host': '0.0.0.0', 'role': 'inter-router', 'port': x_listener_port,
+            ('connector', {'host': '127.0.0.1', 'role': 'inter-router', 'port': x_listener_port,
                            # Provide a sasl user name and password to connect to QDR.X
                            'saslMechanisms': 'PLAIN',
                            'saslUsername': 'test@domain.com',
@@ -108,7 +108,7 @@ class RouterTestPlainSaslFailure(RouterTestPlainSaslCommon):
             ('router', {'workerThreads': 1,
                         'mode': 'interior',
                         'id': 'QDR.Y'}),
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': y_listener_port}),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': y_listener_port}),
         ])
 
         cls.routers[0].wait_ports()
@@ -179,12 +179,12 @@ class RouterTestPlainSaslFailureUsingLiteral(RouterTestPlainSaslCommon):
         y_listener_port = cls.tester.get_port()
 
         super(RouterTestPlainSaslFailureUsingLiteral, cls).router('X', [
-            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': x_listener_port,
+            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': x_listener_port,
                           'saslMechanisms': 'PLAIN', 'authenticatePeer': 'yes'}),
             # This unauthenticated listener is for qdstat to connect to it.
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port(),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port(),
                           'authenticatePeer': 'no'}),
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port(),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port(),
                           'saslMechanisms': 'PLAIN', 'authenticatePeer': 'yes'}),
             ('router', {'workerThreads': 1,
                         'id': 'QDR.X',
@@ -195,7 +195,7 @@ class RouterTestPlainSaslFailureUsingLiteral(RouterTestPlainSaslCommon):
         ])
 
         super(RouterTestPlainSaslFailureUsingLiteral, cls).router('Y', [
-            ('connector', {'host': '0.0.0.0', 'role': 'inter-router', 'port': x_listener_port,
+            ('connector', {'host': '127.0.0.1', 'role': 'inter-router', 'port': x_listener_port,
                            # Provide a sasl user name and password to connect to QDR.X
                            'saslMechanisms': 'PLAIN',
                            'saslUsername': 'test@domain.com',
@@ -204,7 +204,7 @@ class RouterTestPlainSaslFailureUsingLiteral(RouterTestPlainSaslCommon):
             ('router', {'workerThreads': 1,
                         'mode': 'interior',
                         'id': 'QDR.Y'}),
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': y_listener_port}),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': y_listener_port}),
         ])
 
         cls.routers[0].wait_ports()
@@ -269,12 +269,12 @@ class RouterTestPlainSasl(RouterTestPlainSaslCommon):
         y_listener_port = cls.tester.get_port()
 
         super(RouterTestPlainSasl, cls).router('X', [
-            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': x_listener_port,
+            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': x_listener_port,
                           'saslMechanisms': 'PLAIN', 'authenticatePeer': 'yes'}),
             # This unauthenticated listener is for qdstat to connect to it.
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port(),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port(),
                           'authenticatePeer': 'no'}),
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port(),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port(),
                           'saslMechanisms': 'PLAIN', 'authenticatePeer': 'yes'}),
             ('router', {'workerThreads': 1,
                         'id': 'QDR.X',
@@ -285,7 +285,7 @@ class RouterTestPlainSasl(RouterTestPlainSaslCommon):
         ])
 
         super(RouterTestPlainSasl, cls).router('Y', [
-            ('connector', {'host': '0.0.0.0', 'role': 'inter-router', 'port': x_listener_port,
+            ('connector', {'host': '127.0.0.1', 'role': 'inter-router', 'port': x_listener_port,
                            # Provide a sasl user name and password to connect to QDR.X
                            'saslMechanisms': 'PLAIN',
                            'saslUsername': 'test@domain.com',
@@ -293,7 +293,7 @@ class RouterTestPlainSasl(RouterTestPlainSaslCommon):
             ('router', {'workerThreads': 1,
                         'mode': 'interior',
                         'id': 'QDR.Y'}),
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': y_listener_port}),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': y_listener_port}),
         ])
 
         cls.routers[1].wait_router_connected('QDR.X')
@@ -409,12 +409,12 @@ class RouterTestPlainSaslOverSsl(RouterTestPlainSaslCommon):
         y_listener_port = cls.tester.get_port()
 
         super(RouterTestPlainSaslOverSsl, cls).router('X', [
-            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': x_listener_port,
+            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': x_listener_port,
                           'sslProfile': 'server-ssl-profile',
                           'saslMechanisms': 'PLAIN', 'authenticatePeer': 'yes'}),
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port(),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port(),
                           'authenticatePeer': 'no'}),
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port(),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port(),
                           'sslProfile': 'server-ssl-profile',
                           'saslMechanisms': 'PLAIN', 'authenticatePeer': 'yes'}),
             ('sslProfile', {'name': 'server-ssl-profile',
@@ -442,7 +442,7 @@ class RouterTestPlainSaslOverSsl(RouterTestPlainSaslCommon):
             ('router', {'workerThreads': 1,
                         'mode': 'interior',
                         'id': 'QDR.Y'}),
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': y_listener_port}),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': y_listener_port}),
             ('sslProfile', {'name': 'client-ssl-profile',
                             'caCertFile': cls.ssl_file('ca-certificate.pem')}),
         ])
@@ -539,11 +539,11 @@ class RouterTestVerifyHostNameYes(RouterTestPlainSaslCommon):
         y_listener_port = cls.tester.get_port()
 
         super(RouterTestVerifyHostNameYes, cls).router('X', [
-            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': x_listener_port,
+            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': x_listener_port,
                           'sslProfile': 'server-ssl-profile',
                           'saslMechanisms': 'PLAIN', 'authenticatePeer': 'yes'}),
             # This unauthenticated listener is for qdstat to connect to it.
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port(),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port(),
                           'authenticatePeer': 'no'}),
             ('sslProfile', {'name': 'server-ssl-profile',
                             'certFile': cls.ssl_file('server-certificate.pem'),
@@ -568,7 +568,7 @@ class RouterTestVerifyHostNameYes(RouterTestPlainSaslCommon):
             ('router', {'workerThreads': 1,
                         'mode': 'interior',
                         'id': 'QDR.Y'}),
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': y_listener_port}),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': y_listener_port}),
             ('sslProfile', {'name': 'client-ssl-profile',
                             'caCertFile': cls.ssl_file('ca-certificate.pem')}),
         ])
@@ -631,11 +631,11 @@ class RouterTestVerifyHostNameNo(RouterTestPlainSaslCommon):
         y_listener_port = cls.tester.get_port()
 
         super(RouterTestVerifyHostNameNo, cls).router('X', [
-            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': x_listener_port,
+            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': x_listener_port,
                           'sslProfile': 'server-ssl-profile',
                           'saslMechanisms': 'PLAIN', 'authenticatePeer': 'yes'}),
             # This unauthenticated listener is for qdstat to connect to it.
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port(),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port(),
                           'authenticatePeer': 'no'}),
             ('sslProfile', {'name': 'server-ssl-profile',
                             # certDb has been deprecated. We are using it here to test backward compatibility.
@@ -666,7 +666,7 @@ class RouterTestVerifyHostNameNo(RouterTestPlainSaslCommon):
             ('router', {'workerThreads': 1,
                         'mode': 'interior',
                         'id': 'QDR.Y'}),
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': y_listener_port}),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': y_listener_port}),
             ('sslProfile', {'name': 'client-ssl-profile',
                             'caCertFile': cls.ssl_file('ca-certificate.pem')}),
         ])

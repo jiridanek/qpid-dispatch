@@ -1756,7 +1756,7 @@ class TwoRouterConnection(TestCase):
 
         TwoRouterConnection.router('A', [
             ('router', {'mode': 'interior', 'id': 'A'}),
-            ('listener', {'host': '0.0.0.0', 'role': 'normal',
+            ('listener', {'host': '127.0.0.1', 'role': 'normal',
                           'port': cls.tester.get_port()}),
         ]
         )
@@ -1764,9 +1764,9 @@ class TwoRouterConnection(TestCase):
         TwoRouterConnection.router('B',
                                    [
                                        ('router', {'mode': 'interior', 'id': 'B'}),
-                                       ('listener', {'host': '0.0.0.0', 'role': 'normal',
+                                       ('listener', {'host': '127.0.0.1', 'role': 'normal',
                                                      'port': cls.B_normal_port_1}),
-                                       ('listener', {'host': '0.0.0.0', 'role': 'normal',
+                                       ('listener', {'host': '127.0.0.1', 'role': 'normal',
                                                      'port': cls.B_normal_port_2}),
 
                                    ]
@@ -1828,11 +1828,11 @@ class TwoRouterConnection(TestCase):
 
         long_type = 'org.apache.qpid.dispatch.connector' ''
 
-        create_command = 'CREATE --type=' + long_type + ' --name=foo' + ' host=0.0.0.0 port=' + str(TwoRouterConnection.B_normal_port_1)
+        create_command = 'CREATE --type=' + long_type + ' --name=foo' + ' host=127.0.0.1 port=' + str(TwoRouterConnection.B_normal_port_1)
 
         self.run_qdmanage(create_command)
 
-        create_command = 'CREATE --type=' + long_type + ' --name=bar' + ' host=0.0.0.0 port=' + str(TwoRouterConnection.B_normal_port_2)
+        create_command = 'CREATE --type=' + long_type + ' --name=bar' + ' host=127.0.0.1 port=' + str(TwoRouterConnection.B_normal_port_2)
 
         self.run_qdmanage(create_command)
 
@@ -2069,7 +2069,7 @@ class TwoRouterExtensionStateTest(TestCase):
         cls.RouterA = router('RouterA',
                              [
                                  ('listener', {'role': 'inter-router',
-                                               'host': '0.0.0.0',
+                                               'host': '127.0.0.1',
                                                'port': inter_router_port,
                                                'saslMechanisms': 'ANONYMOUS'}),
                              ])
@@ -2080,7 +2080,7 @@ class TwoRouterExtensionStateTest(TestCase):
                                                 'role': 'inter-router',
                                                 'port': inter_router_port}),
                                  ('listener', {'role': 'route-container',
-                                               'host': '0.0.0.0',
+                                               'host': '127.0.0.1',
                                                'port': service_port,
                                                'saslMechanisms': 'ANONYMOUS'}),
 

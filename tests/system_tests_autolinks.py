@@ -373,25 +373,25 @@ class WaypointReceiverPhaseTest(TestCase):
         cls.inter_router_port = cls.tester.get_port()
         cls.inter_router_port_1 = cls.tester.get_port()
         cls.backup_port = cls.tester.get_port()
-        cls.backup_url = 'amqp://0.0.0.0:' + str(cls.backup_port)
+        cls.backup_url = 'amqp://127.0.0.1:' + str(cls.backup_port)
 
         WaypointReceiverPhaseTest.router('A', [
             ('router', {'mode': 'interior', 'id': 'A'}),
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port()}),
-            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': cls.inter_router_port}),
-            ('autoLink', {'address': '0.0.0.0/queue.ext', 'direction': 'in', 'externalAddress': 'EXT'}),
-            ('autoLink', {'address': '0.0.0.0/queue.ext', 'direction': 'out', 'externalAddress': 'EXT'}),
-            ('address', {'prefix': '0.0.0.0/queue', 'waypoint': 'yes'}),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port()}),
+            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': cls.inter_router_port}),
+            ('autoLink', {'address': '127.0.0.1/queue.ext', 'direction': 'in', 'externalAddress': 'EXT'}),
+            ('autoLink', {'address': '127.0.0.1/queue.ext', 'direction': 'out', 'externalAddress': 'EXT'}),
+            ('address', {'prefix': '127.0.0.1/queue', 'waypoint': 'yes'}),
 
         ])
 
         WaypointReceiverPhaseTest.router('B',
                                          [
                                              ('router', {'mode': 'interior', 'id': 'B'}),
-                                             ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port()}),
+                                             ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port()}),
                                              ('connector', {'name': 'connectorToB', 'role': 'inter-router',
                                                             'port': cls.inter_router_port}),
-                                             ('address', {'prefix': '0.0.0.0/queue', 'waypoint': 'yes'}),
+                                             ('address', {'prefix': '127.0.0.1/queue', 'waypoint': 'yes'}),
                                          ])
 
         cls.routers[1].wait_router_connected('A')
@@ -402,7 +402,7 @@ class WaypointReceiverPhaseTest(TestCase):
         on both receivers is set to 1
         :return:
         """
-        test = WaypointTest(self.routers[0].addresses[0], self.routers[1].addresses[0], "0.0.0.0/queue.ext")
+        test = WaypointTest(self.routers[0].addresses[0], self.routers[1].addresses[0], "127.0.0.1/queue.ext")
         test.run()
         self.assertIsNone(test.error)
 

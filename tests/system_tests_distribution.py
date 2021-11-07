@@ -130,10 +130,10 @@ class DistributionTests (TestCase):
         """
         super(DistributionTests, cls).setUpClass()
 
-        cls.linkroute_prefix   = "0.0.0.0/linkroute"
-        cls.waypoint_prefix_1  = "0.0.0.0/process_1"
-        cls.waypoint_prefix_2  = "0.0.0.0/process_2"
-        cls.waypoint_prefix_3  = "0.0.0.0/process_3"
+        cls.linkroute_prefix   = "127.0.0.1/linkroute"
+        cls.waypoint_prefix_1  = "127.0.0.1/process_1"
+        cls.waypoint_prefix_2  = "127.0.0.1/process_2"
+        cls.waypoint_prefix_3  = "127.0.0.1/process_3"
 
         # -----------------------------------------------------
         # Container IDs are what associate route containers

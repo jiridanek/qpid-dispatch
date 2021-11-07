@@ -40,16 +40,16 @@ class RouterTest(TestCase):
                 ('listener', {'port': cls.tester.get_port(), 'stripAnnotations': 'no'}),
                 ('listener', {'port': cls.tester.get_port(), 'stripAnnotations': 'no', 'multiTenant': 'yes'}),
                 ('listener', {'port': cls.tester.get_port(), 'stripAnnotations': 'no', 'role': 'route-container'}),
-                ('linkRoute', {'prefix': '0.0.0.0/link', 'direction': 'in', 'containerId': 'LRC'}),
-                ('linkRoute', {'prefix': '0.0.0.0/link', 'direction': 'out', 'containerId': 'LRC'}),
-                ('autoLink', {'address': '0.0.0.0/queue.waypoint', 'containerId': 'ALC', 'direction': 'in'}),
-                ('autoLink', {'address': '0.0.0.0/queue.waypoint', 'containerId': 'ALC', 'direction': 'out'}),
-                ('autoLink', {'address': '0.0.0.0/queue.ext', 'containerId': 'ALCE', 'direction': 'in', 'externalAddress': 'EXT'}),
-                ('autoLink', {'address': '0.0.0.0/queue.ext', 'containerId': 'ALCE', 'direction': 'out', 'externalAddress': 'EXT'}),
+                ('linkRoute', {'prefix': '127.0.0.1/link', 'direction': 'in', 'containerId': 'LRC'}),
+                ('linkRoute', {'prefix': '127.0.0.1/link', 'direction': 'out', 'containerId': 'LRC'}),
+                ('autoLink', {'address': '127.0.0.1/queue.waypoint', 'containerId': 'ALC', 'direction': 'in'}),
+                ('autoLink', {'address': '127.0.0.1/queue.waypoint', 'containerId': 'ALC', 'direction': 'out'}),
+                ('autoLink', {'address': '127.0.0.1/queue.ext', 'containerId': 'ALCE', 'direction': 'in', 'externalAddress': 'EXT'}),
+                ('autoLink', {'address': '127.0.0.1/queue.ext', 'containerId': 'ALCE', 'direction': 'out', 'externalAddress': 'EXT'}),
                 ('address', {'prefix': 'closest', 'distribution': 'closest'}),
                 ('address', {'prefix': 'spread', 'distribution': 'balanced'}),
                 ('address', {'prefix': 'multicast', 'distribution': 'multicast'}),
-                ('address', {'prefix': '0.0.0.0/queue', 'waypoint': 'yes'}),
+                ('address', {'prefix': '127.0.0.1/queue', 'waypoint': 'yes'}),
                 connection
             ]
 
@@ -81,19 +81,19 @@ class RouterTest(TestCase):
         test = MessageTransferTest(self.routers[0].addresses[1],
                                    self.routers[0].addresses[0],
                                    "addr_02",
-                                   "0.0.0.0/addr_02",
+                                   "127.0.0.1/addr_02",
                                    self.routers[0].addresses[0],
-                                   "M00.0.0.0/addr_02")
+                                   "M0127.0.0.1/addr_02")
         test.run()
         self.assertIsNone(test.error)
 
     def test_03_one_router_targeted_sender_tenant_on_receiver(self):
         test = MessageTransferTest(self.routers[0].addresses[0],
                                    self.routers[0].addresses[1],
-                                   "0.0.0.0/addr_03",
+                                   "127.0.0.1/addr_03",
                                    "addr_03",
                                    self.routers[0].addresses[0],
-                                   "M00.0.0.0/addr_03")
+                                   "M0127.0.0.1/addr_03")
         test.run()
         self.assertIsNone(test.error)
 
@@ -103,17 +103,17 @@ class RouterTest(TestCase):
                                    "addr_04",
                                    "addr_04",
                                    self.routers[0].addresses[0],
-                                   "M00.0.0.0/addr_04")
+                                   "M0127.0.0.1/addr_04")
         test.run()
         self.assertIsNone(test.error)
 
     def test_05_two_router_targeted_sender_no_tenant(self):
         test = MessageTransferTest(self.routers[0].addresses[0],
                                    self.routers[1].addresses[0],
-                                   "0.0.0.0/addr_05",
-                                   "0.0.0.0/addr_05",
+                                   "127.0.0.1/addr_05",
+                                   "127.0.0.1/addr_05",
                                    self.routers[0].addresses[0],
-                                   "M00.0.0.0/addr_05")
+                                   "M0127.0.0.1/addr_05")
         test.run()
         self.assertIsNone(test.error)
 
@@ -121,19 +121,19 @@ class RouterTest(TestCase):
         test = MessageTransferTest(self.routers[0].addresses[1],
                                    self.routers[1].addresses[0],
                                    "addr_06",
-                                   "0.0.0.0/addr_06",
+                                   "127.0.0.1/addr_06",
                                    self.routers[0].addresses[0],
-                                   "M00.0.0.0/addr_06")
+                                   "M0127.0.0.1/addr_06")
         test.run()
         self.assertIsNone(test.error)
 
     def test_07_two_router_targeted_sender_tenant_on_receiver(self):
         test = MessageTransferTest(self.routers[0].addresses[0],
                                    self.routers[1].addresses[1],
-                                   "0.0.0.0/addr_07",
+                                   "127.0.0.1/addr_07",
                                    "addr_07",
                                    self.routers[0].addresses[0],
-                                   "M00.0.0.0/addr_07")
+                                   "M0127.0.0.1/addr_07")
         test.run()
         self.assertIsNone(test.error)
 
@@ -143,7 +143,7 @@ class RouterTest(TestCase):
                                    "addr_08",
                                    "addr_08",
                                    self.routers[0].addresses[0],
-                                   "M00.0.0.0/addr_08")
+                                   "M0127.0.0.1/addr_08")
         test.run()
         self.assertIsNone(test.error)
 
@@ -161,19 +161,19 @@ class RouterTest(TestCase):
         test = MessageTransferAnonTest(self.routers[0].addresses[1],
                                        self.routers[0].addresses[0],
                                        "addr_10",
-                                       "0.0.0.0/addr_10",
+                                       "127.0.0.1/addr_10",
                                        self.routers[0].addresses[0],
-                                       "M00.0.0.0/addr_10")
+                                       "M0127.0.0.1/addr_10")
         test.run()
         self.assertIsNone(test.error)
 
     def test_11_one_router_anonymous_sender_tenant_on_receiver(self):
         test = MessageTransferAnonTest(self.routers[0].addresses[0],
                                        self.routers[0].addresses[1],
-                                       "0.0.0.0/addr_11",
+                                       "127.0.0.1/addr_11",
                                        "addr_11",
                                        self.routers[0].addresses[0],
-                                       "M00.0.0.0/addr_11")
+                                       "M0127.0.0.1/addr_11")
         test.run()
         self.assertIsNone(test.error)
 
@@ -183,7 +183,7 @@ class RouterTest(TestCase):
                                        "addr_12",
                                        "addr_12",
                                        self.routers[0].addresses[0],
-                                       "M00.0.0.0/addr_12")
+                                       "M0127.0.0.1/addr_12")
         test.run()
         self.assertIsNone(test.error)
 
@@ -201,19 +201,19 @@ class RouterTest(TestCase):
         test = MessageTransferAnonTest(self.routers[0].addresses[1],
                                        self.routers[1].addresses[0],
                                        "addr_14",
-                                       "0.0.0.0/addr_14",
+                                       "127.0.0.1/addr_14",
                                        self.routers[0].addresses[0],
-                                       "M00.0.0.0/addr_14")
+                                       "M0127.0.0.1/addr_14")
         test.run()
         self.assertIsNone(test.error)
 
     def test_15_two_router_anonymous_sender_tenant_on_receiver(self):
         test = MessageTransferAnonTest(self.routers[0].addresses[0],
                                        self.routers[1].addresses[1],
-                                       "0.0.0.0/addr_15",
+                                       "127.0.0.1/addr_15",
                                        "addr_15",
                                        self.routers[0].addresses[0],
-                                       "M00.0.0.0/addr_15")
+                                       "M0127.0.0.1/addr_15")
         test.run()
         self.assertIsNone(test.error)
 
@@ -223,7 +223,7 @@ class RouterTest(TestCase):
                                        "addr_16",
                                        "addr_16",
                                        self.routers[0].addresses[0],
-                                       "M00.0.0.0/addr_16")
+                                       "M0127.0.0.1/addr_16")
         test.run()
         self.assertIsNone(test.error)
 
@@ -231,7 +231,7 @@ class RouterTest(TestCase):
         test = LinkRouteTest(self.routers[0].addresses[1],
                              self.routers[0].addresses[2],
                              "link.addr_17",
-                             "0.0.0.0/link.addr_17",
+                             "127.0.0.1/link.addr_17",
                              False,
                              self.routers[0].addresses[0])
         test.run()
@@ -240,8 +240,8 @@ class RouterTest(TestCase):
     def test_18_one_router_link_route_targeted_no_tenant(self):
         test = LinkRouteTest(self.routers[0].addresses[0],
                              self.routers[0].addresses[2],
-                             "0.0.0.0/link.addr_18",
-                             "0.0.0.0/link.addr_18",
+                             "127.0.0.1/link.addr_18",
+                             "127.0.0.1/link.addr_18",
                              False,
                              self.routers[0].addresses[0])
         test.run()
@@ -251,7 +251,7 @@ class RouterTest(TestCase):
         test = LinkRouteTest(self.routers[0].addresses[1],
                              self.routers[0].addresses[2],
                              "link.addr_19",
-                             "0.0.0.0/link.addr_19",
+                             "127.0.0.1/link.addr_19",
                              True,
                              self.routers[0].addresses[0])
         test.run()
@@ -260,8 +260,8 @@ class RouterTest(TestCase):
     def test_20_one_router_link_route_dynamic_no_tenant(self):
         test = LinkRouteTest(self.routers[0].addresses[0],
                              self.routers[0].addresses[2],
-                             "0.0.0.0/link.addr_20",
-                             "0.0.0.0/link.addr_20",
+                             "127.0.0.1/link.addr_20",
+                             "127.0.0.1/link.addr_20",
                              True,
                              self.routers[0].addresses[0])
         test.run()
@@ -271,7 +271,7 @@ class RouterTest(TestCase):
         test = LinkRouteTest(self.routers[0].addresses[1],
                              self.routers[1].addresses[2],
                              "link.addr_21",
-                             "0.0.0.0/link.addr_21",
+                             "127.0.0.1/link.addr_21",
                              False,
                              self.routers[0].addresses[0])
         test.run()
@@ -280,8 +280,8 @@ class RouterTest(TestCase):
     def test_22_two_router_link_route_targeted_no_tenant(self):
         test = LinkRouteTest(self.routers[0].addresses[0],
                              self.routers[1].addresses[2],
-                             "0.0.0.0/link.addr_22",
-                             "0.0.0.0/link.addr_22",
+                             "127.0.0.1/link.addr_22",
+                             "127.0.0.1/link.addr_22",
                              False,
                              self.routers[0].addresses[0])
         test.run()
@@ -291,7 +291,7 @@ class RouterTest(TestCase):
         test = LinkRouteTest(self.routers[0].addresses[1],
                              self.routers[1].addresses[2],
                              "link.addr_23",
-                             "0.0.0.0/link.addr_23",
+                             "127.0.0.1/link.addr_23",
                              True,
                              self.routers[0].addresses[0])
         test.run()
@@ -300,8 +300,8 @@ class RouterTest(TestCase):
     def test_24_two_router_link_route_dynamic_no_tenant(self):
         test = LinkRouteTest(self.routers[0].addresses[0],
                              self.routers[1].addresses[2],
-                             "0.0.0.0/link.addr_24",
-                             "0.0.0.0/link.addr_24",
+                             "127.0.0.1/link.addr_24",
+                             "127.0.0.1/link.addr_24",
                              True,
                              self.routers[0].addresses[0])
         test.run()
@@ -350,8 +350,8 @@ class RouterTest(TestCase):
     def test_29_one_router_waypoint_no_tenant(self):
         test = WaypointTest(self.routers[0].addresses[0],
                             self.routers[0].addresses[2],
-                            "0.0.0.0/queue.waypoint",
-                            "0.0.0.0/queue.waypoint")
+                            "127.0.0.1/queue.waypoint",
+                            "127.0.0.1/queue.waypoint")
         test.run()
         # Dump the logger output only if there is a test error, otherwise dont bother
         if test.error:
@@ -362,7 +362,7 @@ class RouterTest(TestCase):
         test = WaypointTest(self.routers[0].addresses[1],
                             self.routers[0].addresses[2],
                             "queue.waypoint",
-                            "0.0.0.0/queue.waypoint")
+                            "127.0.0.1/queue.waypoint")
         test.run()
         # Dump the logger output only if there is a test error, otherwise dont bother
         if test.error:
@@ -372,8 +372,8 @@ class RouterTest(TestCase):
     def test_31_two_router_waypoint_no_tenant(self):
         test = WaypointTest(self.routers[0].addresses[0],
                             self.routers[1].addresses[2],
-                            "0.0.0.0/queue.waypoint",
-                            "0.0.0.0/queue.waypoint")
+                            "127.0.0.1/queue.waypoint",
+                            "127.0.0.1/queue.waypoint")
         test.run()
         # Dump the logger output only if there is a test error, otherwise dont bother
         if test.error:
@@ -384,7 +384,7 @@ class RouterTest(TestCase):
         test = WaypointTest(self.routers[0].addresses[1],
                             self.routers[1].addresses[2],
                             "queue.waypoint",
-                            "0.0.0.0/queue.waypoint")
+                            "127.0.0.1/queue.waypoint")
         test.run()
         # Dump the logger output only if there is a test error, otherwise dont bother
         if test.error:
@@ -394,7 +394,7 @@ class RouterTest(TestCase):
     def test_33_one_router_waypoint_no_tenant_external_addr(self):
         test = WaypointTest(self.routers[0].addresses[0],
                             self.routers[0].addresses[2],
-                            "0.0.0.0/queue.ext",
+                            "127.0.0.1/queue.ext",
                             "EXT",
                             "ALCE")
         test.run()
@@ -418,7 +418,7 @@ class RouterTest(TestCase):
     def test_35_two_router_waypoint_no_tenant_external_addr(self):
         test = WaypointTest(self.routers[0].addresses[0],
                             self.routers[1].addresses[2],
-                            "0.0.0.0/queue.ext",
+                            "127.0.0.1/queue.ext",
                             "EXT",
                             "ALCE")
         test.run()
@@ -707,7 +707,7 @@ class LinkRouteTest(MessagingHandler):
             self.first_sender.send(m)
 
     def poll(self):
-        request = self.proxy.read_address("D0.0.0.0/link")
+        request = self.proxy.read_address("D127.0.0.1/link")
         self.agent_sender.send(request)
 
     def setup_first_links(self, event):

@@ -66,15 +66,15 @@ class LinkRouteTest(TestCase):
         router('A',
                [
                    ('router', {'mode': 'standalone', 'id': 'QDR.A'}),
-                   ('listener', {'role': 'normal', 'host': '0.0.0.0', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'role': 'normal', 'host': '127.0.0.1', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
                ])
         router('B',
                [
                    # disallow resumable links
                    ('router', {'mode': 'interior', 'id': 'QDR.B', 'allowResumableLinkRoute': False}),
-                   ('listener', {'role': 'normal', 'host': '0.0.0.0', 'port': b_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'role': 'normal', 'host': '127.0.0.1', 'port': b_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
                    # define link routes
-                   ('connector', {'name': 'broker', 'role': 'route-container', 'host': '0.0.0.0', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('connector', {'name': 'broker', 'role': 'route-container', 'host': '127.0.0.1', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
                    ('linkRoute', {'prefix': 'org.apache', 'containerId': 'QDR.A', 'dir': 'in'}),
                    ('linkRoute', {'prefix': 'org.apache', 'containerId': 'QDR.A', 'dir': 'out'}),
                ]

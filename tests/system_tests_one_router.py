@@ -46,7 +46,7 @@ class StandaloneRouterQdManageTest(TestCase):
         name = "test-router"
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'})
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'})
         ])
         cls.router = cls.tester.qdrouterd(name, config, wait=True)
 
@@ -61,7 +61,7 @@ class StandaloneRouterQdManageTest(TestCase):
         test_pass = False
         try:
             out = mgmt.create("org.apache.qpid.dispatch.connector",
-                              {"host": "0.0.0.0",
+                              {"host": "127.0.0.1",
                                "port": "77777",
                                "role": "inter-router"})
         except Exception as e:
@@ -80,7 +80,7 @@ class StandaloneRouterQdManageTest(TestCase):
         test_pass = False
         try:
             out = mgmt.create("org.apache.qpid.dispatch.listener",
-                              {"host": "0.0.0.0",
+                              {"host": "127.0.0.1",
                                "port": "77777",
                                "role": "edge",
                                "authenticatePeer": "no"})
@@ -100,7 +100,7 @@ class StandaloneRouterQdManageTest(TestCase):
         test_pass = False
         try:
             out = mgmt.create("org.apache.qpid.dispatch.listener",
-                              {"host": "0.0.0.0",
+                              {"host": "127.0.0.1",
                                "port": "77777",
                                "role": "inter-router",
                                "authenticatePeer": "no"})
@@ -118,7 +118,7 @@ class EdgeRouterQdManageTest(TestCase):
         name = "test-router"
         config = Qdrouterd.Config([
             ('router', {'mode': 'edge', 'id': 'QDR'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'})
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'})
         ])
         cls.router = cls.tester.qdrouterd(name, config, wait=True)
 
@@ -133,7 +133,7 @@ class EdgeRouterQdManageTest(TestCase):
         test_pass = False
         try:
             out = mgmt.create("org.apache.qpid.dispatch.connector",
-                              {"host": "0.0.0.0",
+                              {"host": "127.0.0.1",
                                "port": "77777",
                                "role": "inter-router"})
         except Exception as e:
@@ -152,7 +152,7 @@ class EdgeRouterQdManageTest(TestCase):
         test_pass = False
         try:
             out = mgmt.create("org.apache.qpid.dispatch.listener",
-                              {"host": "0.0.0.0",
+                              {"host": "127.0.0.1",
                                "port": "77777",
                                "role": "edge",
                                "authenticatePeer": "no"})
@@ -172,7 +172,7 @@ class EdgeRouterQdManageTest(TestCase):
         test_pass = False
         try:
             out = mgmt.create("org.apache.qpid.dispatch.listener",
-                              {"host": "0.0.0.0",
+                              {"host": "127.0.0.1",
                                "port": "77777",
                                "role": "inter-router",
                                "authenticatePeer": "no"})
@@ -196,7 +196,7 @@ class StandaloneEdgeRouterConfigTest(TestCase):
         # A standalone router cannot have an edge listener because it cannot accept edge connections.
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'edge', 'host': '0.0.0.0'})
+            ('listener', {'port': cls.tester.get_port(), 'role': 'edge', 'host': '127.0.0.1'})
         ])
         cls.router = cls.tester.qdrouterd(name, config, wait=False, perform_teardown=False)
 
@@ -204,7 +204,7 @@ class StandaloneEdgeRouterConfigTest(TestCase):
         name = "test-router-1"
         config_1 = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
-            ('connector', {'port': cls.tester.get_port(), 'role': 'inter-router', 'host': '0.0.0.0'})
+            ('connector', {'port': cls.tester.get_port(), 'role': 'inter-router', 'host': '127.0.0.1'})
         ])
         cls.router_1 = cls.tester.qdrouterd(name, config_1, wait=False, perform_teardown=False)
 
@@ -214,7 +214,7 @@ class StandaloneEdgeRouterConfigTest(TestCase):
         name = "test-router-2"
         config_2 = Qdrouterd.Config([
             ('router', {'mode': 'edge', 'id': 'QDR'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'edge', 'host': '0.0.0.0'})
+            ('listener', {'port': cls.tester.get_port(), 'role': 'edge', 'host': '127.0.0.1'})
         ])
         cls.router_2 = cls.tester.qdrouterd(name, config_2, wait=False, perform_teardown=False)
 
@@ -223,7 +223,7 @@ class StandaloneEdgeRouterConfigTest(TestCase):
         name = "test-router-3"
         config_3 = Qdrouterd.Config([
             ('router', {'mode': 'edge', 'id': 'QDR'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'inter-router', 'host': '0.0.0.0'})
+            ('listener', {'port': cls.tester.get_port(), 'role': 'inter-router', 'host': '127.0.0.1'})
         ])
         cls.router_3 = cls.tester.qdrouterd(name, config_3, wait=False, perform_teardown=False)
 
@@ -232,7 +232,7 @@ class StandaloneEdgeRouterConfigTest(TestCase):
         name = "test-router-4"
         config_4 = Qdrouterd.Config([
             ('router', {'mode': 'edge', 'id': 'QDR'}),
-            ('connector', {'port': cls.tester.get_port(), 'role': 'inter-router', 'host': '0.0.0.0'})
+            ('connector', {'port': cls.tester.get_port(), 'role': 'inter-router', 'host': '127.0.0.1'})
         ])
         cls.router_4 = cls.tester.qdrouterd(name, config_4, wait=False, perform_teardown=False)
 
@@ -241,7 +241,7 @@ class StandaloneEdgeRouterConfigTest(TestCase):
         name = "test-router-5"
         config_5 = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'inter-router', 'host': '0.0.0.0'})
+            ('listener', {'port': cls.tester.get_port(), 'role': 'inter-router', 'host': '127.0.0.1'})
         ])
         cls.router_5 = cls.tester.qdrouterd(name, config_5, wait=False, perform_teardown=False)
 

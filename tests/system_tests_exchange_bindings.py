@@ -40,7 +40,7 @@ class ExchangeBindingsTest(TestCase):
 
         config = [
             ('router',   {'mode': 'standalone', 'id': 'QDR.%s' % name}),
-            ('listener', {'role': 'normal', 'host': '0.0.0.0',
+            ('listener', {'role': 'normal', 'host': '127.0.0.1',
                           'port': self.tester.get_port(),
                           'saslMechanisms': 'ANONYMOUS'})
         ] + config
@@ -463,7 +463,7 @@ class ExchangeBindingsTest(TestCase):
         """
         config = [
             ('router',   {'mode': 'standalone', 'id': 'QDR.mcast'}),
-            ('listener', {'role': 'normal', 'host': '0.0.0.0',
+            ('listener', {'role': 'normal', 'host': '127.0.0.1',
                           'port': self.tester.get_port(),
                           'saslMechanisms': 'ANONYMOUS'}),
             ('address', {'pattern': 'nextHop2/#', 'distribution': 'multicast'}),

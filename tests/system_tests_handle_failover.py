@@ -47,7 +47,7 @@ class FailoverTest(TestCase):
         cls.inter_router_port = cls.tester.get_port()
         cls.inter_router_port_1 = cls.tester.get_port()
         cls.backup_port = cls.tester.get_port()
-        cls.backup_url = 'amqp://0.0.0.0:' + str(cls.backup_port)
+        cls.backup_url = 'amqp://127.0.0.1:' + str(cls.backup_port)
         cls.my_server_port = cls.tester.get_port()
 
         cls.failover_list = 'amqp://third-host:5671, ' + cls.backup_url
@@ -59,23 +59,23 @@ class FailoverTest(TestCase):
         # idle-time-out=8000, offered-capabilities=:"ANONYMOUS-RELAY",
         # properties={:product="qpid-dispatch-router", :version="1.0.0",
         #  :"failover-server-list"=[{:"network-host"="some-host", :port="35000"},
-        #  {:"network-host"="0.0.0.0", :port="25000"}]}]
+        #  {:"network-host"="127.0.0.1", :port="25000"}]}]
         #
         # The suite of tests determine if the router receiving this open frame stores it properly and if the
         # original connection goes down, check that the router is trying to make connections to the failover urls.
         #
         FailoverTest.router('B', [
             ('router', {'mode': 'interior', 'id': 'B'}),
-            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': cls.inter_router_port,
+            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': cls.inter_router_port,
                           'failoverUrls': cls.failover_list}),
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port()}),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port()}),
         ]
         )
 
         FailoverTest.router('A',
                             [
                                 ('router', {'mode': 'interior', 'id': 'A'}),
-                                ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port()}),
+                                ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port()}),
                                 ('connector', {'name': 'connectorToB', 'role': 'inter-router',
                                                'port': cls.inter_router_port}),
                             ]
@@ -83,8 +83,8 @@ class FailoverTest(TestCase):
 
         FailoverTest.router('C', [
                             ('router', {'mode': 'interior', 'id': 'C'}),
-                            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': cls.backup_port}),
-                            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port()}),
+                            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': cls.backup_port}),
+                            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port()}),
                             ]
                             )
 
@@ -231,9 +231,9 @@ class FailoverTest(TestCase):
         """
         FailoverTest.router('B', [
             ('router', {'mode': 'interior', 'id': 'B'}),
-            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': FailoverTest.inter_router_port,
+            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': FailoverTest.inter_router_port,
                           'failoverUrls': FailoverTest.failover_list +  ', amqp://127.0.0.1:%d' % FailoverTest.my_server_port}),
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': FailoverTest.tester.get_port()}),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': FailoverTest.tester.get_port()}),
         ])
 
         FailoverTest.routers[3].wait_ready()

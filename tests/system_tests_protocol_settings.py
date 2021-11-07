@@ -33,7 +33,7 @@ class MaxFrameMaxSessionFramesTest(TestCase):
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
 
-            ('listener', {'host': '0.0.0.0', 'port': cls.tester.get_port(), 'maxFrameSize': '2048', 'maxSessionFrames': '10'}),
+            ('listener', {'host': '127.0.0.1', 'port': cls.tester.get_port(), 'maxFrameSize': '2048', 'maxSessionFrames': '10'}),
         ])
         cls.router = cls.tester.qdrouterd(name, config)
         cls.router.wait_ready()
@@ -67,7 +67,7 @@ class MaxSessionsTest(TestCase):
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
 
-            ('listener', {'host': '0.0.0.0', 'port': cls.tester.get_port(), 'maxSessions': '10'}),
+            ('listener', {'host': '127.0.0.1', 'port': cls.tester.get_port(), 'maxSessions': '10'}),
         ])
         cls.router = cls.tester.qdrouterd(name, config)
         cls.router.wait_ready()
@@ -95,7 +95,7 @@ class MaxSessionsZeroTest(TestCase):
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
 
-            ('listener', {'host': '0.0.0.0', 'port': cls.tester.get_port(), 'maxSessions': '0'}),
+            ('listener', {'host': '127.0.0.1', 'port': cls.tester.get_port(), 'maxSessions': '0'}),
         ])
         cls.router = cls.tester.qdrouterd(name, config)
         cls.router.wait_ready()
@@ -123,7 +123,7 @@ class MaxSessionsLargeTest(TestCase):
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
 
-            ('listener', {'host': '0.0.0.0', 'port': cls.tester.get_port(), 'maxSessions': '500000'}),
+            ('listener', {'host': '127.0.0.1', 'port': cls.tester.get_port(), 'maxSessions': '500000'}),
         ])
         cls.router = cls.tester.qdrouterd(name, config)
         cls.router.wait_ready()
@@ -151,7 +151,7 @@ class MaxFrameSmallTest(TestCase):
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
 
-            ('listener', {'host': '0.0.0.0', 'port': cls.tester.get_port(), 'maxFrameSize': '2'}),
+            ('listener', {'host': '127.0.0.1', 'port': cls.tester.get_port(), 'maxFrameSize': '2'}),
         ])
         cls.router = cls.tester.qdrouterd(name, config)
         cls.router.wait_ready()
@@ -179,7 +179,7 @@ class MaxFrameDefaultTest(TestCase):
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
 
-            ('listener', {'host': '0.0.0.0', 'port': cls.tester.get_port()}),
+            ('listener', {'host': '127.0.0.1', 'port': cls.tester.get_port()}),
         ])
         cls.router = cls.tester.qdrouterd(name, config)
         cls.router.wait_ready()
@@ -207,7 +207,7 @@ class MaxSessionFramesDefaultTest(TestCase):
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
 
-            ('listener', {'host': '0.0.0.0', 'port': cls.tester.get_port()}),
+            ('listener', {'host': '127.0.0.1', 'port': cls.tester.get_port()}),
         ])
         cls.router = cls.tester.qdrouterd(name, config)
         cls.router.wait_ready()
@@ -247,7 +247,7 @@ class MaxFrameMaxSessionFramesZeroTest(TestCase):
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
 
-            ('listener', {'host': '0.0.0.0', 'port': cls.tester.get_port(), 'maxFrameSize': '0', 'maxSessionFrames': '0'}),
+            ('listener', {'host': '127.0.0.1', 'port': cls.tester.get_port(), 'maxFrameSize': '0', 'maxSessionFrames': '0'}),
         ])
         cls.router = cls.tester.qdrouterd(name, config)
         cls.router.wait_ready()

@@ -47,7 +47,7 @@ class DrainSupportTest(TestCase):
         bconfig = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'Broker'}),
             ('listener', {'role': 'normal',
-                          'host': '0.0.0.0', 'port': broker_listener_port, 'linkCapacity': 100, 'saslMechanisms': 'ANONYMOUS'}),
+                          'host': '127.0.0.1', 'port': broker_listener_port, 'linkCapacity': 100, 'saslMechanisms': 'ANONYMOUS'}),
         ])
         cls.broker = cls.tester.qdrouterd(bname, bconfig, wait=True)
 
@@ -58,13 +58,13 @@ class DrainSupportTest(TestCase):
 
             # Setting the linkCapacity to 10 will allow the sender to send a burst of 10 messages
             ('listener', {'role': 'normal',
-                          'host': '0.0.0.0', 'port': test_listener_port,
+                          'host': '127.0.0.1', 'port': test_listener_port,
                           'linkCapacity': 10, 'saslMechanisms': 'ANONYMOUS'}),
 
             # The DrainMessagesMoreHandler accepts a src/tgt address that may be link-routed.
             # This defines the link route to 'broker' and the 'abc' prefix.
             ('connector', {'name': 'broker1-conn', 'role': 'route-container',
-                           'host': '0.0.0.0', 'port': broker_listener_port,
+                           'host': '127.0.0.1', 'port': broker_listener_port,
                            'saslMechanisms': 'ANONYMOUS'}),
             ('linkRoute', {'prefix': 'abc', 'direction': 'out', 'connection': 'broker1-conn'}),
             ('linkRoute', {'prefix': 'abc', 'direction': 'in', 'connection': 'broker1-conn'}),

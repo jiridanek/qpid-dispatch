@@ -96,21 +96,21 @@ class LinkRouteTest(TestCase):
 
         router('A',
                [
-                   ('listener', {'role': 'normal', 'host': '0.0.0.0', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'role': 'normal', 'host': '127.0.0.1', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
                ])
         router('B',
                [
                    # Listener for clients, note that the tests assume this listener is first in this list:
-                   ('listener', {'role': 'normal', 'host': '0.0.0.0', 'port': b_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
-                   ('listener', {'name': 'test-tag', 'role': 'route-container', 'host': '0.0.0.0', 'port': test_tag_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'role': 'normal', 'host': '127.0.0.1', 'port': b_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'name': 'test-tag', 'role': 'route-container', 'host': '127.0.0.1', 'port': test_tag_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
 
                    # This is an route-container connection made from QDR.B's ephemeral port to a_listener_port
-                   ('connector', {'name': 'broker', 'role': 'route-container', 'host': '0.0.0.0', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('connector', {'name': 'broker', 'role': 'route-container', 'host': '127.0.0.1', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
                    # Only inter router communication must happen on 'inter-router' connectors. This connector makes
                    # a connection from the router B's ephemeral port to c_listener_port
-                   ('connector', {'name': 'routerC', 'role': 'inter-router', 'host': '0.0.0.0', 'port': c_listener_port}),
+                   ('connector', {'name': 'routerC', 'role': 'inter-router', 'host': '127.0.0.1', 'port': c_listener_port}),
                    # This is an on-demand connection made from QDR.B's ephemeral port to d_listener_port
-                   ('connector', {'name': 'routerD', 'role': 'route-container', 'host': '0.0.0.0', 'port': d_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('connector', {'name': 'routerD', 'role': 'route-container', 'host': '127.0.0.1', 'port': d_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
 
                    #('linkRoute', {'prefix': 'org.apache', 'connection': 'broker', 'direction': 'in'}),
                    ('linkRoute', {'prefix': 'org.apache', 'containerId': 'QDR.A', 'direction': 'in'}),
@@ -135,8 +135,8 @@ class LinkRouteTest(TestCase):
                    # The client will exclusively use the following listener to
                    # connect to QDR.C, the tests assume this is the first entry
                    # in the list
-                   ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port(), 'saslMechanisms': 'ANONYMOUS'}),
-                   ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': c_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port(), 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': c_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
                    # The dot(.) at the end is ignored by the address hashing scheme.
 
                    ('linkRoute', {'prefix': 'org.apache.', 'direction': 'in'}),
@@ -155,7 +155,7 @@ class LinkRouteTest(TestCase):
                )
         router('D',  # sink for QDR.D routes
                [
-                   ('listener', {'role': 'normal', 'host': '0.0.0.0', 'port': d_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'role': 'normal', 'host': '127.0.0.1', 'port': d_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
                ])
 
         # Wait for the routers to locate each other, and for route propagation
@@ -1542,7 +1542,7 @@ class LinkRouteProtocolTest(TestCase):
             ('router', {'mode': 'standalone', 'id': 'QDR.A'}),
             # for client connections:
             ('listener', {'role': 'normal',
-                          'host': '0.0.0.0',
+                          'host': '127.0.0.1',
                           'port': cls.tester.get_port(),
                           'saslMechanisms': 'ANONYMOUS'}),
             # to connect to the fake broker
@@ -1727,7 +1727,7 @@ class LinkRouteDrainTest(TestCase):
             ('router', {'mode': 'standalone', 'id': 'QDR.A'}),
             # for client connections:
             ('listener', {'role': 'normal',
-                          'host': '0.0.0.0',
+                          'host': '127.0.0.1',
                           'port': cls.tester.get_port(),
                           'saslMechanisms': 'ANONYMOUS'}),
             # to connect to the fake broker
@@ -1769,7 +1769,7 @@ class EmptyTransferTest(TestCase):
             ('router', {'mode': 'standalone', 'id': 'QDR.A'}),
             # the client will connect to this listener
             ('listener', {'role': 'normal',
-                          'host': '0.0.0.0',
+                          'host': '127.0.0.1',
                           'port': cls.ROUTER_LISTEN_PORT,
                           'saslMechanisms': 'ANONYMOUS'}),
             # to connect to the fake broker
@@ -1816,7 +1816,7 @@ class EmptyTransferTest(TestCase):
         # Connect to the router listening port and send an amqp, open,
         # begin, attach. The attach is sent on the link
         # routed address, "examples"
-        s.connect(("0.0.0.0", EmptyTransferTest.ROUTER_LISTEN_PORT))
+        s.connect(("127.0.0.1", EmptyTransferTest.ROUTER_LISTEN_PORT))
         s.sendall(AMQP_OPEN_BEGIN_ATTACH)
 
         # Give a second for the attach to propagate to the broker and
@@ -1934,12 +1934,12 @@ class ConnectionLinkRouteTest(TestCase):
             [('router', {'mode': 'interior', 'id': 'QDR.A'}),
              # for fake connection-scoped LRs:
              ('listener', {'role': 'normal',
-                           'host': '0.0.0.0',
+                           'host': '127.0.0.1',
                            'port': cls.tester.get_port(),
                            'saslMechanisms': 'ANONYMOUS'}),
              # for fake route-container LR connections:
              ('listener', {'role': 'route-container',
-                           'host': '0.0.0.0',
+                           'host': '127.0.0.1',
                            'port': cls.tester.get_port(),
                            'saslMechanisms': 'ANONYMOUS'}),
              # to connect to the QDR.B
@@ -1951,12 +1951,12 @@ class ConnectionLinkRouteTest(TestCase):
             [('router', {'mode': 'interior', 'id': 'QDR.B'}),
              # for client connections
              ('listener', {'role': 'normal',
-                           'host': '0.0.0.0',
+                           'host': '127.0.0.1',
                            'port': cls.tester.get_port(),
                            'saslMechanisms': 'ANONYMOUS'}),
              # for connection to QDR.A
              ('listener', {'role': 'inter-router',
-                           'host': '0.0.0.0',
+                           'host': '127.0.0.1',
                            'port': b_port,
                            'saslMechanisms': 'ANONYMOUS'})]
         ]
@@ -1979,7 +1979,7 @@ class ConnectionLinkRouteTest(TestCase):
         # file fails
         config = [('router', {'mode': 'interior', 'id': 'QDR.X'}),
                   ('listener', {'role': 'normal',
-                                'host': '0.0.0.0',
+                                'host': '127.0.0.1',
                                 'port': self.tester.get_port(),
                                 'saslMechanisms': 'ANONYMOUS'}),
 
@@ -2379,13 +2379,13 @@ class Dispatch1428(TestCase):
 
         router('A',
                [
-                   ('listener', {'role': 'normal', 'host': '0.0.0.0', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'role': 'normal', 'host': '127.0.0.1', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
                ])
         router('B',
                [
-                   ('listener', {'role': 'normal', 'host': '0.0.0.0', 'port': b_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
-                   ('connector', {'name': 'one', 'role': 'route-container', 'host': '0.0.0.0', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
-                   ('connector', {'name': 'two', 'role': 'route-container', 'host': '0.0.0.0', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'})
+                   ('listener', {'role': 'normal', 'host': '127.0.0.1', 'port': b_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('connector', {'name': 'one', 'role': 'route-container', 'host': '127.0.0.1', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('connector', {'name': 'two', 'role': 'route-container', 'host': '127.0.0.1', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'})
                ]
                )
         sleep(2)
@@ -2577,12 +2577,12 @@ class LinkRoute3Hop(TestCase):
             [('router', {'mode': 'interior', 'id': 'QDR.A'}),
              # for client access
              ('listener', {'role': 'normal',
-                           'host': '0.0.0.0',
+                           'host': '127.0.0.1',
                            'port': cls.tester.get_port(),
                            'saslMechanisms': 'ANONYMOUS'}),
              # for fake service:
              ('listener', {'role': 'route-container',
-                           'host': '0.0.0.0',
+                           'host': '127.0.0.1',
                            'port': cls.tester.get_port(),
                            'saslMechanisms': 'ANONYMOUS'}),
              # to connect to the QDR.B
@@ -2598,12 +2598,12 @@ class LinkRoute3Hop(TestCase):
             [('router', {'mode': 'interior', 'id': 'QDR.B'}),
              # for client connections
              ('listener', {'role': 'normal',
-                           'host': '0.0.0.0',
+                           'host': '127.0.0.1',
                            'port': cls.tester.get_port(),
                            'saslMechanisms': 'ANONYMOUS'}),
              # for inter-router connections from QDR.A and QDR.C
              ('listener', {'role': 'inter-router',
-                           'host': '0.0.0.0',
+                           'host': '127.0.0.1',
                            'port': b_port,
                            'saslMechanisms': 'ANONYMOUS'}),
              ('linkRoute', {'prefix': 'closest/test-client', 'direction': 'in'}),
@@ -2613,7 +2613,7 @@ class LinkRoute3Hop(TestCase):
             [('router', {'mode': 'interior', 'id': 'QDR.C'}),
              # for client connections
              ('listener', {'role': 'normal',
-                           'host': '0.0.0.0',
+                           'host': '127.0.0.1',
                            'port': cls.tester.get_port(),
                            'saslMechanisms': 'ANONYMOUS'}),
              # to connect to the QDR.B

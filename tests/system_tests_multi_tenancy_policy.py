@@ -53,7 +53,7 @@ class RouterMultitenantPolicyTest(TestCase):
                 ('policy', {'enableVhostPolicy': 'true'}),
                 ('vhost', {'hostname': 'hosted-group-1',
                            'allowUnknownUser': 'true',
-                           'aliases': '0.0.0.0',
+                           'aliases': '127.0.0.1',
                            'groups': {
                                '$default': {
                                    'users': '*',

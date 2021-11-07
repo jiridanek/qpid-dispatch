@@ -298,7 +298,7 @@ class QdmanageTest(TestCase):
         self.assertEqual("trace+", output['enable'])
 
     def create(self, type, name, port):
-        create_command = 'CREATE --type=' + type + ' --name=' + name + ' host=0.0.0.0 port=' + port
+        create_command = 'CREATE --type=' + type + ' --name=' + name + ' host=127.0.0.1 port=' + port
         connector = json.loads(self.run_qdmanage(create_command))
         return connector
 
@@ -391,7 +391,7 @@ class QdmanageTest(TestCase):
         created = False
         for output in outputs:
             conn_name = 'connector/127.0.0.1:%s' % QdmanageTest.inter_router_port
-            conn_name_1 = 'connector/0.0.0.0:%s' % QdmanageTest.inter_router_port
+            conn_name_1 = 'connector/127.0.0.1:%s' % QdmanageTest.inter_router_port
             if conn_name == output['name'] or conn_name_1 == output['name']:
                 created = True
                 break
@@ -401,15 +401,15 @@ class QdmanageTest(TestCase):
     def test_zzz_add_connector(self):
         port = self.get_port()
         # dont provide role and make sure that role is defaulted to 'normal'
-        command = "CREATE --type=connector --name=eaconn1 port=" + str(port) + " host=0.0.0.0"
+        command = "CREATE --type=connector --name=eaconn1 port=" + str(port) + " host=127.0.0.1"
         output = json.loads(self.run_qdmanage(command))
         self.assertEqual("normal", output['role'])
         # provide the same connector name (eaconn1), expect duplicate value failure
         self.assertRaises(Exception, self.run_qdmanage,
-                          "CREATE --type=connector --name=eaconn1 port=12345 host=0.0.0.0")
+                          "CREATE --type=connector --name=eaconn1 port=12345 host=127.0.0.1")
         port = self.get_port()
         # provide role as 'normal' and make sure that it is preserved
-        command = "CREATE --type=connector --name=eaconn2 port=" + str(port) + " host=0.0.0.0 role=normal"
+        command = "CREATE --type=connector --name=eaconn2 port=" + str(port) + " host=127.0.0.1 role=normal"
         output = json.loads(self.run_qdmanage(command))
         self.assertEqual("normal", output['role'])
 

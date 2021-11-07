@@ -212,35 +212,35 @@ class RouterTestSslClient(RouterTestSslBase):
         conf = [
             router,
             # TLSv1 only
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.PORT_TLS1,
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.PORT_TLS1,
                           'authenticatePeer': 'no',
                           'sslProfile': 'ssl-profile-tls1'}),
             # TLSv1.1 only
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.PORT_TLS11,
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.PORT_TLS11,
                           'authenticatePeer': 'no',
                           'sslProfile': 'ssl-profile-tls11'}),
             # TLSv1.2 only
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.PORT_TLS12,
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.PORT_TLS12,
                           'authenticatePeer': 'no',
                           'sslProfile': 'ssl-profile-tls12'}),
             # TLSv1 and TLSv1.1 only
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.PORT_TLS1_TLS11,
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.PORT_TLS1_TLS11,
                           'authenticatePeer': 'no',
                           'sslProfile': 'ssl-profile-tls1-tls11'}),
             # TLSv1 and TLSv1.2 only
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.PORT_TLS1_TLS12,
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.PORT_TLS1_TLS12,
                           'authenticatePeer': 'no',
                           'sslProfile': 'ssl-profile-tls1-tls12'}),
             # TLSv1.1 and TLSv1.2 only
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.PORT_TLS11_TLS12,
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.PORT_TLS11_TLS12,
                           'authenticatePeer': 'no',
                           'sslProfile': 'ssl-profile-tls11-tls12'}),
             # All TLS versions
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.PORT_TLS_ALL,
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.PORT_TLS_ALL,
                           'authenticatePeer': 'no',
                           'sslProfile': 'ssl-profile-tls-all'}),
             # Invalid protocol version
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.PORT_SSL3,
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.PORT_SSL3,
                           'authenticatePeer': 'no',
                           'sslProfile': 'ssl-profile-ssl3'})
         ]
@@ -249,7 +249,7 @@ class RouterTestSslClient(RouterTestSslBase):
         if SASL.extended():
             conf += [
                 # TLS 1 and 1.2 with SASL PLAIN authentication for proton client validation
-                ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.PORT_TLS_SASL,
+                ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.PORT_TLS_SASL,
                               'authenticatePeer': 'yes', 'saslMechanisms': 'PLAIN',
                               'requireSsl': 'yes', 'requireEncryption': 'yes',
                               'sslProfile': 'ssl-profile-tls1-tls12'})
@@ -333,7 +333,7 @@ class RouterTestSslClient(RouterTestSslBase):
         if cls.OPENSSL_ALLOW_TLSV1_3:
             conf += [
                 # TLSv1.3 only
-                ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.PORT_TLS13,
+                ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.PORT_TLS13,
                               'authenticatePeer': 'no',
                               'sslProfile': 'ssl-profile-tls13'}),
                 # SSL Profile for TLSv1.3
@@ -379,7 +379,7 @@ class RouterTestSslClient(RouterTestSslBase):
         :return:
         """
         # Management address to connect using the given TLS protocol
-        url = Url("amqps://0.0.0.0:%d/$management" % listener_port)
+        url = Url("amqps://127.0.0.1:%d/$management" % listener_port)
         # Preparing SSLDomain (client cert) and SASL authentication info
         domain = SSLDomain(SSLDomain.MODE_CLIENT)
         domain.set_trusted_ca_db(self.ssl_file('ca-certificate.pem'))
@@ -411,7 +411,7 @@ class RouterTestSslClient(RouterTestSslBase):
         :return:
         """
         # Management address to connect using the given TLS protocol
-        url = Url("amqps://0.0.0.0:%d/$management" % listener_port)
+        url = Url("amqps://127.0.0.1:%d/$management" % listener_port)
         # Preparing SSLDomain (client cert) and SASL authentication info
         domain = SSLDomain(SSLDomain.MODE_CLIENT)
         domain.set_credentials(self.ssl_file('client-certificate.pem'),
@@ -604,19 +604,19 @@ class RouterTestSslInterRouter(RouterTestSslBase):
                         'saslConfigName': 'tests-mech-PLAIN',
                         'saslConfigDir': os.getcwd()}),
             # No auth and no SSL
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.PORT_NO_SSL}),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.PORT_NO_SSL}),
             # All TLS versions
-            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': cls.PORT_TLS_ALL,
+            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': cls.PORT_TLS_ALL,
                           'authenticatePeer': 'yes', 'saslMechanisms': 'PLAIN',
                           'requireEncryption': 'yes', 'requireSsl': 'yes',
                           'sslProfile': 'ssl-profile-tls-all'}),
             # TLSv1.2 only
-            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': cls.PORT_TLS12,
+            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': cls.PORT_TLS12,
                           'authenticatePeer': 'yes', 'saslMechanisms': 'PLAIN',
                           'requireEncryption': 'yes', 'requireSsl': 'yes',
                           'sslProfile': 'ssl-profile-tls12'}),
             # TLSv1 and TLSv1.2 only
-            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': cls.PORT_TLS1_TLS12,
+            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': cls.PORT_TLS1_TLS12,
                           'authenticatePeer': 'yes', 'saslMechanisms': 'PLAIN',
                           'requireEncryption': 'yes', 'requireSsl': 'yes',
                           'sslProfile': 'ssl-profile-tls1-tls12'}),
@@ -654,7 +654,7 @@ class RouterTestSslInterRouter(RouterTestSslBase):
             ('router', {'id': 'QDR.B',
                         'mode': 'interior'}),
             # Connector to All TLS versions allowed listener
-            ('connector', {'host': '0.0.0.0', 'role': 'inter-router', 'port': cls.PORT_TLS_ALL,
+            ('connector', {'host': '127.0.0.1', 'role': 'inter-router', 'port': cls.PORT_TLS_ALL,
                            'verifyHostname': 'no', 'saslMechanisms': 'PLAIN',
                            'saslUsername': 'test@domain.com', 'saslPassword': 'pass:password',
                            'sslProfile': 'ssl-profile-tls-all'}),
@@ -673,7 +673,7 @@ class RouterTestSslInterRouter(RouterTestSslBase):
             ('router', {'id': 'QDR.C',
                         'mode': 'interior'}),
             # Connector to listener that allows TLSv1.2 only
-            ('connector', {'host': '0.0.0.0', 'role': 'inter-router', 'port': cls.PORT_TLS12,
+            ('connector', {'host': '127.0.0.1', 'role': 'inter-router', 'port': cls.PORT_TLS12,
                            'verifyHostname': 'no', 'saslMechanisms': 'PLAIN',
                            'saslUsername': 'test@domain.com', 'saslPassword': 'env:ENV_SASL_PASSWORD',
                            'sslProfile': 'ssl-profile-tls12'}),
@@ -693,7 +693,7 @@ class RouterTestSslInterRouter(RouterTestSslBase):
             ('router', {'id': 'QDR.D',
                         'mode': 'interior'}),
             # Connector to listener that allows TLSv1 and TLSv1.2 only
-            ('connector', {'host': '0.0.0.0', 'role': 'inter-router', 'port': cls.PORT_TLS1_TLS12,
+            ('connector', {'host': '127.0.0.1', 'role': 'inter-router', 'port': cls.PORT_TLS1_TLS12,
                            'verifyHostname': 'no', 'saslMechanisms': 'PLAIN',
                            'saslUsername': 'test@domain.com', 'saslPassword': 'pass:password',
                            'sslProfile': 'ssl-profile-tls1'}),
@@ -713,7 +713,7 @@ class RouterTestSslInterRouter(RouterTestSslBase):
             ('router', {'id': 'QDR.E',
                         'mode': 'interior'}),
             # Connector to listener that allows TLSv1 and TLSv1.2 only
-            ('connector', {'host': '0.0.0.0', 'role': 'inter-router', 'port': cls.PORT_TLS1_TLS12,
+            ('connector', {'host': '127.0.0.1', 'role': 'inter-router', 'port': cls.PORT_TLS1_TLS12,
                            'verifyHostname': 'no', 'saslMechanisms': 'PLAIN',
                            'saslUsername': 'test@domain.com', 'saslPassword': 'password',
                            'sslProfile': 'ssl-profile-tls11'}),
@@ -747,7 +747,7 @@ class RouterTestSslInterRouter(RouterTestSslBase):
         if not SASL.extended():
             self.skipTest("Cyrus library not available. skipping test")
 
-        url = Url("amqp://0.0.0.0:%d/$management" % self.PORT_NO_SSL)
+        url = Url("amqp://127.0.0.1:%d/$management" % self.PORT_NO_SSL)
         node = Node.connect(url)
         response = node.query(type="org.apache.qpid.dispatch.router.node", attribute_names=["id"])
         router_nodes = []
@@ -834,14 +834,14 @@ class RouterTestSslInterRouterWithInvalidPathToCA(RouterTestSslBase):
                         'saslConfigName': 'tests-mech-PLAIN',
                         'saslConfigDir': os.getcwd()}),
             # No auth and no SSL for management access
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.PORT_NO_SSL}),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.PORT_NO_SSL}),
             # All TLS versions and normal, good sslProfile config
-            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': cls.PORT_TLS_ALL_1,
+            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': cls.PORT_TLS_ALL_1,
                           'saslMechanisms': 'PLAIN',
                           'requireEncryption': 'yes', 'requireSsl': 'yes',
                           'sslProfile': 'ssl-profile-tls-all'}),
             # All TLS versions and normal, good sslProfile config
-            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': cls.PORT_TLS_ALL_2,
+            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': cls.PORT_TLS_ALL_2,
                           'saslMechanisms': 'PLAIN',
                           'requireEncryption': 'yes', 'requireSsl': 'yes',
                           'sslProfile': 'ssl-profile-tls-all'}),
@@ -899,7 +899,7 @@ class RouterTestSslInterRouterWithInvalidPathToCA(RouterTestSslBase):
         if not SASL.extended():
             self.skipTest("Cyrus library not available. skipping test")
 
-        url = Url("amqp://0.0.0.0:%d/$management" % self.PORT_NO_SSL)
+        url = Url("amqp://127.0.0.1:%d/$management" % self.PORT_NO_SSL)
         node = Node.connect(url)
         response = node.query(type="org.apache.qpid.dispatch.router.node", attribute_names=["id"])
         router_nodes = []
@@ -1002,9 +1002,9 @@ class RouterTestSslInterRouterWithoutHostnameVerificationAndMismatchedCA(RouterT
                         'saslConfigName': 'tests-mech-PLAIN',
                         'saslConfigDir': os.getcwd()}),
             # No auth and no SSL for management access
-            ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.PORT_NO_SSL}),
+            ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.PORT_NO_SSL}),
             # All TLS versions and normal, good sslProfile config
-            ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': cls.PORT_TLS_ALL,
+            ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': cls.PORT_TLS_ALL,
                           'saslMechanisms': 'PLAIN',
                           'requireEncryption': 'yes', 'requireSsl': 'yes',
                           'sslProfile': 'ssl-profile-tls-all'}),
@@ -1052,7 +1052,7 @@ class RouterTestSslInterRouterWithoutHostnameVerificationAndMismatchedCA(RouterT
         if not SASL.extended():
             self.skipTest("Cyrus library not available. skipping test")
 
-        url = Url("amqp://0.0.0.0:%d/$management" % self.PORT_NO_SSL)
+        url = Url("amqp://127.0.0.1:%d/$management" % self.PORT_NO_SSL)
         node = Node.connect(url)
         response = node.query(type="org.apache.qpid.dispatch.router.node", attribute_names=["id"])
         router_nodes = []

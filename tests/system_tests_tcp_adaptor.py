@@ -292,7 +292,7 @@ class TcpAdaptor(TestCase):
                 ('router', {'mode': mode, 'id': name}),
                 ('listener', {'port': cls.amqp_listener_ports[name]}),
                 # ('listener', {'port': cls.http_listener_ports[name], 'http': 'yes'}),
-                ('tcpListener', {'host': "0.0.0.0",
+                ('tcpListener', {'host': "127.0.0.1",
                                  'port': cls.nodest_listener_ports[name],
                                  'address': 'nodest',
                                  'siteId': cls.site}),
@@ -305,7 +305,7 @@ class TcpAdaptor(TestCase):
                 config.extend(connection)
             listeners = []
             for rtr in cls.router_order:
-                listener = {'host': "0.0.0.0",
+                listener = {'host': "127.0.0.1",
                             'port': cls.tcp_client_listener_ports[name][rtr],
                             'address': 'ES_' + rtr,
                             'siteId': cls.site}
@@ -381,7 +381,7 @@ class TcpAdaptor(TestCase):
         router('INTA', 'interior',
                [('listener', {'role': 'inter-router', 'port': inter_router_port_AB}),
                 ('listener', {'name': 'uplink', 'role': 'edge', 'port': cls.INTA_edge_port}),
-                ('tcpListener', {'host': "0.0.0.0", 'port': cls.INTA_conn_stall_listener_port,
+                ('tcpListener', {'host': "127.0.0.1", 'port': cls.INTA_conn_stall_listener_port,
                                  'address': 'NS_EC2_CONN_STALL', 'siteId': cls.site})])
         inter_router_port_BC = cls.tester.get_port()
         cls.INTB_edge_port = cls.tester.get_port()
@@ -410,7 +410,7 @@ class TcpAdaptor(TestCase):
                [('connector', {'name': 'uplink', 'role': 'edge', 'port': cls.INTC_edge_port}),
                 ('tcpConnector', {'host': "127.0.0.1", 'port': cls.EC2_conn_stall_connector_port,
                                   'address': 'NS_EC2_CONN_STALL', 'siteId': cls.site}),
-                ('tcpListener', {'host': "0.0.0.0", 'port': cls.EC2_conn_stall_listener_port,
+                ('tcpListener', {'host': "127.0.0.1", 'port': cls.EC2_conn_stall_listener_port,
                                  'address': 'NS_EC2_CONN_STALL', 'siteId': cls.site})])
 
         cls.INTA = cls.routers[0]

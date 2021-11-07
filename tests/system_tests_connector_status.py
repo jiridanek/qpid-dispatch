@@ -44,15 +44,15 @@ class ConnectorStatusTest(TestCase):
 
         config_a = [
             ('router', {'mode': 'interior', 'id': 'QDR.A'}),
-            ('listener', {'port': mgmt_port_a, 'host': '0.0.0.0'}),
-            ('listener', {'role': 'inter-router', 'port': inter_router_port, 'host': '0.0.0.0'}),
+            ('listener', {'port': mgmt_port_a, 'host': '127.0.0.1'}),
+            ('listener', {'role': 'inter-router', 'port': inter_router_port, 'host': '127.0.0.1'}),
         ]
 
         router('QDR.A', config_a)
 
         config_b = [
             ('router', {'mode': 'interior', 'id': 'QDR.B'}),
-            ('listener', {'port': mgmt_port_b, 'host': '0.0.0.0'}),
+            ('listener', {'port': mgmt_port_b, 'host': '127.0.0.1'}),
             ('connector', {'name': 'connectorToA', 'role': 'inter-router',
                            'port': inter_router_port}),
         ]

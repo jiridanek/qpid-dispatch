@@ -105,7 +105,7 @@ class GrpcServiceMethodsTest(TestCase):
         cls.router_http_port = cls.tester.get_port()
         config = Qdrouterd.Config([
             ('router', {'mode': 'standalone', 'id': 'QDR'}),
-            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '0.0.0.0'}),
+            ('listener', {'port': cls.tester.get_port(), 'role': 'normal', 'host': '127.0.0.1'}),
 
             ('httpListener', {'port': cls.router_http_port, 'address': 'examples',
                               'host': '127.0.0.1', 'protocolVersion': 'HTTP2'}),

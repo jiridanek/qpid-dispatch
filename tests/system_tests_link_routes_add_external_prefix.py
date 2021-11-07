@@ -79,13 +79,13 @@ class LinkRouteTest(TestCase):
 
         router('A',
                [
-                   ('listener', {'role': 'normal', 'host': '0.0.0.0', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'role': 'normal', 'host': '127.0.0.1', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
                ])
         router('B',
                [
-                   ('listener', {'role': 'normal', 'host': '0.0.0.0', 'port': b_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
-                   ('connector', {'name': 'broker', 'role': 'route-container', 'host': '0.0.0.0', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
-                   ('connector', {'name': 'routerC', 'role': 'inter-router', 'host': '0.0.0.0', 'port': c_listener_port}),
+                   ('listener', {'role': 'normal', 'host': '127.0.0.1', 'port': b_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('connector', {'name': 'broker', 'role': 'route-container', 'host': '127.0.0.1', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('connector', {'name': 'routerC', 'role': 'inter-router', 'host': '127.0.0.1', 'port': c_listener_port}),
 
                    ('linkRoute', {'prefix': 'foo', 'containerId': 'QDR.A', 'direction': 'in', 'addExternalPrefix': 'bar.'}),
                    ('linkRoute', {'prefix': 'foo', 'containerId': 'QDR.A', 'direction': 'out', 'addExternalPrefix': 'bar.'}),
@@ -97,8 +97,8 @@ class LinkRouteTest(TestCase):
                )
         router('C',
                [
-                   ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port(), 'saslMechanisms': 'ANONYMOUS'}),
-                   ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': c_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port(), 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': c_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
 
                    ('linkRoute', {'prefix': 'foo', 'direction': 'in', 'addExternalPrefix': 'bar.'}),
                    ('linkRoute', {'prefix': 'foo', 'direction': 'out', 'addExternalPrefix': 'bar.'}),

@@ -610,15 +610,15 @@ class LinkRouteIngressEgressTransitTest(TestCase):
 
         router('A',
                [
-                   ('listener', {'role': 'normal', 'host': '0.0.0.0', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'role': 'normal', 'host': '127.0.0.1', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
                ])
         router('B',
                [
-                   ('listener', {'role': 'normal', 'host': '0.0.0.0', 'port': b_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
-                   ('listener', {'name': 'test-tag', 'role': 'route-container', 'host': '0.0.0.0', 'port': test_tag_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'role': 'normal', 'host': '127.0.0.1', 'port': b_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'name': 'test-tag', 'role': 'route-container', 'host': '127.0.0.1', 'port': test_tag_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
 
-                   ('connector', {'name': 'broker', 'role': 'route-container', 'host': '0.0.0.0', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
-                   ('connector', {'name': 'routerC', 'role': 'inter-router', 'host': '0.0.0.0', 'port': c_listener_port}),
+                   ('connector', {'name': 'broker', 'role': 'route-container', 'host': '127.0.0.1', 'port': a_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('connector', {'name': 'routerC', 'role': 'inter-router', 'host': '127.0.0.1', 'port': c_listener_port}),
 
 
                    ('linkRoute', {'prefix': 'pulp.task', 'connection': 'broker', 'direction': 'in'}),
@@ -628,8 +628,8 @@ class LinkRouteIngressEgressTransitTest(TestCase):
                )
         router('C',
                [
-                   ('listener', {'host': '0.0.0.0', 'role': 'normal', 'port': cls.tester.get_port(), 'saslMechanisms': 'ANONYMOUS'}),
-                   ('listener', {'host': '0.0.0.0', 'role': 'inter-router', 'port': c_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'host': '127.0.0.1', 'role': 'normal', 'port': cls.tester.get_port(), 'saslMechanisms': 'ANONYMOUS'}),
+                   ('listener', {'host': '127.0.0.1', 'role': 'inter-router', 'port': c_listener_port, 'saslMechanisms': 'ANONYMOUS'}),
 
                    ('linkRoute', {'prefix': 'pulp.task', 'direction': 'in'}),
                    ('linkRoute', {'prefix': 'pulp.task', 'direction': 'out'}),

@@ -64,14 +64,14 @@ class EdgeRouterTest(TestCase):
                 ('listener', {'port': cls.tester.get_port(), 'stripAnnotations': 'no'}),
                 ('listener', {'port': cls.tester.get_port(), 'stripAnnotations': 'no', 'multiTenant': 'yes'}),
                 ('listener', {'port': cls.tester.get_port(), 'stripAnnotations': 'no', 'role': 'route-container'}),
-                ('linkRoute', {'prefix': '0.0.0.0/link', 'direction': 'in', 'containerId': 'LRC'}),
-                ('linkRoute', {'prefix': '0.0.0.0/link', 'direction': 'out', 'containerId': 'LRC'}),
-                ('autoLink', {'address': '0.0.0.0/queue.waypoint', 'containerId': 'ALC', 'direction': 'in'}),
-                ('autoLink', {'address': '0.0.0.0/queue.waypoint', 'containerId': 'ALC', 'direction': 'out'}),
+                ('linkRoute', {'prefix': '127.0.0.1/link', 'direction': 'in', 'containerId': 'LRC'}),
+                ('linkRoute', {'prefix': '127.0.0.1/link', 'direction': 'out', 'containerId': 'LRC'}),
+                ('autoLink', {'address': '127.0.0.1/queue.waypoint', 'containerId': 'ALC', 'direction': 'in'}),
+                ('autoLink', {'address': '127.0.0.1/queue.waypoint', 'containerId': 'ALC', 'direction': 'out'}),
                 ('address', {'prefix': 'closest', 'distribution': 'closest'}),
                 ('address', {'prefix': 'spread', 'distribution': 'balanced'}),
                 ('address', {'prefix': 'multicast', 'distribution': 'multicast'}),
-                ('address', {'prefix': '0.0.0.0/queue', 'waypoint': 'yes'}),
+                ('address', {'prefix': '127.0.0.1/queue', 'waypoint': 'yes'}),
                 connection
             ]
 
@@ -252,14 +252,14 @@ class RouterTest(TestCase):
                 ('listener', {'port': cls.tester.get_port(), 'stripAnnotations': 'no'}),
                 ('listener', {'port': cls.tester.get_port(), 'stripAnnotations': 'no', 'multiTenant': 'yes'}),
                 ('listener', {'port': cls.tester.get_port(), 'stripAnnotations': 'no', 'role': 'route-container'}),
-                ('linkRoute', {'prefix': '0.0.0.0/link', 'direction': 'in', 'containerId': 'LRC'}),
-                ('linkRoute', {'prefix': '0.0.0.0/link', 'direction': 'out', 'containerId': 'LRC'}),
-                ('autoLink', {'address': '0.0.0.0/queue.waypoint', 'containerId': 'ALC', 'direction': 'in'}),
-                ('autoLink', {'address': '0.0.0.0/queue.waypoint', 'containerId': 'ALC', 'direction': 'out'}),
+                ('linkRoute', {'prefix': '127.0.0.1/link', 'direction': 'in', 'containerId': 'LRC'}),
+                ('linkRoute', {'prefix': '127.0.0.1/link', 'direction': 'out', 'containerId': 'LRC'}),
+                ('autoLink', {'address': '127.0.0.1/queue.waypoint', 'containerId': 'ALC', 'direction': 'in'}),
+                ('autoLink', {'address': '127.0.0.1/queue.waypoint', 'containerId': 'ALC', 'direction': 'out'}),
                 ('address', {'prefix': 'closest', 'distribution': 'closest'}),
                 ('address', {'prefix': 'spread', 'distribution': 'balanced'}),
                 ('address', {'prefix': 'multicast', 'distribution': 'multicast'}),
-                ('address', {'prefix': '0.0.0.0/queue', 'waypoint': 'yes'}),
+                ('address', {'prefix': '127.0.0.1/queue', 'waypoint': 'yes'}),
                 connection
             ]
 
