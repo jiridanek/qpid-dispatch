@@ -76,7 +76,9 @@ jobs:
 
       # https://ibob.bg/blog/2018/12/16/windows-rpath/
       - name: copy dlls (cmake has to do this in the future)
-        run: cp qpid-proton/install/bin/qpid-proton-core.dll qpid-proton/install/bin/qpid-proton-proactor.dll qpid-dispatch/build/router/RelWithDebInfo
+        run: |
+          cp qpid-proton/install/bin/qpid-proton-core.dll qpid-dispatch/build/router/RelWithDebInfo
+          cp qpid-proton/install/bin/qpid-proton-proactor.dll qpid-dispatch/build/router/RelWithDebInfo
 
       - name: dispatch test
 #        run: ctest -j 2 -C RelWithDebInfo --output-on-failure
