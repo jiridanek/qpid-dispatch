@@ -355,12 +355,12 @@ void qd_connection_set_user(qd_connection_t *conn)
 }
 
 
-qd_error_t qd_entity_refresh_sslProfile(qd_entity_t* entity, void *impl)
+QD_EXPORT qd_error_t qd_entity_refresh_sslProfile(qd_entity_t* entity, void *impl)
 {
     return QD_ERROR_NONE;
 }
 
-qd_error_t qd_entity_refresh_authServicePlugin(qd_entity_t* entity, void *impl)
+QD_EXPORT qd_error_t qd_entity_refresh_authServicePlugin(qd_entity_t* entity, void *impl)
 {
     return QD_ERROR_NONE;
 }
