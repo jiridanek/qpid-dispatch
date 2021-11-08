@@ -27,10 +27,13 @@
 
 #if defined(__clang__)
 # define QD_HAS_ADDRESS_SANITIZER __has_feature(address_sanitizer)
-#elif defined (__GNUC__) && defined(__SANITIZE_ADDRESS__)
+# define QD_HAS_THREAD_SANITIZER __has_feature(thread_sanitizer)
+#elif defined (__GNUC__) && (defined(__SANITIZE_ADDRESS__) || defined(__SANITIZE_THREAD__))
 # define QD_HAS_ADDRESS_SANITIZER __SANITIZE_ADDRESS__
+# define QD_HAS_THREAD_SANITIZER __SANITIZE_THREAD__
 #else
 # define QD_HAS_ADDRESS_SANITIZER 0
+# define QD_HAS_THREAD_SANITIZER 0
 #endif
 
 #if QD_HAS_ADDRESS_SANITIZER
@@ -68,9 +71,11 @@ void __asan_unpoison_memory_region(void const volatile *addr, size_t size);
 #endif  // QD_HAS_ADDRESS_SANITIZER
 
 // https://github.com/google/sanitizers/wiki/AddressSanitizer#turning-off-instrumentation
-
 #if QD_HAS_ADDRESS_SANITIZER
 # define ATTRIBUTE_NO_SANITIZE_ADDRESS __attribute__((no_sanitize_address))
+#elif QD_HAS_THREAD_SANITIZER
+// note: tsan will also detect some invalid memory accesses and that will crash the binary
+# define ATTRIBUTE_NO_SANITIZE_ADDRESS __attribute__((no_sanitize_thread))
 #else
 # define ATTRIBUTE_NO_SANITIZE_ADDRESS
 #endif  // QD_HAS_ADDRESS_SANITIZER
