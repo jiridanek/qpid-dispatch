@@ -149,7 +149,7 @@ elseif(RUNTIME_CHECK STREQUAL "msan")
     message(FATAL_ERROR "libmsan not installed - memory sanitizer not available")
   endif(MSAN_LIBRARY-NOTFOUND)
   message(STATUS "Runtime memory checker: gcc/clang memory sanitizer")
-  set(SANITIZE_FLAGS "-g -fno-omit-frame-pointer -fsanitize=memory -fsanitize-memory-use-after-dtor")
+  set(SANITIZE_FLAGS "-g -fno-omit-frame-pointer -fsanitize=memory -fsanitize-memory-use-after-dtor -fsanitize-memory-track-origins")
   set(RUNTIME_MSAN_ENV_OPTIONS "poison_in_dtor=1")
 
 elseif(RUNTIME_CHECK STREQUAL "tsan")
