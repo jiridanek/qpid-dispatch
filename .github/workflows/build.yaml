@@ -343,7 +343,7 @@ jobs:
       - name: Install and activate Clang (when msan is desired)
         if: ${{ matrix.runtimeCheck == 'msan' }}
         run: |
-          yum install -y clang
+          yum install -y llvm clang
           echo "CC=clang" >> $GITHUB_ENV
           echo "CXX=clang++" >> $GITHUB_ENV
 
