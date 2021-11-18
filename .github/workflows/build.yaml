@@ -257,7 +257,7 @@ jobs:
         container: ['fedora']
         containerTag: ['34']
         buildType: [RelWithDebInfo]
-        runtimeCheck: [asan, tsan]
+        runtimeCheck: [asan, msan, tsan]
         shard: [ 1, 2 ]
         shards: [ 2 ]
         include:

@@ -64,7 +64,7 @@ endmacro()
 
 # Valid options for RUNTIME_CHECK
 #
-set(runtime_checks OFF tsan asan hwasan memcheck helgrind)
+set(runtime_checks OFF tsan asan msan hwasan memcheck helgrind)
 
 # Set RUNTIME_CHECK value and deal with the older cmake flags for
 # valgrind and TSAN
@@ -141,6 +141,16 @@ elseif(RUNTIME_CHECK STREQUAL "asan" OR RUNTIME_CHECK STREQUAL "hwasan")
   set(RUNTIME_ASAN_ENV_OPTIONS "detect_odr_violation=0 strict_string_checks=1 detect_stack_use_after_return=1 check_initialization_order=1 strict_init_order=1 detect_invalid_pointer_pairs=2 suppressions=${CMAKE_SOURCE_DIR}/tests/asan.supp")
   set(RUNTIME_LSAN_ENV_OPTIONS "suppressions=${CMAKE_BINARY_DIR}/tests/lsan.supp")
   set(RUNTIME_UBSAN_ENV_OPTIONS "print_stacktrace=1 print_summary=1")
+
+elseif(RUNTIME_CHECK STREQUAL "msan")
+  assert_has_sanitizers()
+  find_library(MSAN_LIBRARY NAME msan libmsan)
+  if(MSAN_LIBRARY-NOTFOUND)
+    message(FATAL_ERROR "libmsan not installed - memory sanitizer not available")
+  endif(MSAN_LIBRARY-NOTFOUND)
+  message(STATUS "Runtime memory checker: gcc/clang memory sanitizer")
+  set(SANITIZE_FLAGS "-g -fno-omit-frame-pointer -fsanitize=memory -fsanitize-memory-use-after-dtor")
+  set(RUNTIME_MSAN_ENV_OPTIONS "poison_in_dtor=1")
 
 elseif(RUNTIME_CHECK STREQUAL "tsan")
   assert_has_sanitizers()
