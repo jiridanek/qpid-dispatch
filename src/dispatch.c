@@ -92,7 +92,7 @@ qd_dispatch_t *qd_dispatch(const char *python_pkgdir, bool test_hooks)
     if (qd_error_code()) { qd_dispatch_free(qd); return 0; }
 
     if (python_pkgdir) {
-        struct stat st;
+        struct stat st = {0};
         if (stat(python_pkgdir, &st)) {
             qd_error_errno(errno, "Cannot find Python library path '%s'", python_pkgdir);
             return NULL;
