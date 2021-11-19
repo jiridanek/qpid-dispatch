@@ -257,7 +257,7 @@ jobs:
         container: ['fedora']
         containerTag: ['34']
         buildType: [RelWithDebInfo]
-        runtimeCheck: [asan, msan, tsan]
+        runtimeCheck: [asan, memcheck, tsan]
         shard: [ 1, 2 ]
         shards: [ 2 ]
         include:
@@ -340,12 +340,10 @@ jobs:
         run: |
           yum install -y gcc gcc-c++ cmake libuuid-devel openssl-devel cyrus-sasl-devel cyrus-sasl-plain swig python3-devel python3-pip make libwebsockets-devel ccache libasan libubsan libtsan
 
-      - name: Install and activate Clang (when msan is desired)
-        if: ${{ matrix.runtimeCheck == 'msan' }}
+      - name: Install valgrind (when memcheck is desired)
+        if: ${{ matrix.runtimeCheck == 'memcheck' }}
         run: |
-          yum install -y llvm clang
-          echo "CC=clang" >> $GITHUB_ENV
-          echo "CXX=clang++" >> $GITHUB_ENV
+          yum install -y valgrind
 
       - name: Install Python build dependencies
         run: python3 -m pip install setuptools wheel tox

@@ -89,7 +89,7 @@ endif()
 if(RUNTIME_CHECK STREQUAL "memcheck")
   assert_has_valgrind()
   message(STATUS "Runtime memory checker: valgrind memcheck")
-  set(QDROUTERD_RUNNER "${VALGRIND_EXECUTABLE} --tool=memcheck --leak-check=full --show-leak-kinds=definite --errors-for-leak-kinds=definite ${VALGRIND_COMMON_ARGS}")
+  set(QDROUTERD_RUNNER "${VALGRIND_EXECUTABLE} --tool=memcheck --leak-check=full --show-leak-kinds=definite --errors-for-leak-kinds=definite --track-origins=yes ${VALGRIND_COMMON_ARGS}")
 
 elseif(RUNTIME_CHECK STREQUAL "helgrind")
   assert_has_valgrind()
