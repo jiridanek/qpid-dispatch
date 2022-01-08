@@ -25,25 +25,26 @@ skip_missing_interpreters = True
 skip_install = True
 
 [testenv]
-commands = flake8 --count --show-source \
-  ${CMAKE_SOURCE_DIR}/python \
-  ${CMAKE_SOURCE_DIR}/console \
-  ${CMAKE_SOURCE_DIR}/docs \
-  ${CMAKE_SOURCE_DIR}/tests \
-  ${CMAKE_SOURCE_DIR}/tools \
-  ${CMAKE_SOURCE_DIR}/tools/qdstat \
-  ${CMAKE_SOURCE_DIR}/tools/qdmanage
+commands =
+  flake8 --count --show-source \
+    ${CMAKE_SOURCE_DIR}/python \
+    ${CMAKE_SOURCE_DIR}/console \
+    ${CMAKE_SOURCE_DIR}/docs \
+    ${CMAKE_SOURCE_DIR}/tests \
+    ${CMAKE_SOURCE_DIR}/tools \
+    ${CMAKE_SOURCE_DIR}/tools/qdstat \
+    ${CMAKE_SOURCE_DIR}/tools/qdmanage
 
-  pylint --rcfile ${CMAKE_BUILD_DIR}/tests/tox.ini
   # TODO(pylint#5648): crash while parsing system_test.py
-  --ignore=system_test.py \
-  ${CMAKE_SOURCE_DIR}/python \
-  ${CMAKE_SOURCE_DIR}/console \
-  ${CMAKE_SOURCE_DIR}/docs \
-  ${CMAKE_SOURCE_DIR}/tests \
-  ${CMAKE_SOURCE_DIR}/tools \
-  ${CMAKE_SOURCE_DIR}/tools/qdstat \
-  ${CMAKE_SOURCE_DIR}/tools/qdmanage
+  pylint --rcfile ${CMAKE_BINARY_DIR}/tests/tox.ini \
+    --ignore=system_test.py \
+    ${CMAKE_SOURCE_DIR}/python \
+    ${CMAKE_SOURCE_DIR}/console \
+    ${CMAKE_SOURCE_DIR}/docs \
+    ${CMAKE_SOURCE_DIR}/tests \
+    ${CMAKE_SOURCE_DIR}/tools \
+    ${CMAKE_SOURCE_DIR}/tools/qdstat \
+    ${CMAKE_SOURCE_DIR}/tools/qdmanage
 
 deps =
     hacking>=1.1.0
