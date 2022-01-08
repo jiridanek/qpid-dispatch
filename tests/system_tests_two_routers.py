@@ -1597,9 +1597,7 @@ class SemanticsBalanced(MessagingHandler):
 
 
 class PropagatedDisposition(MessagingHandler):
-    """
-    Verify outcomes are properly sent end-to-end
-    """
+    """Verify outcomes are properly sent end-to-end"""
 
     def __init__(self, test, sender_addr, receiver_addr, dest):
         super(PropagatedDisposition, self).__init__(auto_accept=False)
@@ -1986,9 +1984,7 @@ class MulticastTestClient(MessagingHandler):
 
 
 class StreamingLinkScrubberTest(TestCase):
-    """
-    Verify that unused inter-router streaming links are eventually reclaimed
-    """
+    """Verify that unused inter-router streaming links are eventually reclaimed"""
 
     @classmethod
     def setUpClass(cls):
@@ -2036,9 +2032,7 @@ class StreamingLinkScrubberTest(TestCase):
         cls.RouterB.wait_router_connected('RouterA')
 
     def test_01_streaming_link_scrubber(self):
-        """
-        Ensure extra streaming links are closed by the periodic scrubber
-        """
+        """Ensure extra streaming links are closed by the periodic scrubber"""
         address = "closest/scrubber"
 
         # scrubber removes at most 10 links per scan, the test pool size is 2
@@ -2148,9 +2142,7 @@ class TwoRouterExtensionStateTest(TestCase):
         cls.RouterB.wait_router_connected('RouterA')
 
     def test_01_link_route(self):
-        """
-        Verify non-terminal state and data propagates over a link route
-        """
+        """Verify non-terminal state and data propagates over a link route"""
         class MyExtendedService(FakeService):
             """
             This service saves any outcome and extension data that arrives in a
@@ -2179,9 +2171,7 @@ class TwoRouterExtensionStateTest(TestCase):
         self.assertEqual([1, 2, 3], fs.remote_data)
 
     def test_02_closest(self):
-        """
-        Verify non-terminal state and data propagates over anycase
-        """
+        """Verify non-terminal state and data propagates over anycase"""
         test = ExtensionStateTester(self.RouterA.addresses[0],
                                     self.RouterB.addresses[0],
                                     "closest/fleabag")

@@ -62,9 +62,7 @@ mech_list: SCRAM-SHA-1 PLAIN
 
     @classmethod
     def setUpClass(cls):
-        """
-        Tests the delegation of sasl auth to an external auth service.
-        """
+        """Tests the delegation of sasl auth to an external auth service."""
         super(AuthServicePluginAuthzTest, cls).setUpClass()
 
         if not SASL.extended():
@@ -147,9 +145,7 @@ mech_list: SCRAM-SHA-1 PLAIN
 class AuthServicePluginAuthzDeprecatedTest(AuthServicePluginAuthzTest):
     @classmethod
     def setUpClass(cls):
-        """
-        Tests the delegation of sasl auth to an external auth service.
-        """
+        """Tests the delegation of sasl auth to an external auth service."""
         super(AuthServicePluginAuthzTest, cls).setUpClass()
 
         if not SASL.extended():

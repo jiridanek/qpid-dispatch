@@ -627,9 +627,7 @@ function show_node(node)
 #
 #
 def main_except(log_fn):
-    """
-    Given a log file name, split the file into per-connection sub files
-    """
+    """Given a log file name, split the file into per-connection sub files"""
     log_files = []
 
     if not os.path.exists(log_fn):

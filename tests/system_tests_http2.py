@@ -40,9 +40,7 @@ def python_37_available():
 
 
 def quart_available():
-    """
-    Checks if quart version is greater than 0.13
-    """
+    """Checks if quart version is greater than 0.13"""
     popen_args = ['quart', '--version']
     try:
         process = Process(popen_args,
@@ -94,9 +92,7 @@ def image_file(name):
 
 class Http2TestBase(TestCase):
     def run_curl(self, address, args=None, input=None, timeout=TIMEOUT):
-        """
-        Run the curl command using the HTTP/2 protocol
-        """
+        """Run the curl command using the HTTP/2 protocol"""
         local_args = [str(address), "--http2-prior-knowledge"]
         if args:
             local_args +=  args

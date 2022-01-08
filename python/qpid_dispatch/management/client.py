@@ -17,9 +17,7 @@
 # under the License
 #
 
-"""
-AMQP management client for Qpid dispatch.
-"""
+"""AMQP management client for Qpid dispatch."""
 
 import proton
 from proton import Url
@@ -87,8 +85,7 @@ class Node(object):
 
     @staticmethod
     def connection(url=None, router=None, timeout=10, ssl_domain=None, sasl=None, edge_router=None):
-        """Return a BlockingConnection suitable for connecting to a management node
-        """
+        """Return a BlockingConnection suitable for connecting to a management node"""
         if ssl_domain:
             sasl_enabled = True
         else:
@@ -163,9 +160,7 @@ class Node(object):
 
     @staticmethod
     def check_response(response, expect=OK):
-        """
-        Check a management response message for errors and correlation ID.
-        """
+        """Check a management response message for errors and correlation ID."""
         code = response.properties.get('statusCode')
         if code != expect:
             if 200 <= code <= 299:
@@ -177,7 +172,7 @@ class Node(object):
 
     def request(self, body=None, **properties):
         """
-        Make a L{proton.Message} containining a management request.
+        Make a L{proton.Message} containing a management request.
         @param body: The request body, a dict or list.
         @param properties: Keyword arguments for application-properties of the request.
         @return: L{proton.Message} containining the management request.
@@ -210,9 +205,6 @@ class Node(object):
         """
 
         def __init__(self, node, attribute_names, results):
-            """
-            @param response: the respose message to a query.
-            """
             self.node = node
             self.attribute_names = attribute_names
             self.results = results

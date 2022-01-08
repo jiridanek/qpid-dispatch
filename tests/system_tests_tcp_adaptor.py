@@ -1122,9 +1122,7 @@ class TcpAdaptorStuckDeliveryTest(TestCase):
 
 
 class TcpAdaptorManagementTest(TestCase):
-    """
-    Test Creation and deletion of TCP management entities
-    """
+    """Test Creation and deletion of TCP management entities"""
     @classmethod
     def setUpClass(cls):
         super(TcpAdaptorManagementTest, cls).setUpClass()

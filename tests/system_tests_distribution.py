@@ -32,9 +32,7 @@ from proton.reactor import Container, LinkOption, ApplicationEvent, EventInjecto
 
 
 class AddressCheckResponse(object):
-    """
-    Convenience class for the responses returned by an AddressChecker.
-    """
+    """Convenience class for the responses returned by an AddressChecker."""
 
     def __init__(self, status_code, status_description, attrs):
         self.status_code        = status_code
@@ -50,9 +48,7 @@ class AddressCheckResponse(object):
 
 
 class AddressChecker (object):
-    """
-    Format address-query messages and parse the responses.
-    """
+    """Format address-query messages and parse the responses."""
 
     def __init__(self, reply_addr):
         self.reply_addr = reply_addr
@@ -2249,8 +2245,7 @@ class ClosestTest (MessagingHandler):
         self._logger = Logger(title=test_name, print_to_console=print_debug)
 
     def _new_message(self):
-        """Add expected rx for log tracing
-        """
+        """Add expected rx for log tracing"""
         return Message(body="%s: Hello, %s." % (self.test_name, self.closest_rx.name),
                        address=self.dest)
 

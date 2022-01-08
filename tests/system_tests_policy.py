@@ -36,9 +36,7 @@ from test_broker import FakeBroker
 
 
 class AbsoluteConnectionCountLimit(TestCase):
-    """
-    Verify that connections beyond the absolute limit are denied and counted
-    """
+    """Verify that connections beyond the absolute limit are denied and counted"""
     @classmethod
     def setUpClass(cls):
         """Start the router"""
@@ -278,9 +276,7 @@ class LoadPolicyFromFolder(TestCase):
 
 
 class SenderReceiverLimits(TestCase):
-    """
-    Verify that policy can limit senders and receivers by count.
-    """
+    """Verify that policy can limit senders and receivers by count."""
     @classmethod
     def setUpClass(cls):
         """Start the router"""
@@ -988,9 +984,7 @@ class PolicyLinkNamePatternTest(TestCase):
 
 
 class PolicyHostamePatternTest(TestCase):
-    """
-    Verify hostname pattern matching
-    """
+    """Verify hostname pattern matching"""
     @classmethod
     def setUpClass(cls):
         """Start the router"""

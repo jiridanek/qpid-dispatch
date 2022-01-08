@@ -57,9 +57,7 @@ def TimeShort(value):
 
 
 def NumKMG(value, base=1000):
-    """
-    Format large numbers in a human readable summary
-    """
+    """Format large numbers in a human readable summary"""
     # IEEE 1541 numeric suffix definitions:
     SUFFIX = {1024: ('KiB', 'MiB', 'GiB', 'TiB', 'PiB'),
               1000: ('k', 'm', 'g', 't', 'p')}
@@ -254,9 +252,7 @@ class Display:
             print(line)
 
     def tableCsv(self, title, heads, rows):
-        """
-        Print a table with CSV format.
-        """
+        """Print a table with CSV format."""
 
         def csvEscape(text):
             """

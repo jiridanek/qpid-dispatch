@@ -17,9 +17,7 @@
 # under the License
 #
 
-"""
-ManagementError exception class and subclasses, with status codes used by AMQP.
-"""
+"""ManagementError exception class and subclasses, with status codes used by AMQP."""
 
 #from httplib import responses as STATUS_TEXT
 # from httplib import OK, NO_CONTENT, CREATED, \

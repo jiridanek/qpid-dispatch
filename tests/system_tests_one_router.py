@@ -590,9 +590,7 @@ class OneRouterTest(TestCase):
         self.assertTrue(test.reject_count_match)
 
     def test_37_connection_properties_unicode_string(self):
-        """
-        Tests connection property that is a map of unicode strings and integers
-        """
+        """Tests connection property that is a map of unicode strings and integers"""
         connection = BlockingConnection(self.router.addresses[0],
                                         timeout=TIMEOUT,
                                         properties=CONNECTION_PROPERTIES_UNICODE_STRING)
@@ -613,9 +611,7 @@ class OneRouterTest(TestCase):
         client.connection.close()
 
     def test_38_connection_properties_symbols(self):
-        """
-        Tests connection property that is a map of symbols
-        """
+        """Tests connection property that is a map of symbols"""
         connection = BlockingConnection(self.router.addresses[0],
                                         timeout=TIMEOUT,
                                         properties=CONNECTION_PROPERTIES_SYMBOL)
@@ -802,9 +798,7 @@ class ReleasedChecker(object):
 
 class ExtensionCapabilitiesTest(MessagingHandler):
     def __init__(self, address, capabilities):
-        """
-        capabilities: sent by this client to the router
-        """
+        """capabilities: sent by this client to the router"""
         super(ExtensionCapabilitiesTest, self).__init__()
         self._addr = address
         self._caps = capabilities
@@ -3686,9 +3680,7 @@ class Q2HoldoffDropTest(MessagingHandler):
 
 
 class OneRouterTransactionalAttachTest(TestCase):
-    """
-    Verify that a transaction is properly forwarded through the router
-    """
+    """Verify that a transaction is properly forwarded through the router"""
 
     class FakeTxnBroker(FakeBroker):
         """
@@ -3804,9 +3796,7 @@ class OneRouterTransactionalAttachTest(TestCase):
         cls.router.wait_address("closest/queue01", count=2)
 
     def test_01_verify_attach(self):
-        """
-        Verify the transaction link attach is correctly forwarded to the broker
-        """
+        """Verify the transaction link attach is correctly forwarded to the broker"""
         client = self.TxSender(url=self.listener)
         Container(client).run()
         self.assertTrue(client.declare_failed)

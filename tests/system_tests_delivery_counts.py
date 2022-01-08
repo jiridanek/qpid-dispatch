@@ -47,9 +47,7 @@ def get_body(n_sent, large_message=False):
 
 
 def _link_stats_are_zero(statistics, keys):
-    """
-    Verify that all statistics whose keys are present are zero
-    """
+    """Verify that all statistics whose keys are present are zero"""
     for key in keys:
         if statistics.get(key) != 0:
             return False
@@ -931,9 +929,7 @@ class RouteContainerEgressCount(TestCase):
 
 
 class OneRouterLinkCountersTest(TestCase):
-    """
-    A set of tests that validate link-level counters
-    """
+    """A set of tests that validate link-level counters"""
     CREDIT = 20  # default issued by test receiver client
     COUNT  = 40  # default total msgs the sender client generates
 
@@ -1046,9 +1042,7 @@ class OneRouterLinkCountersTest(TestCase):
             Container(self).run()
 
     def verify_released(self, large_message=False):
-        """
-        Verify the link released count by releasing all received messages
-        """
+        """Verify the link released count by releasing all received messages"""
         test = self.LinkCountersTest(self.router.addresses[0],
                                      outcome=Delivery.RELEASED,
                                      large_message=large_message)
@@ -1148,9 +1142,7 @@ class OneRouterLinkCountersTest(TestCase):
                                                 'presettledCount'}))
 
     def verify_one_credit_accepted(self, large_message=False):
-        """
-        Verify counters on a credit-blocked link
-        """
+        """Verify counters on a credit-blocked link"""
         test = self.LinkCountersTest(self.router.addresses[0],
                                      outcome=Delivery.ACCEPTED,
                                      rx_limit=1,

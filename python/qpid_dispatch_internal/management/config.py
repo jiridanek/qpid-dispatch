@@ -17,9 +17,7 @@
 # under the License
 #
 
-"""
-Configuration file parsing
-"""
+"""Configuration file parsing"""
 import json
 import re
 import os

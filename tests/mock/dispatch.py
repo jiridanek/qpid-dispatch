@@ -16,9 +16,7 @@
 # under the License.
 #
 
-"""
-Mock implementation of the dispatch C extension module for use in unit tests.
-"""
+"""Mock implementation of the dispatch C extension module for use in unit tests."""
 
 LOG_TRACE    = 1
 LOG_DEBUG    = 2

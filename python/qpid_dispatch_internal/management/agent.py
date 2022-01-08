@@ -147,9 +147,7 @@ class PythonImplementation(Implementation):
 
 
 class EntityAdapter(SchemaEntity):
-    """
-    Base class for agent entities with operations as well as attributes.
-    """
+    """Base class for agent entities with operations as well as attributes."""
 
     def __init__(self, agent, entity_type, attributes=None, validate=True):
         """
@@ -643,9 +641,7 @@ class HttpConnectorEntity(EntityAdapter):
 
 
 class EntityCache(object):
-    """
-    Searchable cache of entities, can be refreshed from implementation objects.
-    """
+    """Searchable cache of entities, can be refreshed from implementation objects."""
 
     def __init__(self, agent):
         self.entities = []
@@ -812,9 +808,7 @@ class ManagementEntity(EntityAdapter):
                          for t in self._schema.by_type(type)))
 
     def get_annotations(self, request):
-        """
-        We are not supporting any annotations at the moment.
-        """
+        """We are not supporting any annotations at the moment."""
         return (OK, {})
 
     def get_operations(self, request):

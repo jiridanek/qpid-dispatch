@@ -45,9 +45,7 @@ class Timeout(object):
 
 
 class ManagementMessageHelper (object):
-    """
-    Format management messages.
-    """
+    """Format management messages."""
 
     def __init__(self, reply_addr):
         self.reply_addr = reply_addr

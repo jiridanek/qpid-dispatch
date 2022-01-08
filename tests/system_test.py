@@ -238,9 +238,7 @@ def skip_test_in_ci(environment_var):
 
 
 class Process(subprocess.Popen):
-    """
-    Popen that can be torn down at the end of a TestCase and stores its output.
-    """
+    """Popen that can be torn down at the end of a TestCase and stores its output."""
 
     # Expected states of a Process at teardown
     RUNNING = -1                # Still running
@@ -349,9 +347,7 @@ class Http2Server(HttpServer):
             self.wait_ready()
 
     def wait_ready(self, **retry_kwargs):
-        """
-        Wait for ports to be ready
-        """
+        """Wait for ports to be ready"""
         if not self._wait_ready:
             self._wait_ready = True
             self.wait_ports(**retry_kwargs)
@@ -658,9 +654,7 @@ class Qdrouterd(Process):
         assert retry(check, **retry_kwargs)
 
     def wait_address_unsubscribed(self, address, **retry_kwargs):
-        """
-        Block until address has no subscribers
-        """
+        """Block until address has no subscribers"""
         a_type = 'org.apache.qpid.dispatch.router.address'
 
         def check():
@@ -745,9 +739,7 @@ class Tester(object):
     root_dir = os.path.abspath(__name__ + '.dir')
 
     def __init__(self, id):
-        """
-        @param id: module.class.method or False if no directory should be created
-        """
+        """@param id: module.class.method or False if no directory should be created"""
         self.directory = os.path.join(self.root_dir, *id.split('.')) if id else None
         self.cleanup_list = []
 
@@ -1129,9 +1121,7 @@ class AsyncTestSender(MessagingHandler):
 
 
 class QdManager(object):
-    """
-    A means to invoke qdmanage during a testcase
-    """
+    """A means to invoke qdmanage during a testcase"""
 
     def __init__(self, tester=None, address=None, timeout=TIMEOUT,
                  router_id=None,
@@ -1203,9 +1193,7 @@ class QdManager(object):
 
 
 class MgmtMsgProxy(object):
-    """
-    Utility for creating and inspecting management messages
-    """
+    """Utility for creating and inspecting management messages"""
     class _Response(object):
         def __init__(self, status_code, status_description, body):
             self.status_code        = status_code
@@ -1333,9 +1321,7 @@ class PollTimeout(object):
 
 
 def get_link_info(name, address):
-    """
-    Query the router at address for the status and statistics of the named link
-    """
+    """Query the router at address for the status and statistics of the named link"""
     qdm = QdManager(address=address)
     rc = qdm.query('org.apache.qpid.dispatch.router.link')
     for item in rc:
@@ -1371,9 +1357,7 @@ def get_inter_router_links(address):
 
 
 class Timestamp(object):
-    """
-    Time stamps for logging.
-    """
+    """Time stamps for logging."""
 
     def __init__(self):
         self.ts = datetime.now()

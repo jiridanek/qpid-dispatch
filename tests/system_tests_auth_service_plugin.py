@@ -84,10 +84,7 @@ sql_select: dummy select
 
     @unittest.skipIf(not SASL.extended(), "Cyrus library not available. skipping test")
     def test_valid_credentials(self):
-        """
-        Check authentication succeeds when valid credentials are presented.
-
-        """
+        """Check authentication succeeds when valid credentials are presented."""
         test = SimpleConnect("127.0.0.1:%d" % self.router_port, 'test@domain.com', 'password')
         test.run()
         self.assertEqual(True, test.connected)
@@ -95,10 +92,7 @@ sql_select: dummy select
 
     @unittest.skipIf(not SASL.extended(), "Cyrus library not available. skipping test")
     def test_invalid_credentials(self):
-        """
-        Check authentication fails when invalid credentials are presented.
-
-        """
+        """Check authentication fails when invalid credentials are presented."""
         test = SimpleConnect("127.0.0.1:%d" % self.router_port, 'test@domain.com', 'foo')
         test.run()
         self.assertEqual(False, test.connected)
