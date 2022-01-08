@@ -43,7 +43,7 @@ class RouterTest(TestCase):
         """Start a router"""
         super(RouterTest, cls).setUpClass()
 
-        def router(name, mode, connection, extra=None, args=[]):
+        def router(name, mode, connection, extra=None, args=None):
             config = [
                 ('router', {'mode': mode, 'id': name}),
                 ('listener', {'port': cls.tester.get_port(), 'stripAnnotations': 'no'}),
@@ -53,7 +53,7 @@ class RouterTest(TestCase):
             if extra:
                 config.append(extra)
             config = Qdrouterd.Config(config)
-            cls.routers.append(cls.tester.qdrouterd(name, config, wait=True, cl_args=args))
+            cls.routers.append(cls.tester.qdrouterd(name, config, wait=True, cl_args=args or []))
 
         cls.routers = []
 
