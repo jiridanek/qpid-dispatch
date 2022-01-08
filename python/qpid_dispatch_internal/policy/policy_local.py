@@ -748,7 +748,7 @@ class PolicyLocal:
         the vhost is defined in rulesetdb.
         @return:
         """
-        return not self._default_vhost == "" and self._default_vhost in self.rulesetdb
+        return self._default_vhost != "" and self._default_vhost in self.rulesetdb
 
     #
     # Runtime query interface
