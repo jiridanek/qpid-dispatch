@@ -185,7 +185,6 @@ disable =
     consider-using-enumerate,
     consider-using-f-string,
     consider-using-in,
-    consider-using-max-builtin,
     consider-using-with,
     deprecated-module,
     duplicate-code,

@@ -131,8 +131,7 @@ class Header:
             if self.format == Header.TIME_SHORT:
                 return TimeShort(value)
             if self.format == Header.DURATION:
-                if value < 0:
-                    value = 0
+                value = max(value, 0)
                 sec = value / 1000000000
                 min = sec / 60
                 hour = min / 60
@@ -286,8 +285,7 @@ class Display:
         return strftime(self.timestampFormat, gmtime(nsec / 1000000000))
 
     def duration(self, nsec):
-        if nsec < 0:
-            nsec = 0
+        nsec = max(nsec, 0)
         sec = nsec / 1000000000
         min = sec / 60
         hour = min / 60
