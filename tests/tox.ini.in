@@ -134,8 +134,6 @@ ignore =
     D208,
     # Multi-line docstring closing quotes should be on a separate line
     D209,
-    # No whitespaces allowed surrounding docstring text
-    D210,
     # Missing docstring in magic method
     D105,
     # Missing docstring in __init__

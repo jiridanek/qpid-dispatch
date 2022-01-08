@@ -34,7 +34,7 @@ class ConsolePreReq(object):
 
     @staticmethod
     def is_cmd(name):
-        ''' determine if a command is present and executes on the system '''
+        """Determine if a command is present and executes on the system"""
         try:
             devnull = open(os.devnull, "w")
             subprocess.Popen([name], stdout=devnull, stderr=devnull).communicate()

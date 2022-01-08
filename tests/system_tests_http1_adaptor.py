@@ -88,7 +88,7 @@ class Http1AdaptorManagementTest(TestCase):
         cls.e_router.wait_ready()
 
     def test_01_create_delete(self):
-        """ Create and delete HTTP1 connectors and listeners.  The
+        """Create and delete HTTP1 connectors and listeners.  The
         connectors/listeners are created on the edge router.  Verify that the
         adaptor properly notifies the interior of the subscribers/producers.
         """
