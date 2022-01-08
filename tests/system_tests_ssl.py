@@ -130,11 +130,7 @@ class RouterTestSslClient(RouterTestSslBase):
     # Test if OpenSSL has TLSv1_3
     OPENSSL_HAS_TLSV1_3 = False
     if OPENSSL_VER_1_1_GT:
-        try:
-            ssl.TLSVersion.TLSv1_3
-            OPENSSL_HAS_TLSV1_3 = True
-        except:
-            pass
+        OPENSSL_HAS_TLSV1_3 = hasattr(ssl.TLSVersion, 'TLSv1_3')
 
     # Test if Proton supports TLSv1_3
     try:
