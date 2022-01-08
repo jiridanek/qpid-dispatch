@@ -90,7 +90,7 @@ class Node:
         if ssl_domain:
             sasl_enabled = True
         else:
-            sasl_enabled = True if sasl else False
+            sasl_enabled = bool(sasl)
 
         # if sasl_mechanism is unicode, convert it to python string
         return BlockingConnection(url,
