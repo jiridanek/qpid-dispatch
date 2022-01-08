@@ -728,9 +728,9 @@ class Qdrouterd(Process):
 
 class Tester(object):
     """Tools for use by TestCase
-- Create a directory for the test.
-- Utilities to create processes and servers, manage ports etc.
-- Clean up processes on teardown"""
+    - Create a directory for the test.
+    - Utilities to create processes and servers, manage ports etc.
+    - Clean up processes on teardown"""
 
     # Top level directory above any Tester directories.
     # CMake-generated configuration may be found here.
