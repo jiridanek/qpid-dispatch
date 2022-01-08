@@ -56,16 +56,12 @@ max-line-length = 464
 
 # TODO(DISPATCH-1974) re-enable all these warnings
 ignore =
-    # H238: old style class declaration, use new style (inherit from `object`)
-    H238,
     # E241 multiple spaces after ','
     E241,
     # E203 whitespace before ':'
     E203,
     # E704 multiple statements on one line (def)
     E704,
-    # TabError: inconsistent use of tabs and spaces in indentation
-    E999,
     # H101: Use TODO(NAME)
     H101,
     # H202: assertRaises Exception too broad
@@ -146,8 +142,6 @@ ignore =
     D210,
     # No blank lines allowed before class docstring
     D211,
-    # Use r""" if any backslashes in a docstring
-    D301,
     # Missing docstring in magic method
     D105,
     # Missing docstring in __init__

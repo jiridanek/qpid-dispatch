@@ -186,7 +186,7 @@ def html_escape(text):
 
 
 def strings_of_proton_log(text):
-    '''
+    r"""
     Given a transfer log text string like:
       "\x00SpE\x00Ss\xd0\x00\x00\x002\x00\x00\x00\x06@@@@\xa1$amqp:/_edge/EB1/temp.RkCWe_Is4jc3bcN\xa1\x0232\x00St\xd1\x00\x00\x00\x8c\x00\x00\x00\x0c\xa1\x04name\xa1\x04self\xa1\x04type\xa1\x13org.amqp.management\xa1\x09operation\xa1\x05QUERY\xa1\x0aentityType\xa1'org.apache.qpid.dispatch.router.address\xa1\x06offsetU\x00\xa1\x05count\x81\x00\x00\x00\x00\x00\x00\x01\xf4\x00Sw\xd1\x00\x00\x00Q\x00\x00\x00\x02\xa1\x0eattributeNames\xd0\x00\x00\x008\x00\x00\x00\x04\xa1\x04name\xa1\x0fsubscriberCount\xa1\x0bremoteCount\xa1\x0econtainerCount"
     return the strings thereof:
@@ -194,7 +194,7 @@ def strings_of_proton_log(text):
     The intended use for this is to help decode management and router frames in the transfer nickname dump.
     :param text:
     :return: strings embedded in text
-    '''
+    """
     r = ""  # return result
     sstate = 0  # when a backslash is seen, skip this many more input chars
     skipping = False
