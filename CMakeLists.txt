@@ -77,11 +77,6 @@ message(STATUS "Build type is \"${CMAKE_BUILD_TYPE}\"${has_debug_symbols}")
 # This is commonly needed so define it before we include anything else.
 string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
 
-# add 3rdparty projects, before we set our compile flags
-add_subdirectory(3rdparty)
-
-option(QD_MEMORY_STATS "Track memory pool usage statistics" ON)
-
 if(uppercase_CMAKE_BUILD_TYPE STREQUAL "DEBUG" )
     option(QD_ENABLE_ASSERTIONS "Enable assertions" ON)
 else()
@@ -141,10 +136,6 @@ include (CTest)
 
 set(PYTHON_TEST_COMMAND "-m" "unittest" "-v" "\${py_test_module}"
     CACHE STRING "Command used to run tests implemented in Python unittest; \${py_test_module} will be replaced with test module name.")
-
-set (SO_VERSION_MAJOR 2)
-set (SO_VERSION_MINOR 0)
-set (SO_VERSION "${SO_VERSION_MAJOR}.${SO_VERSION_MINOR}")
 
 if (NOT DEFINED LIB_SUFFIX)
     get_property(LIB64 GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS)
