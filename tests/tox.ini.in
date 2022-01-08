@@ -110,8 +110,6 @@ ignore =
     W504,
     # 1 blank line required between summary line and description
     D205,
-    # Use """triple double quotes"""
-    D300,
     # Missing docstring in public module
     D100,
     # Missing docstring in public class

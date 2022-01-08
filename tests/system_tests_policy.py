@@ -1344,10 +1344,10 @@ class SenderAddressValidator(ClientAddressValidator):
 #
 
 class ConnectorPolicyMisconfiguredClient(FakeBroker):
-    '''
+    """
     This client is targeted by a misconfigured connector whose policy
     causes an immediate connection close.
-    '''
+    """
 
     def __init__(self, url, container_id=None):
         self.connection_opening = 0
@@ -1459,10 +1459,10 @@ class ConnectorPolicyMisconfigured(TestCase):
 
 
 class ConnectorPolicyClient(FakeBroker):
-    '''
+    """
     This client is targeted by a configured connector whose policy
     allows certain sources and targets.
-    '''
+    """
 
     def __init__(self, url, container_id=None):
         self.connection_opening = 0
