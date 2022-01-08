@@ -62,25 +62,3 @@ add_test(
     COMMAND ${TEST_WRAP} $<TARGET_FILE:c_unittests>
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
-
-add_executable(mmck mmck.c)
-target_include_directories(mmck PRIVATE ${CMAKE_SOURCE_DIR}/3rdparty/tests/mimick/include)
-target_link_libraries(mmck mimick pthread qpid-dispatch)
-target_compile_options(mmck PRIVATE -g -fPIE -fPIC -O0 -Wno-error -fpermissive -std=c++14 -Wl,-z,norelro)
-target_link_options(mmck PRIVATE -g -fPIE -fPIC -O0 -Wno-error -fpermissive -std=c++14 -Wl,-z,norelro)
-
-add_test(
-        NAME mmck
-        COMMAND ${TEST_WRAP} $<TARGET_FILE:mmck>
-)
-
-#
-#add_executable(c_unittestss test_terminuss.cpp "c_unittests_main.cpp")
-#target_include_directories(c_unittestss PRIVATE ${CMAKE_SOURCE_DIR}/3rdparty/tests/mimick/include)
-#target_link_libraries(c_unittestss mimick pthread qpid-dispatch)
-#target_compile_options(c_unittestss PRIVATE -g -fPIC -O0 -Wno-error -fpermissive -std=c++14)
-#
-#add_test(
-#        NAME c_unittestss
-#        COMMAND ${TEST_WRAP} $<TARGET_FILE:c_unittestss>
-#)
