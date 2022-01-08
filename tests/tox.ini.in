@@ -257,7 +257,6 @@ disable =
     use-dict-literal,
     use-list-literal,
     useless-else-on-loop,
-    useless-import-alias,
     useless-object-inheritance,
     useless-super-delegation,
     wildcard-import,
