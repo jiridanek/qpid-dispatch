@@ -30,7 +30,6 @@ from system_test import TestCase, Qdrouterd, TIMEOUT, Process
 
 
 class RouterTestBadConfiguration(TestCase):
-
     """
     This test case sets up a router using configurations that are not
     well defined, but are not supposed to cause a crash to the router

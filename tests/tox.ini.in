@@ -136,8 +136,6 @@ ignore =
     D209,
     # No whitespaces allowed surrounding docstring text
     D210,
-    # No blank lines allowed before class docstring
-    D211,
     # Missing docstring in magic method
     D105,
     # Missing docstring in __init__
