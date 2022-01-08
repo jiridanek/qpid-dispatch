@@ -42,7 +42,7 @@ size_t mmk_strlen(const char *s);
 int mmk_isspace(int c);
 int mmk_mprotect(void *addr, size_t len, int prot);
 
-mmk_noreturn void mmk_panic(const char *, ...);
+void mmk_panic(const char *, ...);
 
 void mmk_init_vital_functions(plt_ctx ctx);
 

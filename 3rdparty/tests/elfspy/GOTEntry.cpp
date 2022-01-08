@@ -30,7 +30,7 @@ int argc;
 char** argv;
 std::string program_name;
 //bool debug = getenv("ELFSPY_DEBUG") != nullptr;
-bool debug = true;
+//bool debug = true;
 // TODO: just copy the char it's in memory
 std::unordered_map<std::string, unsigned char*> vtables;
 std::vector<spy::ELFObject> elf_objects;

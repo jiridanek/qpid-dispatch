@@ -12,6 +12,8 @@
 #include "elfspy/MFile.h"
 #include "elfspy/SectionHeader.h"
 
+#include "compat.hpp"
+
 #ifdef __x86_64__
 using Elf_Phdr = Elf64_Phdr;
 using Elf_Ehdr = Elf64_Ehdr;
@@ -136,10 +138,10 @@ namespace spy
 ELFInfo::ELFInfo(const char* name)
 {
   name_ = name;
-  files_.emplace_back(std::make_unique<MFile>(name));
+  files_.emplace_back(make_unique<MFile>(name));
   std::string debug_file_name = get_debug_file_name(name);
   if (!debug_file_name.empty()) {
-    files_.emplace_back(std::make_unique<MFile>(debug_file_name.c_str()));
+    files_.emplace_back(make_unique<MFile>(debug_file_name.c_str()));
   }
   if (!is_elf()) {
     Fail() << "Not ELF data - no ELF header found in " << name;
@@ -235,7 +237,9 @@ ELFInfo::Symbol ELFInfo::get_symbol_rela(size_t value) const
   size_t index = 0;
   for (auto& symbol : find_header(".dynsym").as_section<Elf_Sym>()) {
       printf("found dynsym: %s\n", find_name(symbol.st_name));
-//      result.name_ = "__libc_malloc";
+      if (strcmp(find_name(symbol.st_name), "locally_defined_function") == 0) {
+          printf("\n");
+      }
 //      break;
     if (ELF_STTYPE(symbol.st_info) == STT_FUNC && symbol.st_value == value) {
       // the symbol is defined in this file as 0 is undefined.
