@@ -746,7 +746,7 @@ class OneRouterTest(TestCase):
                 self.assertIn(symbol('qd.streaming-links'), rc)
 
 
-class Entity(object):
+class Entity:
 
     def __init__(self, status_code, status_description, attrs):
         self.status_code        = status_code
@@ -757,7 +757,7 @@ class Entity(object):
         return self.attrs[key]
 
 
-class RouterProxy(object):
+class RouterProxy:
 
     def __init__(self, reply_addr):
         self.reply_addr = reply_addr
@@ -793,7 +793,7 @@ class RouterProxy(object):
         return Message(properties=ap, reply_to=self.reply_addr)
 
 
-class ReleasedChecker(object):
+class ReleasedChecker:
 
     def __init__(self, parent):
         self.parent = parent
@@ -1299,7 +1299,7 @@ class ManagementTest(MessagingHandler):
         Container(self).run()
 
 
-class CustomTimeout(object):
+class CustomTimeout:
 
     def __init__(self, parent):
         self.parent = parent
@@ -1467,7 +1467,7 @@ class PreSettled (MessagingHandler) :
             self.bail(None)
 
 
-class PresettledCustomTimeout(object):
+class PresettledCustomTimeout:
 
     def __init__(self, parent):
         self.parent = parent
@@ -2904,7 +2904,7 @@ class MultiframePresettledTest(MessagingHandler):
         Container(self).run()
 
 
-class UptimeLastDlvChecker(object):
+class UptimeLastDlvChecker:
 
     def __init__(self, parent, lastDlv=None, uptime=0):
         self.parent = parent

@@ -23,7 +23,7 @@ import json
 from .policy_util import PolicyError, HostStruct, HostAddr, PolicyAppConnectionMgr, is_ipv6_enabled
 
 
-class PolicyKeys(object):
+class PolicyKeys:
     """String constants"""
     # Common key words
     KW_IGNORED_NAME             = "name"
@@ -100,7 +100,7 @@ class PolicyKeys(object):
 #
 
 
-class PolicyCompiler(object):
+class PolicyCompiler:
     """
     Validate incoming configuration for legal schema.
     - Warn about section options that go unused.
@@ -499,7 +499,7 @@ class PolicyCompiler(object):
 
 #
 #
-class AppStats(object):
+class AppStats:
     """Maintain live state and statistics for an vhost."""
 
     def __init__(self, id, manager, ruleset):
@@ -553,7 +553,7 @@ class AppStats(object):
 #
 
 
-class ConnectionFacts(object):
+class ConnectionFacts:
 
     def __init__(self, user, host, app, conn_name):
         self.user = user
@@ -565,7 +565,7 @@ class ConnectionFacts(object):
 #
 
 
-class PolicyLocal(object):
+class PolicyLocal:
     """The local policy database."""
 
     def __init__(self, manager):

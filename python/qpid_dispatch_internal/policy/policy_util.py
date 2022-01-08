@@ -46,7 +46,7 @@ def is_ipv6_enabled():
     return ipv6_enabled
 
 
-class HostStruct(object):
+class HostStruct:
     """
     HostStruct represents a single, binary socket address from getaddrinfo
         - name     : name given to constructor; numeric IP or host name
@@ -113,7 +113,7 @@ class HostStruct(object):
 #
 
 
-class HostAddr(object):
+class HostAddr:
     """
     Provide HostIP address ranges and comparison functions.
     A HostIP may be:
@@ -228,7 +228,7 @@ class HostAddr(object):
 #
 
 
-class PolicyAppConnectionMgr(object):
+class PolicyAppConnectionMgr:
     """
     Track policy user/host connection limits and statistics for one app.
     # limits - set at creation and by update()

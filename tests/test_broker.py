@@ -34,7 +34,7 @@ from system_test import TIMEOUT, Logger
 
 class FakeBroker(MessagingHandler):
     """A fake broker-like service that listens for client connections"""
-    class _Queue(object):
+    class _Queue:
 
         def __init__(self, name, logger, dynamic=False):
             self.dynamic = dynamic

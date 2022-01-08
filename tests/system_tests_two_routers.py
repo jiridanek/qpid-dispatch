@@ -1491,7 +1491,7 @@ class SemanticsClosestIsRemote(MessagingHandler):
         Container(self).run()
 
 
-class CustomTimeout(object):
+class CustomTimeout:
 
     def __init__(self, parent):
         self.parent = parent

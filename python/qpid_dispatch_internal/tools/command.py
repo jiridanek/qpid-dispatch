@@ -235,7 +235,7 @@ def get_password(file=None):
     return None
 
 
-class Sasl(object):
+class Sasl:
     """A simple object to hold sasl mechanisms, sasl username and password"""
 
     def __init__(self, mechs=None, user=None, password=None, sasl_password_file=None):

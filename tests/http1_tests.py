@@ -141,7 +141,7 @@ class MyHTTPServer(HTTPServer):
         HTTPServer.server_close(self)
 
 
-class ThreadedTestClient(object):
+class ThreadedTestClient:
     """An HTTP client running in a separate thread"""
 
     def __init__(self, tests, port, repeat=1):
@@ -208,7 +208,7 @@ class ThreadedTestClient(object):
         self._logger.dump()
 
 
-class TestServer(object):
+class TestServer:
     """A HTTPServer running in a separate thread"""
     __test__ = False
 
@@ -298,7 +298,7 @@ def http1_ping(sport, cport):
     return client.count, client.error
 
 
-class ResponseMsg(object):
+class ResponseMsg:
     """
     A 'hardcoded' HTTP response message.  This class writes its response
     message when called by the HTTPServer via the BaseHTTPRequestHandler
@@ -332,7 +332,7 @@ class ResponseMsg(object):
         handler.wfile.flush()
 
 
-class RequestMsg(object):
+class RequestMsg:
     """
     A 'hardcoded' HTTP request message.  This class writes its request
     message to the HTTPConnection.
@@ -356,7 +356,7 @@ class RequestMsg(object):
             conn.send(self.body)
 
 
-class ResponseValidator(object):
+class ResponseValidator:
     """Validate a response as received by the HTTP client"""
 
     def __init__(self, status=200, expect_headers=None, expect_body=None):
@@ -382,7 +382,7 @@ class ResponseValidator(object):
         return body
 
 
-class CommonHttp1Edge2EdgeTest(object):
+class CommonHttp1Edge2EdgeTest:
 
     def test_01_concurrent_requests(self):
         """Test multiple concurrent clients sending streaming messages"""
@@ -732,7 +732,7 @@ class CommonHttp1Edge2EdgeTest(object):
         server10.wait()
 
 
-class CommonHttp1OneRouterTest(object):
+class CommonHttp1OneRouterTest:
     TESTS_11 = {
         #
         # GET
@@ -1191,7 +1191,7 @@ class Http1Edge2EdgeTestBase(TestCase):
         cls.http_listener10_port = cls.tester.get_port()
 
 
-class Http1ClientCloseTestsMixIn(object):
+class Http1ClientCloseTestsMixIn:
     """Generic test functions for simulating HTTP/1.x client connection drops."""
     def client_request_close_test(self, server_port, client_port, server_mgmt):
         """Simulate an HTTP client drop while sending a very large PUT request"""
@@ -1343,7 +1343,7 @@ class Http1ClientCloseTestsMixIn(object):
         server.wait()
 
 
-class Http1CurlTestsMixIn(object):
+class Http1CurlTestsMixIn:
     """Test cases using curl as the command line client"""
 
     @unittest.skipIf(not _curl_ok(),

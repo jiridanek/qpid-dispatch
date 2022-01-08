@@ -24,7 +24,7 @@ from proton.reactor import Container
 from system_test import TestCase, Qdrouterd, main_module, TIMEOUT, TestTimeout, PollTimeout, unittest
 
 
-class AddrTimer(object):
+class AddrTimer:
 
     def __init__(self, parent):
         self.parent = parent
@@ -310,7 +310,7 @@ class RouterTest(TestCase):
         self.assertIsNone(test.error)
 
 
-class Entity(object):
+class Entity:
 
     def __init__(self, status_code, status_description, attrs):
         self.status_code        = status_code
@@ -321,7 +321,7 @@ class Entity(object):
         return self.attrs[key]
 
 
-class RouterProxy(object):
+class RouterProxy:
 
     def __init__(self, reply_addr):
         self.reply_addr = reply_addr

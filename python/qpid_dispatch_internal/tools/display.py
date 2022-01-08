@@ -303,7 +303,7 @@ class Display:
         return result
 
 
-class Sortable(object):
+class Sortable:
     """ """
 
     def __init__(self, row, sortIndex):

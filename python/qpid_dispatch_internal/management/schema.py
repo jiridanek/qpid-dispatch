@@ -46,7 +46,7 @@ class ValidationError(Exception):
     pass
 
 
-class Type(object):
+class Type:
     """Base class for schema types.
 
     @ivar name: The type name.
@@ -201,7 +201,7 @@ def _dump_dict(items):
     return OrderedDict((k, v) for k, v in items if v)
 
 
-class AttributeType(object):
+class AttributeType:
     """
     Definition of an attribute.
 
@@ -286,7 +286,7 @@ class AttributeType(object):
         return self.name
 
 
-class MessageDef(object):
+class MessageDef:
     """A request or response message"""
 
     def __init__(self, body=None, properties=None):
@@ -297,7 +297,7 @@ class MessageDef(object):
                                for name, value in (properties or {}).items())
 
 
-class OperationDef(object):
+class OperationDef:
     """An operation definition"""
 
     def __init__(self, name, description=None, request=None, response=None):
@@ -314,7 +314,7 @@ class OperationDef(object):
                                   % (name, str(exc), sys.exc_info()[2]))
 
 
-class EntityType(object):
+class EntityType:
     """
     An entity type defines a set of attributes for an entity.
 
@@ -531,7 +531,7 @@ class EntityType(object):
         return self.name == self.schema.long_name(name)
 
 
-class Schema(object):
+class Schema:
     """
     Schema defining entity types.
     Note: keyword arguments come from schema so use camelCase

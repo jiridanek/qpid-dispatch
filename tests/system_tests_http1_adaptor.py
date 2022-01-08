@@ -419,7 +419,7 @@ class Http1AdaptorEdge2EdgeTest(Http1Edge2EdgeTestBase,
                             self.http_server11_port)
 
 
-class FakeHttpServerBase(object):
+class FakeHttpServerBase:
     """A very base socket server to simulate HTTP server behaviors"""
 
     def __init__(self, host='', port=80, bufsize=1024):
