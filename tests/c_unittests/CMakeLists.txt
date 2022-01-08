@@ -32,13 +32,22 @@ add_executable(c_unittests
         qdr_doctest.hpp
         helpers.cpp
         helpers.hpp
+
+#        plthook.cpp
+#        plthook.hpp
+#
+#        test_plthook.cpp
+#        test_amqp.cpp
+#        test_router_startup.cpp
+#        test_terminus.cpp
+
         test_amqp.cpp
         test_listener_startup.cpp
         test_router_startup.cpp
         test_terminus.cpp
         $<TARGET_OBJECTS:qpid-dispatch>)
 target_include_directories(c_unittests PRIVATE ${CMAKE_SOURCE_DIR}/3rdparty/tests/)
-target_link_libraries(c_unittests elfspy plthook pthread qpid-dispatch-libraries)
+#target_link_libraries(c_unittests elfspy plthook pthread qpid-dispatch-libraries)
 
 file(COPY
         ${CMAKE_CURRENT_SOURCE_DIR}/minimal_silent.conf
