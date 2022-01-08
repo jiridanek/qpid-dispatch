@@ -25,6 +25,7 @@ from proton.reactor import Container
 
 
 class AddrTimer(object):
+
     def __init__(self, parent):
         self.parent = parent
 
@@ -76,6 +77,7 @@ class RouterTest(TestCase):
 
 
 class DelayTimeout(object):
+
     def __init__(self, parent):
         self.parent = parent
 
@@ -84,6 +86,7 @@ class DelayTimeout(object):
 
 
 class InteriorSyncUpTest(MessagingHandler):
+
     def __init__(self, host_a, host_b, inter_router_port):
         """
         This test verifies that a router can join an existing network and be synced up using

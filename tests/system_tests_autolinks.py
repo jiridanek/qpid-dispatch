@@ -32,6 +32,7 @@ CONNECTION_PROPERTIES = {'connection': 'properties', 'int_property': 6451}
 
 
 class AutoLinkDetachAfterAttachTest(MessagingHandler):
+
     def __init__(self, address, node_addr):
         super(AutoLinkDetachAfterAttachTest, self).__init__(prefetch=0)
         self.timer = None
@@ -89,6 +90,7 @@ class AutoLinkDetachAfterAttachTest(MessagingHandler):
 
 
 class NameCollisionTest(TestCase):
+
     @classmethod
     def setUpClass(cls):
         super(NameCollisionTest, cls).setUpClass()
@@ -203,6 +205,7 @@ class NameCollisionTest(TestCase):
 
 
 class DetachAfterAttachTest(TestCase):
+
     @classmethod
     def setUpClass(cls):
         super(DetachAfterAttachTest, cls).setUpClass()
@@ -408,6 +411,7 @@ class WaypointReceiverPhaseTest(TestCase):
 
 
 class WaypointTest(MessagingHandler):
+
     def __init__(self, first_host, second_host, dest):
         super(WaypointTest, self).__init__()
         self.first_host = first_host
@@ -679,6 +683,7 @@ class AutolinkTest(TestCase):
 
 
 class AutolinkAttachTestWithListenerName(MessagingHandler):
+
     def __init__(self, address, node_addr):
         super(AutolinkAttachTestWithListenerName, self).__init__(prefetch=0)
         self.address = address
@@ -740,6 +745,7 @@ class AutolinkAttachTestWithListenerName(MessagingHandler):
 
 
 class AutolinkAttachTest(MessagingHandler):
+
     def __init__(self, cid, address, node_addr):
         super(AutolinkAttachTest, self).__init__(prefetch=0)
         self.cid       = cid
@@ -790,6 +796,7 @@ class AutolinkAttachTest(MessagingHandler):
 
 
 class AutolinkCreditTest(MessagingHandler):
+
     def __init__(self, normal_address, route_address):
         super(AutolinkCreditTest, self).__init__(prefetch=0)
         self.normal_address = normal_address
@@ -847,6 +854,7 @@ class AutolinkCreditTest(MessagingHandler):
 
 
 class AutolinkSenderTest(MessagingHandler):
+
     def __init__(self, cid, normal_address, route_address, addr, ext_addr):
         super(AutolinkSenderTest, self).__init__()
         self.cid            = cid
@@ -913,6 +921,7 @@ class AutolinkSenderTest(MessagingHandler):
 
 
 class AutolinkReceiverTest(MessagingHandler):
+
     def __init__(self, cid, normal_address, route_address, addr, ext_addr):
         super(AutolinkReceiverTest, self).__init__()
         self.cid            = cid
@@ -980,6 +989,7 @@ class AutolinkReceiverTest(MessagingHandler):
 
 
 class AutolinkMultipleReceiverUsingMyListenerTest(MessagingHandler):
+
     def __init__(self, normal_address, route_address, addr):
         super(AutolinkMultipleReceiverUsingMyListenerTest, self).__init__()
         self.normal_address = normal_address
@@ -1061,6 +1071,7 @@ class AutolinkMultipleReceiverUsingMyListenerTest(MessagingHandler):
 
 
 class InterContainerTransferTest(MessagingHandler):
+
     def __init__(self, normal_address, route_address):
         super(InterContainerTransferTest, self).__init__()
         self.normal_address = normal_address
@@ -1117,6 +1128,7 @@ class InterContainerTransferTest(MessagingHandler):
 
 
 class ManageAutolinksTest(MessagingHandler):
+
     def __init__(self, normal_address, route_address):
         super(ManageAutolinksTest, self).__init__()
         self.normal_address = normal_address

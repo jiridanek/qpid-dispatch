@@ -111,6 +111,7 @@ class PolicyHostAddrTest(TestCase):
 
 
 class QpidDispatch(object):
+
     def qd_dispatch_policy_c_counts_alloc(self):
         return 100
 
@@ -119,6 +120,7 @@ class QpidDispatch(object):
 
 
 class MockAgent(object):
+
     def __init__(self):
         self.qd = QpidDispatch()
 
@@ -127,6 +129,7 @@ class MockAgent(object):
 
 
 class MockPolicyManager(object):
+
     def __init__(self):
         self.agent = MockAgent()
         self.logs = []

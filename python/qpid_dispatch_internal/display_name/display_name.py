@@ -31,6 +31,7 @@ from qpid_dispatch_internal import dispatch
 
 
 class SSLProfile(object):
+
     def __init__(self, profile_name, profile_file):
         super(SSLProfile, self).__init__()
         self.profile_name = profile_name

@@ -35,6 +35,7 @@ TREATMENT_LINK_BALANCED    = 4
 
 
 class LogAdapter:
+
     def __init__(self, mod_name):
         self.mod_name = mod_name
 
@@ -43,6 +44,7 @@ class LogAdapter:
 
 
 class IoAdapter:
+
     def __init__(self, handler, address, global_address=False):
         self.handler = handler
         self.address = address

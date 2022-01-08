@@ -128,6 +128,7 @@ class ReceiverDropsOffDrainTest(TestCase):
 
 
 class ReceiverDropsOffSenderDrain(MessagingHandler):
+
     def __init__(self, address, dest):
         super(ReceiverDropsOffSenderDrain, self).__init__()
         self.sender_conn = None

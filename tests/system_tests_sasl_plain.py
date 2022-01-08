@@ -27,6 +27,7 @@ from proton import SASL
 
 
 class RouterTestPlainSaslCommon(TestCase):
+
     @classmethod
     def router(cls, name, connection):
 
@@ -56,6 +57,7 @@ sql_select: dummy select
 
 
 class RouterTestPlainSaslFailure(RouterTestPlainSaslCommon):
+
     @staticmethod
     def sasl_file(name):
         return os.path.join(DIR, 'sasl_files', name)
@@ -152,6 +154,7 @@ class RouterTestPlainSaslFailure(RouterTestPlainSaslCommon):
 
 
 class RouterTestPlainSaslFailureUsingLiteral(RouterTestPlainSaslCommon):
+
     @staticmethod
     def sasl_file(name):
         return os.path.join(DIR, 'sasl_files', name)
@@ -504,6 +507,7 @@ class RouterTestPlainSaslOverSsl(RouterTestPlainSaslCommon):
 
 
 class RouterTestVerifyHostNameYes(RouterTestPlainSaslCommon):
+
     @staticmethod
     def ssl_file(name):
         return os.path.join(DIR, 'ssl_certs', name)

@@ -40,6 +40,7 @@ import text
 
 
 class connection():
+
     def __init__(self, instance, conn_id, logfile):
         self.instance = instance
         self.conn_id = conn_id
@@ -158,6 +159,7 @@ class parsed_attach():
 
 
 class LogFile:
+
     def __init__(self, fn, top_n=24):
         """
         Represent connections in a file

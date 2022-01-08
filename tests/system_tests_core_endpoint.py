@@ -82,6 +82,7 @@ class RouterTest(TestCase):
 
 
 class DenyLinkTest(MessagingHandler):
+
     def __init__(self, host, address):
         super(DenyLinkTest, self).__init__(prefetch=0)
         self.host      = host
@@ -121,6 +122,7 @@ class DenyLinkTest(MessagingHandler):
 
 
 class DiscardTest(MessagingHandler):
+
     def __init__(self, host, address):
         super(DiscardTest, self).__init__(prefetch=0)
         self.host      = host
@@ -169,6 +171,7 @@ class DiscardTest(MessagingHandler):
 
 
 class SourceTest(MessagingHandler):
+
     def __init__(self, host, address, count, expected_ps):
         super(SourceTest, self).__init__(prefetch=0)
         self.host        = host
@@ -216,6 +219,7 @@ class SourceTest(MessagingHandler):
 
 
 class EchoTest(MessagingHandler):
+
     def __init__(self, host, address):
         super(EchoTest, self).__init__(prefetch=0)
         self.host      = host

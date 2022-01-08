@@ -24,6 +24,7 @@ from proton.reactor import Container
 
 
 class AddrTimer(object):
+
     def __init__(self, parent):
         self.parent = parent
 
@@ -309,6 +310,7 @@ class RouterTest(TestCase):
 
 
 class Entity(object):
+
     def __init__(self, status_code, status_description, attrs):
         self.status_code        = status_code
         self.status_description = status_description
@@ -319,6 +321,7 @@ class Entity(object):
 
 
 class RouterProxy(object):
+
     def __init__(self, reply_addr):
         self.reply_addr = reply_addr
 
@@ -336,6 +339,7 @@ class RouterProxy(object):
 
 
 class LRDestSenderFlowTest(MessagingHandler):
+
     def __init__(self, receiver_host, sender_host, probe_host, address, initial_credit):
         super(LRDestSenderFlowTest, self).__init__(prefetch=0)
         self.receiver_host   = receiver_host
@@ -443,6 +447,7 @@ class LRDestSenderFlowTest(MessagingHandler):
 
 
 class LRDestReceiverFlowTest(MessagingHandler):
+
     def __init__(self, receiver_host, sender_host, probe_host, address, initial_credit):
         super(LRDestReceiverFlowTest, self).__init__(prefetch=0)
         self.receiver_host   = receiver_host
@@ -550,6 +555,7 @@ class LRDestReceiverFlowTest(MessagingHandler):
 
 
 class LRFastTeardownTest(MessagingHandler):
+
     def __init__(self, host, address):
         super(LRFastTeardownTest, self).__init__(prefetch=0)
         self.host    = host

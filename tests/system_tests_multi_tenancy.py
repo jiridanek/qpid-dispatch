@@ -441,6 +441,7 @@ class RouterTest(TestCase):
 
 
 class Entity(object):
+
     def __init__(self, status_code, status_description, attrs):
         self.status_code        = status_code
         self.status_description = status_description
@@ -451,6 +452,7 @@ class Entity(object):
 
 
 class RouterProxy(object):
+
     def __init__(self, reply_addr):
         self.reply_addr = reply_addr
 
@@ -468,6 +470,7 @@ class RouterProxy(object):
 
 
 class MessageTransferTest(MessagingHandler):
+
     def __init__(self, sender_host, receiver_host, sender_address, receiver_address, lookup_host, lookup_address):
         super(MessageTransferTest, self).__init__()
         self.sender_host      = sender_host
@@ -555,6 +558,7 @@ class MessageTransferTest(MessagingHandler):
 
 
 class MessageTransferAnonTest(MessagingHandler):
+
     def __init__(self, sender_host, receiver_host, sender_address, receiver_address, lookup_host, lookup_address):
         super(MessageTransferAnonTest, self).__init__()
         self.sender_host      = sender_host
@@ -657,6 +661,7 @@ class MessageTransferAnonTest(MessagingHandler):
 
 
 class LinkRouteTest(MessagingHandler):
+
     def __init__(self, first_host, second_host, first_address, second_address, dynamic, lookup_host):
         super(LinkRouteTest, self).__init__(prefetch=0)
         self.first_host     = first_host
@@ -793,6 +798,7 @@ class LinkRouteTest(MessagingHandler):
 
 
 class WaypointTest(MessagingHandler):
+
     def __init__(self, first_host, second_host, first_address, second_address, container_id="ALC"):
         super(WaypointTest, self).__init__()
         self.first_host     = first_host

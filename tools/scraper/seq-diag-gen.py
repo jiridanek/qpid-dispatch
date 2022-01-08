@@ -39,6 +39,7 @@ MAGIC_SPACE_NUMBER = 1   # tested with entryspacing 0.1
 
 
 class log_record:
+
     def __init__(self, index, line):
         # print("DEBUG input line: ", index, line)
         dateandtime, name_left, direction, name_right, perf, router_line, dummy = line.split('|')

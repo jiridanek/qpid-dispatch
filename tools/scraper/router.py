@@ -43,6 +43,7 @@ import text
 
 
 class RestartRecord():
+
     def __init__(self, _router, _line, _lineno):
         self.router = _router
         self.line = _line

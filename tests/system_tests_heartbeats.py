@@ -24,6 +24,7 @@ from proton.reactor import Container
 
 
 class HeartbeatTimer(object):
+
     def __init__(self, parent):
         self.parent = parent
 
@@ -73,6 +74,7 @@ class RouterTest(TestCase):
 
 
 class ReceiverRejectTest(MessagingHandler):
+
     def __init__(self, host):
         super(ReceiverRejectTest, self).__init__()
         self.host     = host
@@ -109,6 +111,7 @@ class ReceiverRejectTest(MessagingHandler):
 
 
 class ConnectionCloseTest(MessagingHandler):
+
     def __init__(self, host, count):
         super(ConnectionCloseTest, self).__init__()
         self.host    = host

@@ -498,6 +498,7 @@ class Http1AdaptorBadEndpointsTest(TestCase,
         without first waiting for a request to arrive.
         """
         class UnsolicitedResponse(FakeHttpServerBase):
+
             def __init__(self, host, port):
                 self.request_sent = False
                 super(UnsolicitedResponse, self).__init__(host, port)

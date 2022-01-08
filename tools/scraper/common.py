@@ -143,6 +143,7 @@ def index_of_log_letter(letter):
 
 
 class RestartRec():
+
     def __init__(self, _id, _router, _event, _datetime):
         self.id = _id
         self.router = _router

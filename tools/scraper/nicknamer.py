@@ -178,6 +178,7 @@ class ShortNames():
 
 
 class Shorteners():
+
     def __init__(self):
         self.short_link_names = ShortNames("link", 15)
         self.short_addr_names = ShortNames("address")

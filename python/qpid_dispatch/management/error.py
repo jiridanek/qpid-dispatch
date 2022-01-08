@@ -108,6 +108,7 @@ class ManagementError(Exception):
 def _error_class(status):
     """Create a ManagementError class for a particular status"""
     class Error(ManagementError):
+
         def __init__(self, description): ManagementError.__init__(self, status, description)
     return Error
 

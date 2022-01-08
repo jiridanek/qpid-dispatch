@@ -33,6 +33,7 @@ from proton.reactor import Container
 # Named timers allow test code to distinguish between several
 # simultaneous timers, going off at different rates.
 class Timeout (object):
+
     def __init__(self, parent, name):
         self.parent = parent
         self.name   = name

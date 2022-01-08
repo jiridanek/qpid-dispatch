@@ -34,6 +34,7 @@ TARGET_ADDR = "test_core_client_address"
 
 
 class CoreClientAPITest(TestCase):
+
     @classmethod
     def setUpClass(cls):
         super(CoreClientAPITest, cls).setUpClass()
@@ -89,6 +90,7 @@ class TestService(MessagingHandler):
     __test__ = False
 
     class Timeout(object):
+
         def __init__(self, service):
             self.service = service
 

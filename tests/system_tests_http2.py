@@ -91,6 +91,7 @@ def image_file(name):
 
 
 class Http2TestBase(TestCase):
+
     def run_curl(self, address, args=None, input=None, timeout=TIMEOUT):
         """Run the curl command using the HTTP/2 protocol"""
         local_args = [str(address), "--http2-prior-knowledge"]
@@ -329,6 +330,7 @@ class CommonHttp2Tests:
 
 
 class Http2TestOneStandaloneRouter(Http2TestBase, CommonHttp2Tests):
+
     @classmethod
     def setUpClass(cls):
         super(Http2TestOneStandaloneRouter, cls).setUpClass()
@@ -412,6 +414,7 @@ class Http2TestOneStandaloneRouter(Http2TestBase, CommonHttp2Tests):
 
 
 class Http2TestOneEdgeRouter(Http2TestBase, CommonHttp2Tests):
+
     @classmethod
     def setUpClass(cls):
         super(Http2TestOneEdgeRouter, cls).setUpClass()
@@ -450,6 +453,7 @@ class Http2TestOneEdgeRouter(Http2TestBase, CommonHttp2Tests):
 
 
 class Http2TestOneInteriorRouter(Http2TestBase, CommonHttp2Tests):
+
     @classmethod
     def setUpClass(cls):
         super(Http2TestOneInteriorRouter, cls).setUpClass()
@@ -488,6 +492,7 @@ class Http2TestOneInteriorRouter(Http2TestBase, CommonHttp2Tests):
 
 
 class Http2TestTwoRouter(Http2TestBase, CommonHttp2Tests):
+
     @classmethod
     def setUpClass(cls):
         super(Http2TestTwoRouter, cls).setUpClass()
@@ -882,6 +887,7 @@ class Http2TestEdgeToEdgeViaInteriorRouter(Http2TestBase, CommonHttp2Tests):
 
 
 class Http2TestGoAway(Http2TestBase):
+
     @classmethod
     def setUpClass(cls):
         super(Http2TestGoAway, cls).setUpClass()
@@ -925,6 +931,7 @@ class Http2TestGoAway(Http2TestBase):
 
 
 class Http2Q2OneRouterTest(Http2TestBase):
+
     @classmethod
     def setUpClass(cls):
         super(Http2Q2OneRouterTest, cls).setUpClass()
@@ -981,6 +988,7 @@ class Http2Q2OneRouterTest(Http2TestBase):
 
 
 class Http2Q2TwoRouterTest(Http2TestBase):
+
     @classmethod
     def setUpClass(cls):
         super(Http2Q2TwoRouterTest, cls).setUpClass()

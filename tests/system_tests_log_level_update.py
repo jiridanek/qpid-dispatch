@@ -30,6 +30,7 @@ apply_options = AtMostOnce()
 
 
 class ManyLogFilesTest(TestCase):
+
     @classmethod
     def setUpClass(cls):
         super(ManyLogFilesTest, cls).setUpClass()
@@ -127,6 +128,7 @@ class ManyLogFilesTest(TestCase):
 
 
 class LogModuleProtocolTest(TestCase):
+
     @classmethod
     def setUpClass(cls):
         super(LogModuleProtocolTest, cls).setUpClass()
@@ -317,6 +319,7 @@ class EnableConnectionLevelInterRouterTraceTest(TestCase):
 
 
 class EnableConnectionLevelProtocolTraceTest(TestCase):
+
     @classmethod
     def setUpClass(cls):
         super(EnableConnectionLevelProtocolTraceTest, cls).setUpClass()
@@ -418,6 +421,7 @@ class EnableConnectionLevelProtocolTraceTest(TestCase):
 
 
 class LogLevelUpdateTest(TestCase):
+
     @classmethod
     def setUpClass(cls):
         super(LogLevelUpdateTest, cls).setUpClass()
@@ -580,6 +584,7 @@ class LogLevelUpdateTest(TestCase):
 
 
 class RouterCoreModuleLogTest(TestCase):
+
     @classmethod
     def setUpClass(cls):
         super(RouterCoreModuleLogTest, cls).setUpClass()

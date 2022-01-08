@@ -320,6 +320,7 @@ class Config(object):
 
 
 class HttpServer(Process):
+
     def __init__(self, args, name=None, expect=Process.RUNNING):
         super(HttpServer, self).__init__(args, name=name, expect=expect)
 
@@ -870,6 +871,7 @@ class AsyncTestReceiver(MessagingHandler):
     Empty = Queue.Empty
 
     class MyQueue(Queue.Queue):
+
         def __init__(self, receiver):
             self._async_receiver = receiver
             super(AsyncTestReceiver.MyQueue, self).__init__()
@@ -992,6 +994,7 @@ class AsyncTestSender(MessagingHandler):
     given target.
     """
     class TestSenderException(Exception):
+
         def __init__(self, error=None):
             super(AsyncTestSender.TestSenderException, self).__init__(error)
 
@@ -1195,6 +1198,7 @@ class QdManager(object):
 class MgmtMsgProxy(object):
     """Utility for creating and inspecting management messages"""
     class _Response(object):
+
         def __init__(self, status_code, status_description, body):
             self.status_code        = status_code
             self.status_description = status_description

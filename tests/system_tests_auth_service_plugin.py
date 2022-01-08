@@ -27,6 +27,7 @@ from proton.reactor import Container
 
 
 class AuthServicePluginTest(TestCase):
+
     @classmethod
     def createSaslFiles(cls):
         # Create a sasl database.
@@ -101,6 +102,7 @@ sql_select: dummy select
 
 
 class AuthServicePluginDeprecatedTest(AuthServicePluginTest):
+
     @classmethod
     def setUpClass(cls):
         """
@@ -139,6 +141,7 @@ class AuthServicePluginDeprecatedTest(AuthServicePluginTest):
 
 
 class SimpleConnect(MessagingHandler):
+
     def __init__(self, url, username, password):
         super(SimpleConnect, self).__init__()
         self.url = url

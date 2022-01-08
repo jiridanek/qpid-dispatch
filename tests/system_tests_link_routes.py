@@ -836,6 +836,7 @@ class LinkRouteTest(TestCase):
 
 
 class DeliveryTagsTest(MessagingHandler):
+
     def __init__(self, sender_address, listening_address, qdstat_address):
         super(DeliveryTagsTest, self).__init__()
         self.sender_address = sender_address
@@ -1018,6 +1019,7 @@ class DynamicSourceTest(MessagingHandler):
 
 
 class DynamicTarget(LinkOption):
+
     def apply(self, link):
         link.target.dynamic = True
         link.target.address = None
@@ -1202,6 +1204,7 @@ class DetachMixedCloseTest(MessagingHandler):
 
 # Test to validate fix for DISPATCH-927
 class EchoDetachReceived(MessagingHandler):
+
     def __init__(self, sender_address, recv_address):
         super(EchoDetachReceived, self).__init__()
         self.sender_address = sender_address
@@ -1411,6 +1414,7 @@ class TerminusAddrTest(MessagingHandler):
 
 class MultiLinkSendReceive(MessagingHandler):
     class SendState(object):
+
         def __init__(self, link):
             self.link = link
             self.sent = False
@@ -1434,6 +1438,7 @@ class MultiLinkSendReceive(MessagingHandler):
                 self.link.connection.close()
 
     class RecvState(object):
+
         def __init__(self, link):
             self.link = link
             self.received = False
@@ -1629,6 +1634,7 @@ class FakeBrokerDrain(FakeBroker):
 
 
 class DrainReceiver(MessagingHandler):
+
     def __init__(self, url, fake_broker):
         super(DrainReceiver, self).__init__(prefetch=0, auto_accept=False)
         self.url = url
@@ -2300,6 +2306,7 @@ class ConnectionLinkRouteTest(TestCase):
 
 
 class ConnLinkRouteService(FakeBroker):
+
     def __init__(self, url, container_id, config, timeout=TIMEOUT):
         self.conn = None
         self.mgmt_proxy = None
@@ -2598,6 +2605,7 @@ class Dispatch1428(TestCase):
 
 
 class SendReceive(MessagingHandler):
+
     def __init__(self, send_url, recv_url, message=None):
         super(SendReceive, self).__init__()
         self.send_url = send_url
@@ -2851,6 +2859,7 @@ class LinkRoute3Hop(TestCase):
         """
 
         class FakeServiceModified(FakeService):
+
             def on_message(self, event):
                 # set non-default values for delivery state for delivery to
                 # remote endpoint
@@ -2889,6 +2898,7 @@ class LinkRoute3Hop(TestCase):
         """
 
         class FakeServiceReject(FakeService):
+
             def on_message(self, event):
                 # set non-default values for delivery state for delivery to
                 # remote endpoint

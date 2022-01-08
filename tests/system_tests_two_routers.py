@@ -398,6 +398,7 @@ class TwoRouterTest(TestCase):
 
 
 class DeleteConnectionWithReceiver(MessagingHandler):
+
     def __init__(self, address):
         super(DeleteConnectionWithReceiver, self).__init__()
         self.address = address
@@ -548,6 +549,7 @@ class DeleteConnectionWithReceiver(MessagingHandler):
 
 
 class SingleCharacterDestinationTest(MessagingHandler):
+
     def __init__(self, address1, address2):
         super(SingleCharacterDestinationTest, self).__init__()
         self.address1 = address1
@@ -597,6 +599,7 @@ class SingleCharacterDestinationTest(MessagingHandler):
 
 
 class LargeMessageStreamTest(MessagingHandler):
+
     def __init__(self, address1, address2):
         super(LargeMessageStreamTest, self).__init__()
         self.address1 = address1
@@ -649,6 +652,7 @@ class LargeMessageStreamTest(MessagingHandler):
 
 
 class ExcessDeliveriesReleasedTest(MessagingHandler):
+
     def __init__(self, address1, address2):
         super(ExcessDeliveriesReleasedTest, self).__init__(prefetch=0)
         self.address1 = address1
@@ -741,6 +745,7 @@ class AttachOnInterRouterTest(MessagingHandler):
 
 
 class DeliveriesInTransit(MessagingHandler):
+
     def __init__(self, address1, address2):
         super(DeliveriesInTransit, self).__init__()
         self.address1 = address1
@@ -791,6 +796,7 @@ class DeliveriesInTransit(MessagingHandler):
 
 
 class MessageAnnotationsTest(MessagingHandler):
+
     def __init__(self, address1, address2):
         super(MessageAnnotationsTest, self).__init__()
         self.address1 = address1
@@ -841,6 +847,7 @@ class MessageAnnotationsTest(MessagingHandler):
 
 
 class MessageAnnotationsStripTest(MessagingHandler):
+
     def __init__(self, address1, address2):
         super(MessageAnnotationsStripTest, self).__init__()
         self.address1 = address1
@@ -896,6 +903,7 @@ class MessageAnnotationsStripTest(MessagingHandler):
 
 
 class ManagementTest(MessagingHandler):
+
     def __init__(self, address):
         super(ManagementTest, self).__init__()
         self.address = address
@@ -962,6 +970,7 @@ class ManagementTest(MessagingHandler):
 
 
 class MessageAnnotationStripMessageAnnotationsIn(MessagingHandler):
+
     def __init__(self, address1, address2):
         super(MessageAnnotationStripMessageAnnotationsIn, self).__init__()
         self.address1 = address1
@@ -1018,6 +1027,7 @@ class MessageAnnotationStripMessageAnnotationsIn(MessagingHandler):
 
 
 class MessageAnnotaionsPreExistingOverride(MessagingHandler):
+
     def __init__(self, address1, address2):
         super(MessageAnnotaionsPreExistingOverride, self).__init__()
         self.address1 = address1
@@ -1069,6 +1079,7 @@ class MessageAnnotaionsPreExistingOverride(MessagingHandler):
 
 
 class MessageAnnotationsStripMessageAnnotationsOut(MessagingHandler):
+
     def __init__(self, address1, address2):
         super(MessageAnnotationsStripMessageAnnotationsOut, self).__init__()
         self.address1 = address1
@@ -1119,6 +1130,7 @@ class MessageAnnotationsStripMessageAnnotationsOut(MessagingHandler):
 
 
 class MessageAnnotationsStripBothAddIngressTrace(MessagingHandler):
+
     def __init__(self, address1, address2):
         super(MessageAnnotationsStripBothAddIngressTrace, self).__init__()
         self.address1 = address1
@@ -1174,6 +1186,7 @@ class MessageAnnotationsStripBothAddIngressTrace(MessagingHandler):
 
 
 class MessageAnnotationsStripAddTraceTest(MessagingHandler):
+
     def __init__(self, address1, address2):
         super(MessageAnnotationsStripAddTraceTest, self).__init__()
         self.address1 = address1
@@ -1239,6 +1252,7 @@ class MessageAnnotationsStripAddTraceTest(MessagingHandler):
 
 
 class SenderSettlesFirst(MessagingHandler):
+
     def __init__(self, address1, address2):
         super(SenderSettlesFirst, self).__init__(auto_accept=False)
         self.address1 = address1
@@ -1292,6 +1306,7 @@ class SenderSettlesFirst(MessagingHandler):
 
 
 class MulticastUnsettled(MessagingHandler):
+
     def __init__(self, address):
         super(MulticastUnsettled, self).__init__()
         self.address = address
@@ -1349,6 +1364,7 @@ class MulticastUnsettled(MessagingHandler):
 
 
 class SemanticsClosestIsLocal(MessagingHandler):
+
     def __init__(self, address1, address2):
         super(SemanticsClosestIsLocal, self).__init__()
         self.address1 = address1
@@ -1413,6 +1429,7 @@ class SemanticsClosestIsLocal(MessagingHandler):
 
 
 class SemanticsClosestIsRemote(MessagingHandler):
+
     def __init__(self, address1, address2):
         super(SemanticsClosestIsRemote, self).__init__()
         self.address1 = address1
@@ -1473,6 +1490,7 @@ class SemanticsClosestIsRemote(MessagingHandler):
 
 
 class CustomTimeout(object):
+
     def __init__(self, parent):
         self.parent = parent
 
@@ -1504,6 +1522,7 @@ class CustomTimeout(object):
 
 
 class SemanticsBalanced(MessagingHandler):
+
     def __init__(self, address1, address2, address3):
         super(SemanticsBalanced, self).__init__(auto_accept=False, prefetch=0)
         self.address1 = address1
@@ -1734,6 +1753,7 @@ class PropagatedDispositionData(PropagatedDisposition):
 
 
 class ThreeAck(MessagingHandler):
+
     def __init__(self, test, address1, address2):
         super(ThreeAck, self).__init__(auto_accept=False, auto_settle=False)
         self.addrs = [address1, address2]
@@ -1781,6 +1801,7 @@ class ThreeAck(MessagingHandler):
 
 
 class TwoRouterConnection(TestCase):
+
     def __init__(self, test_method):
         TestCase.__init__(self, test_method)
         self.success = False
@@ -1933,6 +1954,7 @@ class PropagationTest(TestCase):
 
 
 class CreateReceiver(MessagingHandler):
+
     def __init__(self, connection, address):
         super(CreateReceiver, self).__init__()
         self.connection = connection
@@ -1943,6 +1965,7 @@ class CreateReceiver(MessagingHandler):
 
 
 class DelayedSend(MessagingHandler):
+
     def __init__(self, connection, address, message):
         super(DelayedSend, self).__init__()
         self.connection = connection
@@ -1954,6 +1977,7 @@ class DelayedSend(MessagingHandler):
 
 
 class MulticastTestClient(MessagingHandler):
+
     def __init__(self, router1, router2):
         super(MulticastTestClient, self).__init__()
         self.routers = [router1, router2]
@@ -2251,6 +2275,7 @@ class TwoRouterExtensionStateTest(TestCase):
         self.RouterA.wait_address("RoutieMcRouteFace", remotes=1, count=2)
 
         class MyTransactionStateSender(AsyncTestSender):
+
             def on_sendable(self, event):
                 # Send just one delivery with a transactional state.
                 if self.sent < self.total:

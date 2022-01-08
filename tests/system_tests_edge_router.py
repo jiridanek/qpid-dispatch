@@ -42,6 +42,7 @@ from subprocess import PIPE
 
 
 class AddrTimer(object):
+
     def __init__(self, parent):
         self.parent = parent
 
@@ -1657,6 +1658,7 @@ class LinkRouteProxyTest(TestCase):
         immediate detach.  The client will immediately re-establish the link.
         """
         class AttachDropper(FakeService):
+
             def __init__(self, *args, **kwargs):
                 super(AttachDropper, self).__init__(*args, **kwargs)
                 self.link_dropped = Event()
@@ -2001,6 +2003,7 @@ class LinkRouteProxyTest(TestCase):
 
 
 class ConnectivityTest(MessagingHandler):
+
     def __init__(self, interior_host, edge_host, edge_id):
         super(ConnectivityTest, self).__init__()
         self.interior_host = interior_host
@@ -2055,6 +2058,7 @@ class ConnectivityTest(MessagingHandler):
 
 
 class DynamicAddressTest(MessagingHandler):
+
     def __init__(self, receiver_host, sender_host):
         super(DynamicAddressTest, self).__init__()
         self.receiver_host = receiver_host
@@ -2102,6 +2106,7 @@ class DynamicAddressTest(MessagingHandler):
 
 
 class CustomTimeout(object):
+
     def __init__(self, parent):
         self.parent = parent
 
@@ -2373,6 +2378,7 @@ class MobileAddressTest(MessagingHandler):
 
 
 class MobileAddressOneSenderTwoReceiversTest(MessagingHandler):
+
     def __init__(self, receiver1_host, receiver2_host, sender_host, address):
         super(MobileAddressOneSenderTwoReceiversTest, self).__init__()
         self.receiver1_host = receiver1_host

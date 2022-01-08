@@ -383,6 +383,7 @@ class ResponseValidator(object):
 
 
 class CommonHttp1Edge2EdgeTest(object):
+
     def test_01_concurrent_requests(self):
         """Test multiple concurrent clients sending streaming messages"""
 
@@ -1158,6 +1159,7 @@ class Http1OneRouterTestBase(TestCase):
 
 
 class Http1Edge2EdgeTestBase(TestCase):
+
     @classmethod
     def router(cls, name, mode, extra):
         config = [

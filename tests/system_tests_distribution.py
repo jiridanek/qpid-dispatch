@@ -67,6 +67,7 @@ class AddressChecker (object):
 
 
 class AddressCheckerTimeout (object):
+
     def __init__(self, parent):
         self.parent = parent
 

@@ -562,6 +562,7 @@ class AppStats(object):
 
 
 class ConnectionFacts(object):
+
     def __init__(self, user, host, app, conn_name):
         self.user = user
         self.host = host

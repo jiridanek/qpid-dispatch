@@ -260,6 +260,7 @@ class Config(object):
 
 
 class PolicyConfig(Config):
+
     def __init__(self, filename=None, schema=QdSchema(), raw_json=False):
         super(PolicyConfig, self).__init__(filename, schema, raw_json)
 
