@@ -130,8 +130,6 @@ ignore =
     D204,
     # Docstring is under-indented
     D207,
-    # Docstring is over-indented
-    D208,
     # Multi-line docstring closing quotes should be on a separate line
     D209,
     # Missing docstring in magic method

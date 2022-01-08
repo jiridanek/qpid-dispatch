@@ -269,7 +269,7 @@ def opts_sasl(opts):
 
 def opts_ssl_domain(opts, mode=SSLDomain.MODE_CLIENT):
     """Return proton.SSLDomain from command line options or None if no SSL options specified.
-    @param opts: Parsed optoins including connection_options()
+    @param opts: Parsed options including connection_options()
     """
 
     url = opts_url(opts)
