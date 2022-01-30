@@ -661,15 +661,17 @@ class CommonHttp1Edge2EdgeTest:
 
         # ensure links recover once the server re-appears
         server = TestServer.new_server(self.http_server11_port, self.http_listener11_port, TESTS)
-        self.assertIsNotNone(server, TEST_SERVER_ERROR % self.http_server11_port)
+        try:
+            self.assertIsNotNone(server, TEST_SERVER_ERROR % self.http_server11_port)
 
-        self.EA2.wait_connectors()
+            self.EA2.wait_connectors()
 
-        client = ThreadedTestClient(TESTS, self.http_listener11_port)
-        client.wait()
-        self.assertIsNone(client.error)
-        self.assertEqual(1, client.count)
-        server.wait()
+            client = ThreadedTestClient(TESTS, self.http_listener11_port)
+            client.wait()
+            self.assertIsNone(client.error)
+            self.assertEqual(1, client.count)
+        finally:
+            server.wait()
 
     def test_05_large_streaming_msg(self):
         """
