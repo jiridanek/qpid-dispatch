@@ -295,6 +295,11 @@ class Http1AdaptorOneRouterTest(Http1OneRouterTestBase,
                                        handler_cls=RequestHandler10)
         cls.INT_A.wait_connectors()
 
+    @classmethod
+    def tearDownClass(cls):
+        cls.http10_server.wait(TIMEOUT)
+        cls.http11_server.wait(TIMEOUT)
+
     def test_005_get_10(self):
         client = HTTPConnection("127.0.0.1:%s" % self.http_listener10_port,
                                 timeout=TIMEOUT)
