@@ -340,6 +340,7 @@ jobs:
         run: |
           dnf install -y crypto-policies crypto-policies-scripts
           fips-mode-setup --enable
+          update-crypto-policies --set FIPS
 
       - name: Show environment (Linux)
         if: ${{ always() && runner.os == 'Linux' }}
