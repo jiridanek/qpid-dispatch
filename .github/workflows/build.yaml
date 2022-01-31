@@ -335,6 +335,12 @@ jobs:
 
     steps:
 
+      - name: Enable FIPS (only on Fedora; CentOS 7 is bit harder to do, so I decided not to, for now)
+        if: ${{ matrix.container == 'fedora' }}
+        run: |
+          dnf install -y crypto-policies crypto-policies-scripts
+          fips-mode-setup --enable
+
       - name: Show environment (Linux)
         if: ${{ always() && runner.os == 'Linux' }}
         run: env -0 | sort -z | tr '\0' '\n'
