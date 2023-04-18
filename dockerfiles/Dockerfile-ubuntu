@@ -20,7 +20,7 @@
 # To run it - sudo docker run -i -t <username>/dispatch (this will launch the dispatch router)
 
 # Gets the trusty Ubuntu from dockerhub
-FROM ubuntu:latest
+FROM ubuntu:22.10
 
 MAINTAINER "dev@qpid.apache.org"
 ARG DEBIAN_FRONTEND=noninteractive
