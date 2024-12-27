@@ -298,7 +298,7 @@ jobs:
       volumes:
         - ${{github.workspace}}:${{github.workspace}}
         # mount the libs from the host, needed for `using: action` steps when image has ancient glibc
-        - "/lib64:/mnt/lib64"
+        - "/:/mnt"
       env:
         LD_LIBRARY_PATH: "/mnt/lib64"
 
