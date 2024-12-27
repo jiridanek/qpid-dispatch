@@ -297,6 +297,8 @@ jobs:
       image: 'library/${{ matrix.container }}:${{ matrix.containerTag }}'
       volumes:
         - ${{github.workspace}}:${{github.workspace}}
+        # mount the libs from the host, needed for `using: action` steps when image has ancient glibc
+        - "/lib64:/mnt/lib64"
 
     env:
       BuildType: ${{matrix.buildType}}
@@ -344,10 +346,14 @@ jobs:
           repository: 'apache/qpid-proton'
           ref: ${{ matrix.protonGitRef }}
           path: 'qpid-proton'
+        env:
+          LD_LIBRARY_PATH: "/mnt/lib64"
 
       - uses: actions/checkout@v3
         with:
           path: 'qpid-dispatch'
+        env:
+          LD_LIBRARY_PATH: "/mnt/lib64"
 
       - name: Install EPEL (on CentOS 7)
         if: ${{ matrix.container == 'centos' && matrix.containerTag == '7' }}
