@@ -299,8 +299,8 @@ jobs:
         - ${{github.workspace}}:${{github.workspace}}
         # mount the libs from the host, needed for `using: action` steps when image has ancient glibc
         - "/:/mnt"
-      env:
-        LD_LIBRARY_PATH: "/mnt/lib64"
+        # manipulate the host from within the job container
+        - "/var/run/docker.sock:/var/run/docker.sock"
 
     env:
       BuildType: ${{matrix.buildType}}
@@ -342,6 +342,14 @@ jobs:
       - name: Show environment (Linux)
         if: ${{ always() && runner.os == 'Linux' }}
         run: env -0 | sort -z | tr '\0' '\n'
+
+      - name: compatibility libs
+        run: |
+          yum -y install podman
+          podman run --rm -it quay.io/centos/centos:10
+        env:
+          CONTAINER_HOST: "unix:///var/run/docker.sock"
+
 
       - name: run node20
 #          ./patchelf --set-interpreter /mnt/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --set-rpath /mnt/lib/x86_64-linux-gnu/ /__e/node20/bin/node
