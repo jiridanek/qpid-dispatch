@@ -345,10 +345,10 @@ jobs:
 
       - name: compatibility libs
         run: |
-          yum -y install podman
+          yum -y install docker-client
           podman run --rm -it quay.io/centos/centos:10
         env:
-          CONTAINER_HOST: "/var/run/docker.sock"
+          CONTAINER_HOST: "unix:///var/run/docker.sock"
 
 
       - name: run node20
