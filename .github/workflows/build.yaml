@@ -348,7 +348,7 @@ jobs:
           yum -y install podman
           podman run --rm -it quay.io/centos/centos:10
         env:
-          CONTAINER_HOST: "unix:///var/run/docker.sock"
+          CONTAINER_HOST: "/var/run/docker.sock"
 
 
       - name: run node20
