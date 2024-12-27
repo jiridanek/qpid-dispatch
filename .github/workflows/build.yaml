@@ -346,7 +346,7 @@ jobs:
       - name: run node20
         run: |
           curl -L https://github.com/NixOS/patchelf/releases/download/0.18.0/patchelf-0.18.0-x86_64.tar.gz | \
-            tar --strip 1 -C . -xzf - bin/patchelf
+            tar --strip 2 -C . -xzf - ./bin/patchelf
           patchelf --set-interpreter /mnt/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --set-rpath /mnt/lib/x86_64-linux-gnu/ /__e/node20/bin/node
           /__e/node20/bin/node --help
 #        env:
