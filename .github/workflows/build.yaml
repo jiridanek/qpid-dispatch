@@ -347,7 +347,7 @@ jobs:
         run: |
           /__e/node20/bin/node --help
         env:
-          LD_LIBRARY_PATH: "/mnt/lib:/mnt/usr/lib"
+          LD_LIBRARY_PATH: "/mnt/lib/x86_64-linux-gnu/"
 
       - uses: actions/checkout@v3
         with:
