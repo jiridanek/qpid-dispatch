@@ -298,7 +298,7 @@ jobs:
       volumes:
         - ${{github.workspace}}:${{github.workspace}}
         # mount the libs from the host, needed for `using: action` steps when image has ancient glibc
-        - "/lib64:/lib64"
+        - "/lib64:/mnt/lib64"
       env:
         LD_LIBRARY_PATH: "/mnt/lib64"
 
@@ -342,6 +342,10 @@ jobs:
       - name: Show environment (Linux)
         if: ${{ always() && runner.os == 'Linux' }}
         run: env -0 | sort -z | tr '\0' '\n'
+
+      - name: run node20
+        run: |
+          /__e/node20/bin/node --help
 
       - uses: actions/checkout@v3
         with:
