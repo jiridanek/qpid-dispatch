@@ -385,8 +385,8 @@ jobs:
           #curl -L https://github.com/NixOS/patchelf/releases/download/0.18.0/patchelf-0.18.0-x86_64.tar.gz | \
           #  tar --strip 2 -C . -xzf - ./bin/patchelf
           patchelf --set-interpreter /mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --set-rpath /mnt/usr/lib/x86_64-linux-gnu /mnt/home/runner/runners/*/externals/node20/bin/node
-          mkdir /mnt/usr
-          cp -R /usr/lib/x86_64-linux-gnu /mnt/usr/lib
+          mkdir /mnt/mnt/usr
+          cp -R /usr/lib/x86_64-linux-gnu /mnt/mnt/usr/lib
           EOF
         env:
           DOCKER_HOST: "unix:///var/run/docker.sock"
