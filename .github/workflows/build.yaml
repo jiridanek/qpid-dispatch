@@ -377,6 +377,7 @@ jobs:
           EOF
 
           # --set-interpreter /mnt/lib64/ld-linux-x86-64.so.2 --set-rpath /mnt/lib64
+          # /mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --set-rpath /mnt/usr/lib/x86_64-linux-gnu
           yum install -y docker-ce-cli
           docker run --rm --volume /:/mnt -i docker.io/library/ubuntu:24.04 <<'EOF'
           set -Eeuxo pipefail
@@ -384,7 +385,7 @@ jobs:
           apt-get install -y curl
           curl -L https://github.com/NixOS/patchelf/releases/download/0.18.0/patchelf-0.18.0-x86_64.tar.gz | \
             tar --strip 2 -C . -xzf - ./bin/patchelf
-          #./patchelf --set-interpreter /mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --set-rpath /mnt/usr/lib/x86_64-linux-gnu /mnt/home/runner/runners/*/externals/node20/bin/node
+          ./patchelf --set-rpath /mnt/usr/lib/x86_64-linux-gnu /mnt/home/runner/runners/*/externals/node20/bin/node
           mkdir -p /mnt/mnt/usr/lib
           cp -R /usr/lib/x86_64-linux-gnu /mnt/mnt/usr/lib
           #/mnt/home/runner/runners/2.321.0/externals/node20/bin/node --help
@@ -399,7 +400,7 @@ jobs:
           ls /mnt/usr/lib/x86_64-linux-gnu/
           ls /mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
           /mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --help
-          LD_LIBRARY_PATH=/mnt/usr/lib/x86_64-linux-gnu /mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 /__e/node20/bin/node
+          LD_LIBRARY_PATH=/mnt/usr/lib/x86_64-linux-gnu /mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 /__e/node20/bin/node --help
           
           #/__e/node20/bin/node --help
           
