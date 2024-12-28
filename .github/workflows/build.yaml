@@ -389,7 +389,7 @@ jobs:
 #          ./patchelf --set-interpreter /mnt/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --set-rpath /mnt/lib/x86_64-linux-gnu/ /__e/node20/bin/node
         run: |
           set -Eeuxo pipefail
-#          /__e/node20/bin/node --help
+          #/__e/node20/bin/node --help
           
           #ls /mnt
           #ls /mnt/lib64
