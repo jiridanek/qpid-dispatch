@@ -384,9 +384,14 @@ jobs:
 #          ./patchelf --set-interpreter /mnt/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --set-rpath /mnt/lib/x86_64-linux-gnu/ /__e/node20/bin/node
         run: |
           set -x
-          ls /mnt
-          ls /mnt/lib64
+          #ls /mnt
+          #ls /mnt/lib64
           ldd --verbose /__e/node20/bin/node
+          /lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
+          /mnt/lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
+          /lib64/ld-linux-x86-64.so.2 --list --library-path /mnt/lib64/ /__e/node20/bin/node
+          /mnt/lib64/ld-linux-x86-64.so.2 --list --library-path /mnt/lib64/ /__e/node20/bin/node
+          
           LD_LIBRARY_PATH=/mnt/lib64/ /__e/node20/bin/node --help
 #        env:
 #          LD_LIBRARY_PATH: /mnt/lib64/
