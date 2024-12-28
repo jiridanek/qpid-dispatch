@@ -574,6 +574,10 @@ jobs:
           path: |
             **/core
 
+      - name: Run dmesg
+        run: dmesg
+        if: failure()
+
   python:
     name: 'Python Checker (${{ matrix.os }})'
     runs-on: '${{ matrix.os }}'
