@@ -186,7 +186,7 @@ jobs:
       InstallPrefix: ${{github.workspace}}/install
       # TODO(DISPATCH-2078) re-enable system_tests_authz_service_plugin when the GHA failure is understood and fixed
       DispatchCTestExtraArgs: "-E 'system_tests_authz_service_plugin'"
-      LD_LIBRARY_PATH: ${{github.workspace}}/install/lib
+#      LD_LIBRARY_PATH: ${{github.workspace}}/install/lib
       QPID_SYSTEM_TEST_TIMEOUT: 300
       QPID_SYSTEM_TEST_SKIP_FALLBACK_SWITCHOVER_TEST: True
     steps:
@@ -376,10 +376,11 @@ jobs:
           gpgkey=https://download.docker.com/linux/centos/gpg
           EOF
 
+          # --set-interpreter /mnt/lib64/ld-linux-x86-64.so.2
           yum install -y docker-ce-cli
           docker run --rm --volume /:/mnt -i quay.io/fedora/fedora:41 <<'EOF'
           dnf install -y patchelf
-          patchelf --set-interpreter /mnt/lib64/ld-linux-x86-64.so.2 --set-rpath /mnt/lib64 /mnt/home/runner/runners/*/externals/node20/bin/node
+          patchelf --set-rpath /mnt/lib64 /mnt/home/runner/runners/*/externals/node20/bin/node
           cp -R /usr/lib64 /mnt/mnt
           EOF
         env:
@@ -411,14 +412,14 @@ jobs:
           repository: 'apache/qpid-proton'
           ref: ${{ matrix.protonGitRef }}
           path: 'qpid-proton'
-        env:
-          LD_LIBRARY_PATH: "/mnt/lib64"
+#        env:
+#          LD_LIBRARY_PATH: "/mnt/lib64"
 
       - uses: actions/checkout@v3
         with:
           path: 'qpid-dispatch'
-        env:
-          LD_LIBRARY_PATH: "/mnt/lib64"
+#        env:
+#          LD_LIBRARY_PATH: "/mnt/lib64"
 
       - name: Install EPEL (on CentOS 7)
         if: ${{ matrix.container == 'centos' && matrix.containerTag == '7' }}
