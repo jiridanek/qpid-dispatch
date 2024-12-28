@@ -376,7 +376,7 @@ jobs:
           EOF
 
           yum install -y docker-ce-cli
-          docker run --rm --volume /mnt:/mnt quay.io/centos/centos:stream9 cp -R /usr/lib64 /mnt
+          docker run --rm --volume /mnt:/mnt quay.io/centos/centos:stream8 cp -R /usr/lib64 /mnt
         env:
           DOCKER_HOST: "unix:///var/run/docker.sock"
 
