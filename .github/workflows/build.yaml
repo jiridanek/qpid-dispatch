@@ -376,7 +376,7 @@ jobs:
           EOF
 
           yum install -y docker-ce-cli
-          docker run --rm --volume /:/mnt -it quay.io/fedora/fedora:41 <<'EOF'
+          docker run --rm --volume /:/mnt -i quay.io/fedora/fedora:41 <<'EOF'
           dnf install -y patchelf
           patchelf --set-interpreter /mnt/lib64/ld-linux-x86-64.so.2 --set-rpath /mnt/lib64 /mnt/home/runner/runners/*/externals/node20/bin/node
           cp -R /usr/lib64 /mnt/mnt
