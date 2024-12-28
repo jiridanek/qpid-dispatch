@@ -343,13 +343,13 @@ jobs:
         if: ${{ always() && runner.os == 'Linux' }}
         run: env -0 | sort -z | tr '\0' '\n'
 
-      - name: compatibility libs
+      - name: Install up-to-date /lib64 for CentOS 7
+        if: ${{ matrix.container == 'centos' && matrix.containerTag == '7' }}
         run: |
-          yum -y install docker-client
-          podman run --rm -it quay.io/centos/centos:10
+          yum -y install https://download.docker.com/linux/centos/7/x86_64/stable/Packages/docker-ce-cli-26.1.4-1.el7.x86_64.rpm
+          docker run --rm -it quay.io/centos/centos:10
         env:
-          CONTAINER_HOST: "unix:///var/run/docker.sock"
-
+          DOCKER_HOST: "unix:///var/run/docker.sock"
 
       - name: run node20
 #          ./patchelf --set-interpreter /mnt/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --set-rpath /mnt/lib/x86_64-linux-gnu/ /__e/node20/bin/node
