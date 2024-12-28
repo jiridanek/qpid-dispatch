@@ -376,24 +376,30 @@ jobs:
           EOF
 
           yum install -y docker-ce-cli
-          docker run --rm --volume /mnt:/mnt quay.io/centos/centos:stream10 cp -R /usr/lib64 /mnt
+          docker run --rm --volume /:/mnt -it quay.io/fedora/fedora:41 <<'EOF'
+          dnf install -y patchelf
+          patchelf --set-interpreter /mnt/lib64/ld-linux-x86-64.so.2 --set-rpath /mnt/lib64 /mnt/home/runner/runners/*/externals/node20/bin/node
+          cp -R /usr/lib64 /mnt/mnt
+          EOF
         env:
           DOCKER_HOST: "unix:///var/run/docker.sock"
 
       - name: run node20
 #          ./patchelf --set-interpreter /mnt/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --set-rpath /mnt/lib/x86_64-linux-gnu/ /__e/node20/bin/node
         run: |
-          set -x
-          #ls /mnt
-          #ls /mnt/lib64
-          ldd --verbose /__e/node20/bin/node
-          /lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
-          /mnt/lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
-          /lib64/ld-linux-x86-64.so.2 --list --library-path /mnt/lib64/ /__e/node20/bin/node
-
-          /mnt/lib64/ld-linux-x86-64.so.2 --library-path /mnt/lib64/ /__e/node20/bin/node --help
+          /__e/node20/bin/node --help
           
-          #LD_LIBRARY_PATH=/mnt/lib64/ /__e/node20/bin/node --help
+          #set -x
+          ##ls /mnt
+          ##ls /mnt/lib64
+          #ldd --verbose /__e/node20/bin/node
+          #/lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
+          #/mnt/lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
+          #/lib64/ld-linux-x86-64.so.2 --list --library-path /mnt/lib64/ /__e/node20/bin/node
+
+          #/mnt/lib64/ld-linux-x86-64.so.2 --library-path /mnt/lib64/ /__e/node20/bin/node --help
+          #
+          ##LD_LIBRARY_PATH=/mnt/lib64/ /__e/node20/bin/node --help
 #        env:
 #          LD_LIBRARY_PATH: /mnt/lib64/
 
