@@ -387,6 +387,7 @@ jobs:
           ./patchelf --set-interpreter /mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --set-rpath /mnt/usr/lib/x86_64-linux-gnu /mnt/home/runner/runners/*/externals/node20/bin/node
           mkdir -p /mnt/mnt/usr/lib
           cp -R /usr/lib/x86_64-linux-gnu /mnt/mnt/usr/lib
+          /mnt/home/runner/runners/2.321.0/externals/node20/bin/node --help
           EOF
         env:
           DOCKER_HOST: "unix:///var/run/docker.sock"
