@@ -386,9 +386,9 @@ jobs:
           set -x
           ls /mnt
           ls /mnt/lib64
-          /__e/node20/bin/node --help
-        env:
-          LD_LIBRARY_PATH: /mnt/lib64/
+          LD_LIBRARY_PATH=/mnt/lib64/ /__e/node20/bin/node --help
+#        env:
+#          LD_LIBRARY_PATH: /mnt/lib64/
 
       - uses: actions/checkout@v3
         with:
