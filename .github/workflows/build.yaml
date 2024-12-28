@@ -343,10 +343,37 @@ jobs:
         if: ${{ always() && runner.os == 'Linux' }}
         run: env -0 | sort -z | tr '\0' '\n'
 
+      # CentOS 7 is archived, so we need to use vault.centos.org
+      # For talking to Docker socket we need genuine Docker, Podman will refuse to communicate
+      # Docker packages are at https://download.docker.com/linux/centos/7/x86_64/stable/Packages/
       - name: Install up-to-date /lib64 for CentOS 7
         if: ${{ matrix.container == 'centos' && matrix.containerTag == '7' }}
         run: |
-          yum --disablerepo="*" -y install https://download.docker.com/linux/centos/7/x86_64/stable/Packages/docker-ce-cli-26.1.4-1.el7.x86_64.rpm
+          rm -rf /etc/yum.repos.d/*.repo
+
+          cat > /etc/yum.repos.d/CentOS-Linux-AppStream.repo <<'EOF'
+          [appstream] 
+          name=CentOS Linux 7 - AppStream
+          baseurl=https://vault.centos.org/\$releasever-stream/AppStream/\$basearch/os/
+          gpgcheck=0
+          EOF
+  
+          cat > /etc/yum.repos.d/CentOS-Linux-BaseOS.repo <<'EOF'
+          [BaseOS]
+          name=CentOS Linux 7 - BaseOS
+          baseurl=https://vault.centos.org/\$releasever-stream/BaseOS/\$basearch/os/
+          gpgcheck=0
+          EOF
+          
+          cat > /etc/yum.repos.d/DockerCE.repo <<'EOF'
+          [docker-ce-stable]
+          name=Docker CE Stable - $basearch
+          baseurl=https://download.docker.com/linux/centos/$releasever/$basearch/stable
+          enabled=1
+          gpgcheck=1
+          gpgkey=https://download.docker.com/linux/centos/gpg
+          
+          yum install -y docker-ce-cli
           docker run --rm -it quay.io/centos/centos:10
         env:
           DOCKER_HOST: "unix:///var/run/docker.sock"
