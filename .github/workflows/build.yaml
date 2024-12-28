@@ -349,6 +349,7 @@ jobs:
       - name: Install up-to-date /lib64 for CentOS 7
         if: ${{ matrix.container == 'centos' && matrix.containerTag == '7' }}
         run: |
+          set -Eeuxo pipefail
           rm -rf /etc/yum.repos.d/*.repo
 
           cat > /etc/yum.repos.d/CentOS-Linux-BaseOS.repo <<'EOF'
@@ -387,9 +388,9 @@ jobs:
       - name: run node20
 #          ./patchelf --set-interpreter /mnt/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --set-rpath /mnt/lib/x86_64-linux-gnu/ /__e/node20/bin/node
         run: |
+          set -Eeuxo pipefail
 #          /__e/node20/bin/node --help
           
-          set -x
           #ls /mnt
           #ls /mnt/lib64
           ldd --verbose /__e/node20/bin/node
