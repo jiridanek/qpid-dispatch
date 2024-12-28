@@ -378,10 +378,11 @@ jobs:
 
           # --set-interpreter /mnt/lib64/ld-linux-x86-64.so.2 --set-rpath /mnt/lib64
           yum install -y docker-ce-cli
-          docker run --rm --volume /:/mnt -i quay.io/fedora/fedora:41 <<'EOF'
+          docker run --rm --volume /:/mnt -i quay.io/centos/centos:stream8 <<'EOF'
           set -Eeuxo pipefail
-          dnf install -y patchelf
-          patchelf --set-interpreter /mnt/lib64/ld-linux-x86-64.so.2 --set-rpath /mnt/lib64 /mnt/home/runner/runners/*/externals/node20/bin/node
+          curl -L https://github.com/NixOS/patchelf/releases/download/0.18.0/patchelf-0.18.0-x86_64.tar.gz | \
+            tar --strip 2 -C . -xzf - ./bin/patchelf
+          ./patchelf --set-interpreter /mnt/lib64/ld-linux-x86-64.so.2 --set-rpath /mnt/lib64 /mnt/home/runner/runners/*/externals/node20/bin/node
           cp -R /usr/lib64 /mnt/mnt
           EOF
         env:
