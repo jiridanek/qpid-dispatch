@@ -397,8 +397,9 @@ jobs:
           #ls /mnt
           #ls /mnt/lib64
           /mnt/lib64/ld-linux-x86-64.so.2 --help
-          #/mnt/lib64/ld-linux-x86-64.so.2 --list --library-path /mnt/lib64/ /__e/node20/bin/node
-          #ldd --verbose /__e/node20/bin/node
+          /mnt/lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
+          /mnt/lib64/ld-linux-x86-64.so.2 --list --library-path /mnt/lib64/ /__e/node20/bin/node
+          ldd --verbose /__e/node20/bin/node
           #/lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
           #/mnt/lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
           #/lib64/ld-linux-x86-64.so.2 --list --library-path /mnt/lib64/ /__e/node20/bin/node
