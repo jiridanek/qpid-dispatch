@@ -386,7 +386,7 @@ jobs:
           set -x
           ls /mnt
           ls /mnt/lib64
-          LD_LIBRARY_PATH=/mnt/lib64/ ldd /__e/node20/bin/node
+          ldd --verbose /__e/node20/bin/node
           LD_LIBRARY_PATH=/mnt/lib64/ /__e/node20/bin/node --help
 #        env:
 #          LD_LIBRARY_PATH: /mnt/lib64/
