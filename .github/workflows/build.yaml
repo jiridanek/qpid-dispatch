@@ -297,8 +297,8 @@ jobs:
       image: 'library/${{ matrix.container }}:${{ matrix.containerTag }}'
       volumes:
         - ${{github.workspace}}:${{github.workspace}}
-        # mount the libs from the host, needed for `using: action` steps when image has ancient glibc
-        - "/:/mnt"
+        # mount the lib64 directory, needed on CentOS 7 for `using: action` steps when image has ancient glibc
+        - "/mnt:/mnt"
         # manipulate the host from within the job container
         - "/var/run/docker.sock:/var/run/docker.sock"
 
@@ -365,7 +365,7 @@ jobs:
           baseurl=https://vault.centos.org/7.9.2009/updates/\$basearch/
           gpgcheck=0
           EOF
-          
+
           cat > /etc/yum.repos.d/DockerCE.repo <<'EOF'
           [docker-ce-stable]
           name=Docker CE Stable - $basearch
@@ -374,9 +374,9 @@ jobs:
           gpgcheck=1
           gpgkey=https://download.docker.com/linux/centos/gpg
           EOF
-          
+
           yum install -y docker-ce-cli
-          docker run --rm -it quay.io/centos/centos:10
+          docker run --rm --volume /mnt:/mnt quay.io/centos/centos:10 cp -R /lib64 /mnt
         env:
           DOCKER_HOST: "unix:///var/run/docker.sock"
 
