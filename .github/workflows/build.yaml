@@ -376,11 +376,11 @@ jobs:
           gpgkey=https://download.docker.com/linux/centos/gpg
           EOF
 
-          # --set-interpreter /mnt/lib64/ld-linux-x86-64.so.2
+          # --set-interpreter /mnt/lib64/ld-linux-x86-64.so.2 --set-rpath /mnt/lib64
           yum install -y docker-ce-cli
           docker run --rm --volume /:/mnt -i quay.io/fedora/fedora:41 <<'EOF'
           dnf install -y patchelf
-          patchelf --set-rpath /mnt/lib64 /mnt/home/runner/runners/*/externals/node20/bin/node
+          patchelf --set-interpreter /mnt/lib64/ld-linux-x86-64.so.2 /mnt/home/runner/runners/*/externals/node20/bin/node
           cp -R /usr/lib64 /mnt/mnt
           EOF
         env:
@@ -396,7 +396,7 @@ jobs:
           #ls /mnt/lib64
           /mnt/lib64/ld-linux-x86-64.so.2 --help
           /mnt/lib64/ld-linux-x86-64.so.2 --list --library-path /mnt/lib64/ /__e/node20/bin/node
-          ldd --verbose /__e/node20/bin/node
+          #ldd --verbose /__e/node20/bin/node
           #/lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
           #/mnt/lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
           #/lib64/ld-linux-x86-64.so.2 --list --library-path /mnt/lib64/ /__e/node20/bin/node
