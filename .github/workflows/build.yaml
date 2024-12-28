@@ -372,6 +372,7 @@ jobs:
           enabled=1
           gpgcheck=1
           gpgkey=https://download.docker.com/linux/centos/gpg
+          EOF
           
           yum install -y docker-ce-cli
           docker run --rm -it quay.io/centos/centos:10
