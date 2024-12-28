@@ -399,10 +399,12 @@ jobs:
           
           #ls /mnt
           #ls /mnt/lib64
-          LD_DEBUG=files,libs /mnt/lib64/ld-linux-x86-64.so.2 --help
-          LD_DEBUG=files,libs /mnt/lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
-          LD_DEBUG=files,libs /mnt/lib64/ld-linux-x86-64.so.2 --list --library-path /mnt/lib64/ /__e/node20/bin/node
-          LD_DEBUG=files,libs ldd --verbose /__e/node20/bin/node
+          LD_DEBUG=files,libs /mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
+
+          #LD_DEBUG=files,libs /mnt/lib64/ld-linux-x86-64.so.2 --help
+          #LD_DEBUG=files,libs /mnt/lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
+          #LD_DEBUG=files,libs /mnt/lib64/ld-linux-x86-64.so.2 --list --library-path /mnt/lib64/ /__e/node20/bin/node
+          #LD_DEBUG=files,libs ldd --verbose /__e/node20/bin/node
           #/lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
           #/mnt/lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
           #/lib64/ld-linux-x86-64.so.2 --list --library-path /mnt/lib64/ /__e/node20/bin/node
