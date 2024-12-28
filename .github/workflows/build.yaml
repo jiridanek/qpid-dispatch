@@ -398,6 +398,7 @@ jobs:
           set -Eeuxo pipefail
           ls /mnt/usr/lib/x86_64-linux-gnu/
           ls /mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+          /mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --help
           
           #/__e/node20/bin/node --help
           
