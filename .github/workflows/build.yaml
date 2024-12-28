@@ -351,17 +351,18 @@ jobs:
         run: |
           rm -rf /etc/yum.repos.d/*.repo
 
-          cat > /etc/yum.repos.d/CentOS-Linux-AppStream.repo <<'EOF'
-          [appstream] 
-          name=CentOS Linux 7 - AppStream
-          baseurl=https://vault.centos.org/\$releasever-stream/AppStream/\$basearch/os/
-          gpgcheck=0
+          cat > /etc/yum.repos.d/CentOS-Linux-BaseOS.repo <<'EOF'
+          [BaseOS] 
+          name=CentOS Linux 7 - BaseOS
+          baseurl=https://vault.centos.org/7.9.2009/os/\$basearch/
+          gpgcheck=1
+          gpgkey=https://vault.centos.org/7.9.2009/os/x86_64/RPM-GPG-KEY-CentOS-7
           EOF
   
-          cat > /etc/yum.repos.d/CentOS-Linux-BaseOS.repo <<'EOF'
-          [BaseOS]
-          name=CentOS Linux 7 - BaseOS
-          baseurl=https://vault.centos.org/\$releasever-stream/BaseOS/\$basearch/os/
+          cat > /etc/yum.repos.d/CentOS-Linux-Updates.repo <<'EOF'
+          [Updates]
+          name=CentOS Linux 7 - Updates
+          baseurl=https://vault.centos.org/7.9.2009/updates/\$basearch/
           gpgcheck=0
           EOF
           
