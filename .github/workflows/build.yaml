@@ -391,7 +391,7 @@ jobs:
           /mnt/lib64/ld-linux-x86-64.so.2 --list /__e/node20/bin/node
           /lib64/ld-linux-x86-64.so.2 --list --library-path /mnt/lib64/ /__e/node20/bin/node
 
-          /mnt/lib64/ld-linux-x86-64.so.2 --library-path /mnt/lib64/ /__e/node20/bin/node
+          /mnt/lib64/ld-linux-x86-64.so.2 --library-path /mnt/lib64/ /__e/node20/bin/node --help
           
           #LD_LIBRARY_PATH=/mnt/lib64/ /__e/node20/bin/node --help
 #        env:
