@@ -427,7 +427,7 @@ jobs:
         with:
           path: 'qpid-dispatch'
 
-      # Again, it's gone from `yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm`
+      # Again, it's gone, can't do `yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm`
       - name: Install EPEL (on CentOS 7)
         if: ${{ matrix.container == 'centos' && matrix.containerTag == '7' }}
         run: |
