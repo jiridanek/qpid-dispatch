@@ -355,9 +355,14 @@ jobs:
       #       from a newer Linux distribution and patch the binary to use them.
       #   - Docker containers provide ready-made env, to avoid docker-in-docker, need to mount host docker socket
       #   - For talking to Docker socket from the host we need genuine Docker, Podman will refuse to communicate
-      #   - The patchelf tool can set interpreter and rpath for preexisting binary, alternatively
+      #   - The patchelf tool can update interpreter and rpath for already-compiled binary, alternatively
       #       I looked at chain-loaders, but that is way too much effort to make work
       #       refs:
+      #         - https://rootknecht.net/blog/patching-binaries-for-nixos/
+      #         - https://nixos.wiki/wiki/Packaging/Binaries#Manual_Method
+      #         - https://tmpout.sh/2/6.html (Preloading the linker for fun and profit)
+      #         - https://github.com/nix-community/nix-ld
+      #         - https://lieeil.wordpress.com/2009/01/04/rtldi-indirect-runtime-loader/,
       - name: Install up-to-date /lib64 for CentOS 7
         if: ${{ matrix.container == 'centos' && matrix.containerTag == '7' }}
         run: |
@@ -405,7 +410,7 @@ jobs:
           EOF
 
           # check that Node20 works
-          /mnt/home/runner/runners/*/externals/node20/bin/node -e 'console.log(3 + 4)'
+          /mnt/home/runner/runners/*/externals/node20/bin/node -e 'console.log("Hello World")'
         env:
           DOCKER_HOST: "unix:///var/run/docker.sock"
 
