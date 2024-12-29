@@ -395,6 +395,7 @@ jobs:
           EOF
 
           yum install -y docker-ce-cli
+
           # Note: the paths get confusing with two containers being around
           docker run --rm --volume /:/mnt -i quay.io/centos/centos:stream10 <<'EOF'
           set -Eeuxo pipefail
@@ -407,6 +408,7 @@ jobs:
           mkdir -p /mnt/mnt/usr
           cp -R /usr/lib64 /mnt/mnt/usr/lib64
           EOF
+
           # Note: this is outside the container now
           cp /mnt/usr/lib64/ld-linux-x86-64.so.2 /
         env:
