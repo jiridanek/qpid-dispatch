@@ -404,9 +404,9 @@ jobs:
 #          ./patchelf --set-interpreter /mnt/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --set-rpath /mnt/lib/x86_64-linux-gnu/ /__e/node20/bin/node
         run: |
           set -Eeuxo pipefail
-          ls /mnt/usr/lib/x86_64-linux-gnu/
-          ls /mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
-          /mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --help
+          #ls /mnt/usr/lib/x86_64-linux-gnu/
+          #ls /mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+          #/mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --help
           #LD_LIBRARY_PATH=/mnt/usr/lib/x86_64-linux-gnu /mnt/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 /__e/node20/bin/node --help
           
           #/__e/node20/bin/node --help
