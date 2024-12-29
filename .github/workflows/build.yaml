@@ -428,10 +428,17 @@ jobs:
         with:
           path: 'qpid-dispatch'
 
+      # Again, it's gone from `yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm`
       - name: Install EPEL (on CentOS 7)
         if: ${{ matrix.container == 'centos' && matrix.containerTag == '7' }}
         run: |
-          yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+          cat > /etc/yum.repos.d/epel.repo <<'EOF'
+          [docker-ce-stable]
+          name=EPEL 7
+          baseurl=https://archives.fedoraproject.org/pub/archive/epel/$releasever/$basearch/
+          enabled=1
+          gpgcheck=0
+          EOF
 
       # https://wiki.rockylinux.org/rocky/repo/#notes-on-epel
       - name: Install EPEL (on RockyLinux 8)
