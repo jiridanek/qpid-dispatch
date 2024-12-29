@@ -403,7 +403,7 @@ jobs:
             tar --strip 2 -C . -xzf - ./bin/patchelf
           # `patchelf` may fail to patch correctly if new interpreter path is longer than the previous interpreter path
           #    this would manifest as strange segfault when running the binary
-          cp /usr/lib64/ld-linux-x86-64.so.2 /
+          cp /usr/lib64/ld-linux-x86-64.so.2 /mnt/
           find /mnt/home/runner/runners/*/externals -type f -executable -exec ./patchelf --set-interpreter /ld-linux-x86-64.so.2 --set-rpath /mnt/usr/lib64 {} ';'
           mkdir -p /mnt/mnt/usr
           cp -R /usr/lib64 /mnt/mnt/usr/lib64
