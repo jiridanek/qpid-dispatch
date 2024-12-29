@@ -432,7 +432,7 @@ jobs:
         if: ${{ matrix.container == 'centos' && matrix.containerTag == '7' }}
         run: |
           cat > /etc/yum.repos.d/epel.repo <<'EOF'
-          [docker-ce-stable]
+          [epel]
           name=EPEL 7
           baseurl=https://archives.fedoraproject.org/pub/archive/epel/$releasever/$basearch/
           enabled=1
