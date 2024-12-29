@@ -408,11 +408,12 @@ jobs:
           mkdir -p /mnt/mnt/usr
           cp -R /usr/lib64 /mnt/mnt/usr/lib64
           EOF
-
-          # check that Node20 works
-          /mnt/home/runner/runners/*/externals/node20/bin/node -e 'console.log("Hello World")'
         env:
           DOCKER_HOST: "unix:///var/run/docker.sock"
+
+      - name: Check that Node20 works inside in-docker steps
+        if: ${{ matrix.container == 'centos' && matrix.containerTag == '7' }}
+        run: /__e/node20/bin/node -e 'console.log("Hello World")'
 
       - uses: actions/checkout@v3
         with:
